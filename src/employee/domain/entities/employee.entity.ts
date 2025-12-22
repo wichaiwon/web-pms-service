@@ -1,9 +1,9 @@
 
-import { Branch, UserRole } from 'src/shared/enum/user/user.enum'
+import { Branch, EmployeeRole } from 'src/shared/enum/employee/employee.enum'
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm'
 
-@Entity('user')
-export class User {
+@Entity('employee')
+export class Employee {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -21,11 +21,11 @@ export class User {
 
   @Column({
     type: 'enum',
-    enum: UserRole,
-    default: UserRole.MECHANIC,
+    enum: EmployeeRole,
+    default: EmployeeRole.MECHANIC,
     nullable: false,
   })
-  role: UserRole
+  role: EmployeeRole
 
   @Column({ unique: true, nullable: false })
   mirai_id: string
@@ -45,7 +45,7 @@ export class User {
   @Column({ type: 'enum', nullable: false, enum: Branch, default: Branch.HEAD_OFFICE })
   branch: Branch
 
-  @Column({ nullable: false })
+  @Column({ nullable: false ,default: true})
   is_active: boolean
 
   @Column({ nullable: false })

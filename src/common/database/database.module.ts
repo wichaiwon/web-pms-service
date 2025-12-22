@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { User } from 'src/user/domain/entities/user.entity'
+import { Employee } from 'src/employee/domain/entities/employee.entity'
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -14,7 +14,7 @@ import { User } from 'src/user/domain/entities/user.entity'
         password: configService.get('DB_PASSWORD', 'postgres'),
         database: configService.get('DB_NAME', 'web-pms-service-db'),
         entities: [
-          User,
+          Employee,
         ],
         synchronize: configService.get('NODE_ENV') !== 'production',
         logging: configService.get('NODE_ENV') === 'development',

@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { DatabaseModule } from './common/database/database.module'
-import { UserModule } from './user/user.module'
+import { EmployeeModule } from './employee/employee.module'
 
 @Module({
   imports: [
@@ -12,7 +12,7 @@ import { UserModule } from './user/user.module'
       envFilePath: '.env',
     }),
     DatabaseModule,
-    UserModule
+    EmployeeModule
   ],
   controllers: [AppController],
   providers: [AppService],

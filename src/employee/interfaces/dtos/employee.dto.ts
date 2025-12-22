@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Branch, UserRole } from 'src/shared/enum/user/user.enum'
+import { Branch, EmployeeRole } from 'src/shared/enum/employee/employee.enum'
 
-export class UserDto {
+export class EmployeeDto {
   @ApiProperty()
   id: string;
 
@@ -20,8 +20,8 @@ export class UserDto {
   @ApiProperty()
   lastname: string;
 
-  @ApiProperty({ enum: UserRole })
-  role: UserRole;
+  @ApiProperty({ enum: EmployeeRole })
+  role: EmployeeRole;
 
   @ApiProperty({ enum: Branch })
   branch: Branch;

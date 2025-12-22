@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserDto } from './user.dto';
+import { EmployeeDto } from './employee.dto';
 
 export class TokenDto {
   @ApiProperty({ example: 'eyJhbGc...' })
@@ -8,6 +8,6 @@ export class TokenDto {
   @ApiProperty({ example: 3600, required: false })
   expires_in?: number;
 
-  @ApiProperty({ type: () => UserDto, required: false })
-  user?: UserDto;
+  @ApiProperty({ type: () => EmployeeDto, required: false })
+  employee?: EmployeeDto;
 }

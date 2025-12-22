@@ -1,9 +1,9 @@
 import { IsString, IsNotEmpty, IsEnum, IsOptional, MinLength, MaxLength, IsEmail, Matches } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
-import { Branch, UserRole } from 'src/shared/enum/user/user.enum'
+import { Branch, EmployeeRole } from 'src/shared/enum/employee/employee.enum'
 
 
-export class CreateUserDto {
+export class CreateEmployeeDto {
   @ApiProperty({ 
     example: '6805018',
     description: 'PKG member ID'
@@ -89,15 +89,15 @@ export class CreateUserDto {
   pin_code?: string
 
   @ApiProperty({ 
-    example: UserRole.ADMIN, 
-    enum: UserRole, 
-    default: UserRole.ADMIN,
-    description: 'User role',
+    example: EmployeeRole.ADMIN, 
+    enum: EmployeeRole, 
+    default: EmployeeRole.ADMIN,
+    description: 'Employee role',
     required: false
   })
   @IsOptional()
-  @IsEnum(UserRole, { message: `role must be one of: ${Object.values(UserRole).join(', ')}` })
-  role?: UserRole
+  @IsEnum(EmployeeRole, { message: `role must be one of: ${Object.values(EmployeeRole).join(', ')}` })
+  role?: EmployeeRole
 
   @ApiProperty({ 
     example: Branch.HEAD_OFFICE, 
@@ -109,4 +109,14 @@ export class CreateUserDto {
   @IsOptional()
   @IsEnum(Branch, { message: `branch must be one of: ${Object.values(Branch).join(', ')}` })
   branch?: Branch
+
+  @ApiProperty({
+    example: 'system',
+    description: 'Created by user ID or system name',
+    required: false,
+    default: 'system'
+  })
+  @IsOptional()
+  @IsString({ message: 'created_by must be a string' })
+  created_by?: string
 }
