@@ -1,6 +1,6 @@
 
 import { Branch, UserRole } from 'src/shared/enum/user/user.enum'
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity('users')
 export class Users {
@@ -37,7 +37,7 @@ export class Users {
   mirai_password: string
   
   @Column({ nullable: true, type: 'timestamp with time zone' })
-  password_updated_at: Date
+  mirai_password_updated_at: Date
 
   @Column({ nullable: true })
   pin_code: string
@@ -57,6 +57,6 @@ export class Users {
   @Column({ nullable: true })
   updated_by: string
 
-  @Column({ type: 'timestamp with time zone', nullable: true })
+  @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true })
   updated_at: Date
 }
