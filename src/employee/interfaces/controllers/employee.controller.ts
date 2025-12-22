@@ -1,9 +1,11 @@
-import { Body, Controller, Post } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from "@nestjs/swagger";
-import { create } from "domain";
+import { Body, Controller, Post, HttpException, HttpStatus, UseGuards } from "@nestjs/common";
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiBearerAuth } from "@nestjs/swagger";
 import { EmployeeService } from "src/employee/application/employee.service";
 import { CreateEmployeeDto } from "src/employee/interfaces/dtos/create-employee.dto";
 import { EmployeeDto } from "src/employee/interfaces/dtos/employee.dto";
+import { LoginDto } from "../dtos/login.dto";
+import { TokenDto } from "../dtos/token.dto";
+import { JwtAuthGuard } from "src/employee/infrastructure/jwt-auth.guard";
 
 @ApiTags('Authentication')
 @Controller('employee')
@@ -13,9 +15,11 @@ export class EmployeeController {
     ) { }
     
     @Post('create')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('JWT-auth')
     @ApiOperation({ 
         summary: 'Create new employee(s)', 
-        description: 'Create one or multiple employees. Can accept a single employee object or an array of employee objects.' 
+        description: 'Create one or multiple employees. Can accept a single employee object or an array of employee objects. Requires JWT authentication.' 
     })
     @ApiBody({
         type: CreateEmployeeDto,
@@ -84,5 +88,30 @@ export class EmployeeController {
             ? await Promise.all(createEmployeeDto.map(dto => this.employeeService.createEmployee(dto)))
             : await this.employeeService.createEmployee(createEmployeeDto);
         return employee;
+    }
+
+    @Post('login')
+    @ApiOperation({ summary: 'Employee login', description: 'Login with username (mirai_id, pkg_id_member, or email) and password' })
+    @ApiBody({ 
+        type: LoginDto, 
+        description: 'Login credentials',
+        examples: {
+            example1: {
+                summary: 'Login example',
+                value: {
+                    username: '405680518',
+                    password: '1234567890'
+                }
+            }
+        }
+    })
+    @ApiResponse({ status: 200, description: 'Login successful', type: TokenDto })
+    @ApiResponse({ status: 401, description: 'Unauthorized - Invalid credentials' })
+    async login(@Body() loginDto: LoginDto): Promise<TokenDto> {
+        const result = await this.employeeService.login(loginDto.username, loginDto.password);
+        if (!result) {
+            throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+        }
+        return result;
     }
 }

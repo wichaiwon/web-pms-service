@@ -15,4 +15,14 @@ export class EmployeeRepository implements IEmployeeRepository {
         const newEmployee = this.employeeRepository.create(createEmployeeDto);
         return this.employeeRepository.save(newEmployee);
     }
+    
+    async findByUsername(username: string): Promise<Employee | null> {
+        return this.employeeRepository.findOne({ 
+            where: [
+                { mirai_id: username },
+                { pkg_id_member: username },
+                { email: username }
+            ]
+        });
+    }
 }
