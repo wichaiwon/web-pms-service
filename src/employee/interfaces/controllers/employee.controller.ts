@@ -5,7 +5,7 @@ import { CreateEmployeeDto } from "src/employee/interfaces/dtos/create-employee.
 import { EmployeeDto } from "src/employee/interfaces/dtos/employee.dto";
 import { LoginDto } from "../dtos/login.dto";
 import { TokenDto } from "../dtos/token.dto";
-import { JwtAuthGuard } from "src/employee/infrastructure/jwt-auth.guard";
+import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
 
 @ApiTags('Authentication')
 @Controller('employee')

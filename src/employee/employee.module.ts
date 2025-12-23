@@ -6,8 +6,8 @@ import { Employee } from "./domain/entities/employee.entity";
 import { PassportModule } from "@nestjs/passport";
 import { EmployeeController } from "./interfaces/controllers/employee.controller";
 import { EmployeeService } from "./application/employee.service";
-import { EmployeeRepository } from "./infrastructure/employee.repository";
-import { JwtStrategy } from "./infrastructure/jwt.strategy";
+import { EmployeeRepository } from "./infrastructure/repositories/employee.repository";
+import { JwtStrategy } from "./infrastructure/services/jwt.strategy";
 
 @Module({
     imports: [

@@ -1,12 +1,11 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import bcrypt from "bcryptjs";
 import { Employee } from "src/employee/domain/entities/employee.entity";
 import type { IEmployeeRepository } from "src/employee/domain/interfaces/employee.repository.interface";
 import { IEmployeeService } from "src/employee/domain/interfaces/employee.service.interface";
 import { CreateEmployeeDto } from "src/employee/interfaces/dtos/create-employee.dto";
 import { TokenDto } from "src/employee/interfaces/dtos/token.dto";
-import { EmployeeDto } from "src/employee/interfaces/dtos/employee.dto";
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class EmployeeService implements IEmployeeService {
