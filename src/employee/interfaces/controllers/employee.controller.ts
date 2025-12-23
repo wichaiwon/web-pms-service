@@ -17,9 +17,9 @@ export class EmployeeController {
     @Post('create')
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('JWT-auth')
-    @ApiOperation({
-        summary: 'Create new employee(s)',
-        description: 'Create one or multiple employees. Can accept a single employee object or an array of employee objects. Requires JWT authentication.'
+    @ApiOperation({ 
+        summary: 'Create new employee(s)', 
+        description: 'Create one or multiple employees. Can accept a single employee object or an array of employee objects. Requires JWT authentication.' 
     })
     @ApiBody({
         type: CreateEmployeeDto,
@@ -40,30 +40,13 @@ export class EmployeeController {
                     branch: 'สำนักงานใหญ่',
                     created_by: 'system'
                 }
-            }
-        }
-    })
-    async createEmployee(@Body() createEmployeeDto: CreateEmployeeDto): Promise<EmployeeDto> {
-        return this.employeeService.createEmployee(createEmployeeDto);
-    }
-
-    @Post('create-multiple')
-    // @UseGuards(JwtAuthGuard)
-    // @ApiBearerAuth('JWT-auth')
-    @ApiOperation({
-        summary: 'Create multiple employees',
-        description: 'Create multiple employees by providing an array of employee objects. Requires JWT authentication.'
-    })
-    @ApiBody({
-        type: [CreateEmployeeDto],
-        description: 'Array of employee data to create',
-        examples: {
+            },
             multiple: {
                 summary: 'Create multiple employees',
                 value: [
                     {
-                        pkg_id_member: '6805019',
-                        mirai_id: '405680519',
+                        pkg_id_member: '6805018',
+                        mirai_id: '405680518',
                         email: 'wichai.wongfu.pkg@gmail.com',
                         password: '1234567890',
                         mirai_password: '1234567890',
@@ -75,30 +58,39 @@ export class EmployeeController {
                         created_by: 'system'
                     },
                     {
-                        pkg_id_member: '6805020',
-                        mirai_id: '405680520',
-                        email: 'wichai.wongfu.pkg@gmail.com',
+                        pkg_id_member: '6805019',
+                        mirai_id: '405680519',
+                        email: 'somchai.test@gmail.com',
                         password: '1234567890',
                         mirai_password: '1234567890',
-                        firstname: 'วิชัย',
-                        lastname: 'วงค์ฟู',
-                        pin_code: '123456',
-                        role: 'admin',
-                        branch: 'สำนักงานใหญ่',
+                        firstname: 'สมชาย',
+                        lastname: 'ทดสอบ',
+                        pin_code: '654321',
+                        role: 'mechanic',
+                        branch: 'สอยดาว',
                         created_by: 'system'
                     }
                 ]
             }
         }
     })
-    async createMultipleEmployees(@Body() createEmployeesDto: CreateEmployeeDto[]): Promise<EmployeeDto[]> {
-        return this.employeeService.createEmployees(createEmployeesDto);
+    @ApiResponse({ 
+        status: 201, 
+        description: 'Employee(s) created successfully',
+        type: EmployeeDto
+    })
+    @ApiResponse({ 
+        status: 400, 
+        description: 'Bad request - Invalid input data' 
+    })
+    async createEmployee(@Body() createEmployeeDto: CreateEmployeeDto | CreateEmployeeDto[]): Promise<EmployeeDto | EmployeeDto[]> {
+        return this.employeeService.createEmployee(createEmployeeDto);
     }
 
     @Post('login')
     @ApiOperation({ summary: 'Employee login', description: 'Login with username (mirai_id, pkg_id_member, or email) and password' })
-    @ApiBody({
-        type: LoginDto,
+    @ApiBody({ 
+        type: LoginDto, 
         description: 'Login credentials',
         examples: {
             example1: {

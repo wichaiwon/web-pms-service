@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsEnum, IsOptional, MinLength, MaxLength, IsEmail, Matches, IsUUID } from 'class-validator'
+import { IsString, IsNotEmpty, IsEnum, IsOptional, MinLength, MaxLength, IsEmail, Matches } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { Branch, EmployeeRole } from 'src/shared/enum/employee/employee.enum'
 
@@ -117,6 +117,6 @@ export class CreateEmployeeDto {
     default: 'system'
   })
   @IsNotEmpty()
-  @IsUUID('4', { message: 'created_by must be a valid UUID' })
+  @IsString({ message: 'created_by must be a string' })
   created_by: string
 }

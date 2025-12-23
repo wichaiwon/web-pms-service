@@ -1,10 +1,16 @@
 
 export class VehicleServiceReviewDto {
     id: string;
+    walk_in_flag: boolean;
     success_flag: boolean;
     in_process_flag: boolean;
+    appointment_running: string;
     vehicle_registration: string;
     vehicle_registration_province: string;
+    vin_number: string;
+    engine_number: string;
+    chassis_number: string;
+    lift?: string;
     model_number: string;
     model_name: string;
     customer_firstname: string;

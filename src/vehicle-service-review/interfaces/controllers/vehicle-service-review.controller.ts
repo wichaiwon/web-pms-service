@@ -1,10 +1,13 @@
-import { Body, Controller, Param, Patch, Post, Put, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Get, Param, Patch, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
 import { VehicleServiceReviewService } from "src/vehicle-service-review/application/vehicle-service-review.service";
 import { CreateVehicleServiceReviewDto } from "../dtos/create-vehicle-service-review.dto";
 import { UpdateVehicleServiceReviewDto } from "../dtos/update-vehicle-service-review.dto";
 import { PatchVehicleServiceReviewInProcessDto } from "../dtos/patch-vehicle-service-review-in-process.dto";
+import { PatchVehicleServiceReviewIsActiveDto } from "../dtos/patch-vehicle-service-review-is-active.dto";
+import { PatchVehicleServiceReviewSuccessFlagDto } from "../dtos/patch-vehicle-service-review-success-flag.dto";
+import { Branch } from "src/shared/enum/employee/employee.enum";
 
 @ApiTags('Vehicle Service Reviews')
 @Controller('vehicle-service-review')
@@ -14,6 +17,22 @@ export class VehicleServiceReviewController {
     constructor(
         private readonly vehicleServiceReviewService: VehicleServiceReviewService,
     ) { }
+
+    @Get()
+    @ApiOperation({
+        summary: 'Get vehicle service reviews',
+        description: 'Get vehicle service reviews by branch (active only, today only). Requires JWT authentication.'
+    })
+    @ApiQuery({
+        name: 'branch',
+        enum: Branch,
+        required: true,
+        description: 'Branch to filter',
+        example: Branch.HEAD_OFFICE
+    })
+    async getVehicleServiceReviews(@Query('branch') branch: Branch) {
+        return await this.vehicleServiceReviewService.getVehicleServiceReview(branch);
+    }
 
     @Post('create')
     @ApiOperation({
@@ -59,6 +78,15 @@ export class VehicleServiceReviewController {
         return await this.vehicleServiceReviewService.createVehicleServiceReview(createVehicleServiceReviewDto);
     }
 
+    @Post('sync')
+    @ApiOperation({
+        summary: 'manual-sync vehicle service reviews',
+        description: 'Auto-sync vehicle service reviews from external source. Requires JWT authentication.'
+    })
+    async autoSyncVehicleServiceReview() {
+        return await this.vehicleServiceReviewService.autoSyncVehicleServiceReview('system');
+    }
+
     @Put(':id')
     @ApiOperation({
         summary: 'Update vehicle service review',
@@ -79,6 +107,7 @@ export class VehicleServiceReviewController {
                 value: {
                     success_flag: true,
                     in_process_flag: false,
+                    appointment_running: "19996",
                     vehicle_registration: "กข 1234ถ",
                     vehicle_registration_province: "จบ",
                     model_number: "NLR85Aฟฟ",
@@ -101,8 +130,7 @@ export class VehicleServiceReviewController {
     })
     async updateVehicleServiceReview(@Param('id') id: string, @Body() updateVehicleServiceReviewDto: UpdateVehicleServiceReviewDto) {
         //responsible เอา string เพิ่มเข้าไปใน array
-        updateVehicleServiceReviewDto.id = id;
-        return await this.vehicleServiceReviewService.updateVehicleServiceReview(updateVehicleServiceReviewDto);
+        return await this.vehicleServiceReviewService.updateVehicleServiceReview(id, updateVehicleServiceReviewDto);
     }
 
     @Patch('in-process/:id')
@@ -125,5 +153,49 @@ export class VehicleServiceReviewController {
     })
     async patchInProcessFlag(@Param('id') id: string, @Body() patchInProcessDto: PatchVehicleServiceReviewInProcessDto) {
         return await this.vehicleServiceReviewService.patchInProcessFlag(id, patchInProcessDto);
+    }
+
+    @Patch('is-active/:id')
+    @ApiOperation({
+        summary: 'Patch active status of vehicle service review',
+        description: 'Patch the active status of a vehicle service review. Requires JWT authentication.'
+    })
+    @ApiBody({
+        type: PatchVehicleServiceReviewInProcessDto,
+        description: 'Data to patch active status',
+        examples: {
+            patch: {
+                summary: 'Patch active status',
+                value: {
+                    is_active: false,
+                    updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
+                }
+            }
+        }
+    })
+    async patchActiveStatus(@Param('id') id: string, @Body() patchActiveStatusDto: PatchVehicleServiceReviewIsActiveDto) {
+        return await this.vehicleServiceReviewService.patchActiveStatus(id, patchActiveStatusDto);
+    }
+
+    @Patch('success-flag/:id')
+    @ApiOperation({
+        summary: 'Patch success flag of vehicle service review',
+        description: 'Patch the success flag of a vehicle service review. Requires JWT authentication.'
+    })
+    @ApiBody({
+        type: PatchVehicleServiceReviewInProcessDto,
+        description: 'Data to patch success flag',
+        examples: {
+            patch: {
+                summary: 'Patch success flag',
+                value: {
+                    success_flag: true,
+                    updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
+                }
+            }
+        }
+    })
+    async patchSuccessFlag(@Param('id') id: string, @Body() patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto) {
+        return await this.vehicleServiceReviewService.patchSuccessFlag(id, patchSuccessDto);
     }
 }

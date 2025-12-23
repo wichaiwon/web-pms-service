@@ -76,7 +76,7 @@ export class VehicleServiceReview {
   @Column({ type: 'enum', enum: StatusReport, default: StatusReport.NOT_ISSUED })
   status_report: StatusReport
 
-  @Column({ type: 'boolean', default: true })
+  @Column({ type: 'boolean', default: true , nullable: false })
   is_active: boolean
 
   @CreateDateColumn({ type: 'timestamp with time zone', nullable: false })

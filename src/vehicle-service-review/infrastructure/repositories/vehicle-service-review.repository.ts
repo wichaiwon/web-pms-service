@@ -4,18 +4,22 @@ import { Branch } from "src/shared/enum/employee/employee.enum";
 import { VehicleServiceReview } from "src/vehicle-service-review/domain/entities/vehicle-service-review.entity";
 import { IVehicleServiceReviewRepositoryInterface } from "src/vehicle-service-review/domain/interfaces/vehicle-service-review.repository.interface";
 import { CreateVehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/create-vehicle-service-review.dto";
-import { PatchVehicleServiceReviewActiveStatusDto } from "src/vehicle-service-review/interfaces/dtos/patch-vehicle-service-review-active-status.dto";
+import { PatchVehicleServiceReviewIsActiveDto } from "src/vehicle-service-review/interfaces/dtos/patch-vehicle-service-review-is-active.dto";
 import { PatchVehicleServiceReviewInProcessDto } from "src/vehicle-service-review/interfaces/dtos/patch-vehicle-service-review-in-process.dto";
 import { PatchVehicleServiceReviewSuccessFlagDto } from "src/vehicle-service-review/interfaces/dtos/patch-vehicle-service-review-success-flag.dto";
 import { UpdateVehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/update-vehicle-service-review.dto";
 import { VehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/vehicle-service-review.dto";
 import { Repository } from "typeorm";
+import { firstValueFrom } from "rxjs";
+import { HttpService } from "@nestjs/axios";
 
 @Injectable()
 export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepositoryInterface {
+    private readonly n8nApiUrl = 'https://n8n-pmsg.agilesoftgroup.com/webhook/pms-service/appointment'
     constructor(
         @InjectRepository(VehicleServiceReview)
         private readonly vehicleServiceReviewRepository: Repository<VehicleServiceReview>,
+        private readonly httpService: HttpService,
     ) { }
 
     async createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
@@ -27,6 +31,17 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
         const newReviews = this.vehicleServiceReviewRepository.create(createDtos);
         return await this.vehicleServiceReviewRepository.save(newReviews);
     }
+
+    async autoSyncVehicleServiceReview(): Promise<VehicleServiceReviewDto[]> {
+        try {
+            const response = await firstValueFrom(this.httpService.post<VehicleServiceReviewDto[]>(this.n8nApiUrl));
+            return response.data;
+        } catch (error) {
+            console.error('Error syncing vehicle service reviews:', error);
+            throw new Error(`Failed to sync vehicle service reviews: ${error.message}`);
+        }
+    }
+
     async getVehicleServiceReview(branch: Branch, is_active: boolean, date_booked: string): Promise<VehicleServiceReviewDto[]> {
         return await this.vehicleServiceReviewRepository.find({
             where: {
@@ -36,73 +51,52 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
             },
         });
     }
-    async updateVehicleServiceReview(updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
-        if (!updateDto.id) {
-            throw new NotFoundException('Vehicle service review ID is required');
-        }
-
-        // Handle responsible field - push or concat into array, not overwrite
-        let updateData: VehicleServiceReview = { ...(updateDto as VehicleServiceReview) };
-        if (updateDto.responsible) {
-            const existing = await this.vehicleServiceReviewRepository.findOneBy({ id: updateDto.id });
-            if (existing) {
-                const currentResponsible = existing.responsible || [];
-                if (typeof updateDto.responsible === 'string') {
-                    if (!currentResponsible.includes(updateDto.responsible)) {
-                        updateData.responsible = [...currentResponsible, updateDto.responsible];
-                    } else {
-                        updateData.responsible = currentResponsible;
-                    }
-                } else if (Array.isArray(updateDto.responsible)) {
-                    // รวม array และ filter duplicate
-                    const merged = [...currentResponsible, ...updateDto.responsible];
-                    updateData.responsible = Array.from(new Set(merged));
-                }
-            } else {
-                updateData.responsible = Array.isArray(updateDto.responsible)
-                    ? Array.from(new Set(updateDto.responsible))
-                    : [updateDto.responsible];
-            }
-        }
-        if (!updateDto.id) {
-            throw new NotFoundException('Vehicle service review ID is required');
-        }
-        await this.vehicleServiceReviewRepository.update(updateDto.id, updateData);
-        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id: updateDto.id });
+    async updateVehicleServiceReview(id: string, updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
+        // Data Access Only: Update และ return ข้อมูล
+        await this.vehicleServiceReviewRepository.update(id, updateDto);
+        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id });
         if (!updated) {
-            throw new NotFoundException(`Vehicle service review with UUID ${updateDto.id} not found`);
+            throw new NotFoundException(`Vehicle service review with UUID ${id} not found`);
         }
         return updated;
     }
 
-    async patchInProcessFlag(id: string, patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto> {
-        if (!id) {
-            throw new NotFoundException('Vehicle service review ID is required');
+    async findById(id: string): Promise<VehicleServiceReviewDto> {
+        const found = await this.vehicleServiceReviewRepository.findOneBy({ id });
+        if (!found) {
+            throw new NotFoundException(`Vehicle service review with ID ${id} not found`);
         }
-        await this.vehicleServiceReviewRepository.update(
-            id, patchInprocessDto
-        );
-        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id: id });
+        return found;
+    }
+
+    async findByAppointmentRunning(appointmentRunning: string): Promise<VehicleServiceReviewDto | null> {
+        return await this.vehicleServiceReviewRepository.findOneBy({ appointment_running: appointmentRunning });
+    }
+
+    async patchInProcessFlag(id: string, patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto> {
+        // Data Access Only: Update และ return ข้อมูล
+        await this.vehicleServiceReviewRepository.update(id, patchInprocessDto);
+        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id });
         if (!updated) {
             throw new NotFoundException(`Vehicle service review with ID ${id} not found`);
         }
         return updated;
     }
 
-    async patchSuccessFlag(patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReviewDto> {
-        await this.vehicleServiceReviewRepository.update(patchSuccessDto.id, { success_flag: patchSuccessDto.success_flag });
-        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id: patchSuccessDto.id });
+    async patchSuccessFlag(id: string, patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReviewDto> {
+        await this.vehicleServiceReviewRepository.update(id, patchSuccessDto);
+        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id });
         if (!updated) {
-            throw new NotFoundException(`Vehicle service review with ID ${patchSuccessDto.id} not found`);
+            throw new NotFoundException(`Vehicle service review with ID ${id} not found`);
         }
         return updated;
     }
 
-    async patchActiveStatus(patchActiveStatusDto: PatchVehicleServiceReviewActiveStatusDto): Promise<VehicleServiceReviewDto> {
-        await this.vehicleServiceReviewRepository.update(patchActiveStatusDto.id, { is_active: patchActiveStatusDto.is_active });
-        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id: patchActiveStatusDto.id });
+    async patchActiveStatus(id: string, patchActiveStatusDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReviewDto> {
+        await this.vehicleServiceReviewRepository.update(id, patchActiveStatusDto);
+        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id });
         if (!updated) {
-            throw new NotFoundException(`Vehicle service review with ID ${patchActiveStatusDto.id} not found`);
+            throw new NotFoundException(`Vehicle service review with ID ${id} not found`);
         }
         return updated;
     }
