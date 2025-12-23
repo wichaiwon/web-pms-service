@@ -101,8 +101,7 @@ export class VehicleServiceReviewController {
     })
     async updateVehicleServiceReview(@Param('id') id: string, @Body() updateVehicleServiceReviewDto: UpdateVehicleServiceReviewDto) {
         //responsible เอา string เพิ่มเข้าไปใน array
-        updateVehicleServiceReviewDto.id = id;
-        return await this.vehicleServiceReviewService.updateVehicleServiceReview(updateVehicleServiceReviewDto);
+        return await this.vehicleServiceReviewService.updateVehicleServiceReview(id,updateVehicleServiceReviewDto);
     }
 
     @Patch('in-process/:id')

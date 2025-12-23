@@ -35,8 +35,8 @@ export class VehicleServiceReviewService implements IVehicleServiceReviewService
         return this.getVehicleServiceReviewUseCase.executeAll(branch, is_active, date_booked);
     }
 
-    async updateVehicleServiceReview(updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
-        return this.updateVehicleServiceReviewUseCase.execute(updateDto);
+    async updateVehicleServiceReview(id: string,updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
+        return this.updateVehicleServiceReviewUseCase.execute(id,updateDto);
     }
 
     async patchInProcessFlag(id: string, patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto> {

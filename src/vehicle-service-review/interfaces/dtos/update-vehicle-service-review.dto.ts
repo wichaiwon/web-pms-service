@@ -6,14 +6,6 @@ import { Branch } from 'src/shared/enum/employee/employee.enum'
 export class UpdateVehicleServiceReviewDto {
 
     @ApiPropertyOptional({
-        description: 'UUID of the vehicle service review to update',
-        example: '123e4567-e89b-12d3-a456-426614174000',
-    })
-    @IsOptional()
-    @IsUUID()
-    id?: string
-
-    @ApiPropertyOptional({
         description: 'Success flag',
         example: false,
         type: Boolean,
@@ -38,7 +30,7 @@ export class UpdateVehicleServiceReviewDto {
     @IsOptional()
     @IsString()
     appointment_running?: string
-    
+
     @IsOptional()
     @IsString()
     customer_firstname?: string
