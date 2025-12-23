@@ -1,7 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import bcrypt from "bcryptjs";
-import { Employee } from "src/employee/domain/entities/employee.entity";
 import type { IEmployeeRepository } from "src/employee/domain/interfaces/employee.repository.interface";
 import { IEmployeeService } from "src/employee/domain/interfaces/employee.service.interface";
 import { CreateEmployeeDto } from "src/employee/interfaces/dtos/create-employee.dto";
@@ -17,8 +16,11 @@ export class EmployeeService implements IEmployeeService {
         private readonly jwtService: JwtService,
         private readonly createEmployeeUseCase: CreateEmployeeUseCase,
     ) {}
-    async createEmployee(createEmployeeDto: CreateEmployeeDto | CreateEmployeeDto[]): Promise<EmployeeDto | EmployeeDto[]> {
+    async createEmployee(createEmployeeDto: CreateEmployeeDto): Promise<EmployeeDto> {
         return this.createEmployeeUseCase.execute(createEmployeeDto);
+    }
+    async createEmployees(createEmployeeDto: CreateEmployeeDto[]): Promise<EmployeeDto[]> {
+        return this.createEmployeeUseCase.executeMultiple(createEmployeeDto);
     }
     
     async login(username: string, password: string): Promise<TokenDto | null> {

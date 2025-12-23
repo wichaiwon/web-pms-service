@@ -11,21 +11,31 @@ export class CreateEmployeeUseCase {
         private readonly employeeRepository: IEmployeeRepository,
         @Inject('IPasswordHasher')
         private readonly passwordHasher: IPasswordHasher
-    ) {}
-    async execute(createDto:CreateEmployeeDto | CreateEmployeeDto[]): Promise<EmployeeDto | EmployeeDto[]> {
-        if (Array.isArray(createDto)) {
-            const employeesToCreate = await Promise.all(
-                createDto.map(async (dto) => {
-                    const hashedPassword = await this.passwordHasher.hash(dto.password);
-                    return { ...dto, password: hashedPassword };
-                })
-            );
-            return this.employeeRepository.createEmployees(employeesToCreate);
-        } else {
-            const hashedPassword = await this.passwordHasher.hash(createDto.password);
-            const employeeToCreate = { ...createDto, password: hashedPassword };
-            return this.employeeRepository.createEmployee(employeeToCreate);
-        }
+    ) { }
+    async execute(createDto: CreateEmployeeDto): Promise<EmployeeDto> {
+        const hashedPassword = await this.passwordHasher.hash(createDto.password);
+        const hashedMiraiPassword = await this.passwordHasher.hash(createDto.mirai_password);
+
+        const employee = await this.employeeRepository.createEmployee({
+            ...createDto,
+            password: hashedPassword,
+            mirai_password: hashedMiraiPassword,
+        });
+        return employee;
     }
-    
+    async executeMultiple(createDtos: CreateEmployeeDto[]): Promise<EmployeeDto[]> {
+        const employeesToCreate = await Promise.all(createDtos.map(async (dto) => {
+            const hashedPassword = await this.passwordHasher.hash(dto.password);
+            const hashedMiraiPassword = await this.passwordHasher.hash(dto.mirai_password);
+            return {
+                ...dto,
+                password: hashedPassword,
+                mirai_password: hashedMiraiPassword,
+            };
+        }));
+
+        const employees = await this.employeeRepository.createEmployees(employeesToCreate);
+        return employees;
+    }
+
 }
