@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Branch } from 'src/shared/enum/employee/employee.enum'
 import { CarBrand, CarType, StatusRepairOrder, StatusReport } from 'src/shared/enum/vehicle-service-review.enum'
 
-export class CreateTaskDto {
+export class CreateVehicleServiceReviewDto {
   @ApiPropertyOptional({ 
     description: 'Walk-in customer flag',
     example: false,
