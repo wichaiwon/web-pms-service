@@ -1,19 +1,20 @@
-import { Body, Controller, Post, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
 import { VehicleServiceReviewService } from "src/vehicle-service-review/application/vehicle-service-review.service";
 import { CreateVehicleServiceReviewDto } from "../dtos/create-vehicle-service-review.dto";
+import { UpdateVehicleServiceReviewDto } from "../dtos/update-vehicle-service-review.dto";
 
 @ApiTags('Vehicle Service Reviews')
 @Controller('vehicle-service-review')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('JWT-auth')
 export class VehicleServiceReviewController {
     constructor(
         private readonly vehicleServiceReviewService: VehicleServiceReviewService,
     ) { }
 
     @Post('create')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('JWT-auth')
     @ApiOperation({
         summary: 'Create vehicle service reviews',
         description: 'Create vehicle service reviews in bulk. Requires JWT authentication.'
@@ -55,5 +56,51 @@ export class VehicleServiceReviewController {
         @Body() createVehicleServiceReviewDto: CreateVehicleServiceReviewDto
     ) {
         return await this.vehicleServiceReviewService.createVehicleServiceReview(createVehicleServiceReviewDto);
+    }
+
+    @Put(':id')
+    @ApiOperation({
+        summary: 'Update vehicle service review',
+        description: 'Update a vehicle service review by ID. Requires JWT authentication.'
+    })
+    @ApiParam({
+        name: 'id',
+        type: 'string',
+        description: 'ID of the vehicle service review to update',
+        example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+    })
+    @ApiBody({
+        type: UpdateVehicleServiceReviewDto,
+        description: 'Vehicle service review data to update',
+        examples: {
+            update: {
+                summary: 'Update vehicle service review',
+                value: {
+                    success_flag: true,
+                    in_process_flag: false,
+                    vehicle_registration: "กข 1234ถ",
+                    vehicle_registration_province: "จบ",
+                    model_number: "NLR85Aฟฟ",
+                    model_name: "ISUZU ELFหหห",
+                    customer_firstname: "สมชายกกกก",
+                    customer_lastname: "ใจดีแแแแ",
+                    customer_contact: "0812345678ๅๅๅๅ",
+                    date_booked: "2024-07-02",
+                    time_booked: "10:15",
+                    branch_booked: "นายายอาม",
+                    responsible: ["edc6a03a-6285-4a09-aab6-decb494cf522"],
+                    car_brand: "รถยนต์ ISUZU",
+                    car_type: "รถยนต์ขนาดเล็ก (LCV)",
+                    status_report: "ยังไม่ออกใบสรุปรถ",
+                    status_repair_order: "ยังไม่เปิดใบสั่งซ่อม",
+                    updated_by: "edc6a03a-6285-4a09-aab6-decb494cf522"
+                }
+            }
+        }
+    })
+    async updateVehicleServiceReview(@Param('id') id: string, @Body() updateVehicleServiceReviewDto: UpdateVehicleServiceReviewDto) {
+        //responsible เอา string เพิ่มเข้าไปใน array
+        updateVehicleServiceReviewDto.id = id;
+        return await this.vehicleServiceReviewService.updateVehicleServiceReview(updateVehicleServiceReviewDto);
     }
 }

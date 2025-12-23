@@ -7,6 +7,7 @@ import { CreateVehicleServiceReviewsUseCase } from "./application/commands/creat
 import { GetVehicleServiceReviewUseCase } from "./application/queries/get-vehicle-service-review.use-case";
 import { VehicleServiceReviewService } from "./application/vehicle-service-review.service";
 import { VehicleServiceReviewRepository } from "./infrastructure/repositories/vehicle-service-review.repository";
+import { UpdateVehicleServiceReviewUseCase } from "./application/commands/update-vehicle-service-review.use-case";
 
 @Module({
     imports: [
@@ -18,10 +19,12 @@ import { VehicleServiceReviewRepository } from "./infrastructure/repositories/ve
         CreateVehicleServiceReviewUseCase,
         CreateVehicleServiceReviewsUseCase,
         GetVehicleServiceReviewUseCase,
+        UpdateVehicleServiceReviewUseCase,
         {
             provide: 'IVehicleServiceReviewRepository',
             useClass: VehicleServiceReviewRepository,
         }
+        
     ],
     exports: [VehicleServiceReviewService],
 })

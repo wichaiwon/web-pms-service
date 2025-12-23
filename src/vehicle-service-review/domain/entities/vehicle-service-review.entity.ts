@@ -2,7 +2,7 @@ import { Branch } from 'src/shared/enum/employee/employee.enum'
 import { CarBrand, CarType, StatusRepairOrder, StatusReport } from 'src/shared/enum/vehicle-service-review.enum'
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
-@Entity('Vehicle_Service_Review')
+@Entity('vehicle_service_review')
 export class VehicleServiceReview {
   @PrimaryGeneratedColumn('uuid')
   id: string

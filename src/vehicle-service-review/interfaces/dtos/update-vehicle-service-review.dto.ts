@@ -1,6 +1,7 @@
 import { IsUUID, IsOptional, IsBoolean, IsEnum, IsArray, IsString, IsNotEmpty } from 'class-validator'
 import { ApiPropertyOptional } from '@nestjs/swagger'
 import { CarBrand, CarType, StatusRepairOrder, StatusReport } from 'src/shared/enum/vehicle-service-review.enum'
+import { Branch } from 'src/shared/enum/employee/employee.enum'
 
 export class UpdateVehicleServiceReviewDto {
 
@@ -8,9 +9,80 @@ export class UpdateVehicleServiceReviewDto {
         description: 'UUID of the vehicle service review to update',
         example: '123e4567-e89b-12d3-a456-426614174000',
     })
-    @IsNotEmpty()
+    @IsOptional()
     @IsUUID()
-    id: string
+    id?: string
+
+    @ApiPropertyOptional({
+        description: 'Success flag',
+        example: false,
+        type: Boolean,
+    })
+    @IsOptional()
+    @IsBoolean()
+    success_flag?: boolean
+
+    @ApiPropertyOptional({
+        description: 'In process flag',
+        example: false,
+        type: Boolean,
+    })
+    @IsOptional()
+    @IsBoolean()
+    in_process_flag?: boolean
+
+    @ApiPropertyOptional({
+        description: 'Customer first name',
+        example: 'สมชาย',
+    })
+    @IsOptional()
+    @IsString()
+    appointment_running?: string
+    
+    @IsOptional()
+    @IsString()
+    customer_firstname?: string
+
+    @ApiPropertyOptional({
+        description: 'Customer last name',
+        example: 'ใจดี',
+    })
+    @IsOptional()
+    @IsString()
+    customer_lastname?: string
+
+    @ApiPropertyOptional({
+        description: 'Customer contact number',
+        example: '0812345678',
+    })
+    @IsOptional()
+    @IsString()
+    customer_contact?: string
+
+    @ApiPropertyOptional({
+        description: 'Date booked for service',
+        example: '2024-07-01',
+    })
+    @IsOptional()
+    @IsString()
+    date_booked?: string
+
+    @ApiPropertyOptional({
+        description: 'Time booked for service',
+        example: '10:00',
+    })
+    @IsOptional()
+    @IsString()
+    time_booked?: string
+
+    @ApiPropertyOptional({
+        description: 'Branch where service is booked',
+        enum: Branch,
+        example: Branch.HEAD_OFFICE,
+    })
+    @IsOptional()
+    @IsEnum(Branch)
+    branch_booked?: Branch
 
     @ApiPropertyOptional({
         description: 'Vehicle registration number',
@@ -73,11 +145,10 @@ export class UpdateVehicleServiceReviewDto {
         description: 'Array of responsible user UUIDs',
         example: ['123e4567-e89b-12d3-a456-426614174000'],
         type: [String],
-        isArray: true,
     })
     @IsOptional()
     @IsArray()
-    @IsUUID('4', { each: true })
+    @IsString({ each: true })
     responsible?: string[]
 
     @ApiPropertyOptional({
