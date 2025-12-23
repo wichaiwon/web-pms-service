@@ -78,6 +78,15 @@ export class VehicleServiceReviewController {
         return await this.vehicleServiceReviewService.createVehicleServiceReview(createVehicleServiceReviewDto);
     }
 
+    @Post('sync')
+    @ApiOperation({
+        summary: 'manual-sync vehicle service reviews',
+        description: 'Auto-sync vehicle service reviews from external source. Requires JWT authentication.'
+    })
+    async autoSyncVehicleServiceReview() {
+        return await this.vehicleServiceReviewService.autoSyncVehicleServiceReview('system');
+    }
+
     @Put(':id')
     @ApiOperation({
         summary: 'Update vehicle service review',
