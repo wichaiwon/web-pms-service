@@ -8,6 +8,8 @@ import { EmployeeController } from "./interfaces/controllers/employee.controller
 import { EmployeeService } from "./application/employee.service";
 import { EmployeeRepository } from "./infrastructure/repositories/employee.repository";
 import { JwtStrategy } from "./infrastructure/services/jwt.strategy";
+import { CreateEmployeeUseCase } from "./application/commands/create-employee.use-case";
+import { BcryptPasswordHasher } from "./infrastructure/services/password-hasher.service";
 
 @Module({
     imports: [
@@ -27,9 +29,14 @@ import { JwtStrategy } from "./infrastructure/services/jwt.strategy";
     providers: [
         EmployeeService,
         JwtStrategy,
+        CreateEmployeeUseCase,
         {
             provide: 'IEmployeeRepository',
             useClass: EmployeeRepository,
+        },
+        {
+            provide: 'IPasswordHasher',
+            useClass: BcryptPasswordHasher,
         }
     ],
     exports: [EmployeeService],

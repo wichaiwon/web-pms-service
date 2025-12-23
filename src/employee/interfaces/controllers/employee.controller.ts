@@ -84,10 +84,7 @@ export class EmployeeController {
         description: 'Bad request - Invalid input data' 
     })
     async createEmployee(@Body() createEmployeeDto: CreateEmployeeDto | CreateEmployeeDto[]): Promise<EmployeeDto | EmployeeDto[]> {
-        const employee = Array.isArray(createEmployeeDto)
-            ? await Promise.all(createEmployeeDto.map(dto => this.employeeService.createEmployee(dto)))
-            : await this.employeeService.createEmployee(createEmployeeDto);
-        return employee;
+        return this.employeeService.createEmployee(createEmployeeDto);
     }
 
     @Post('login')

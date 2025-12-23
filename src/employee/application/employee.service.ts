@@ -5,7 +5,9 @@ import { Employee } from "src/employee/domain/entities/employee.entity";
 import type { IEmployeeRepository } from "src/employee/domain/interfaces/employee.repository.interface";
 import { IEmployeeService } from "src/employee/domain/interfaces/employee.service.interface";
 import { CreateEmployeeDto } from "src/employee/interfaces/dtos/create-employee.dto";
+import { EmployeeDto } from "src/employee/interfaces/dtos/employee.dto";
 import { TokenDto } from "src/employee/interfaces/dtos/token.dto";
+import { CreateEmployeeUseCase } from "./commands/create-employee.use-case";
 
 @Injectable()
 export class EmployeeService implements IEmployeeService {
@@ -13,10 +15,10 @@ export class EmployeeService implements IEmployeeService {
         @Inject('IEmployeeRepository')
         private readonly employeeRepository: IEmployeeRepository,
         private readonly jwtService: JwtService,
+        private readonly createEmployeeUseCase: CreateEmployeeUseCase,
     ) {}
-    async createEmployee(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
-        createEmployeeDto.password = await bcrypt.hash(createEmployeeDto.password, 10);
-        return this.employeeRepository.createEmployee(createEmployeeDto);
+    async createEmployee(createEmployeeDto: CreateEmployeeDto | CreateEmployeeDto[]): Promise<EmployeeDto | EmployeeDto[]> {
+        return this.createEmployeeUseCase.execute(createEmployeeDto);
     }
     
     async login(username: string, password: string): Promise<TokenDto | null> {

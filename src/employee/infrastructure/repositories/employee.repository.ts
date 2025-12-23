@@ -25,4 +25,8 @@ export class EmployeeRepository implements IEmployeeRepository {
             ]
         });
     }
+    async createEmployees(createEmployeeDtos: CreateEmployeeDto[]): Promise<Employee[]> {
+        const newEmployees = this.employeeRepository.create(createEmployeeDtos);
+        return this.employeeRepository.save(newEmployees);
+    }
 }
