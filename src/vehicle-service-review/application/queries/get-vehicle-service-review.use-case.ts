@@ -9,7 +9,13 @@ export class GetVehicleServiceReviewUseCase {
         @Inject('IVehicleServiceReviewRepository')
         private readonly vehicleServiceReviewRepository: IVehicleServiceReviewRepositoryInterface,
     ) { }
-    async executeAll(branch: Branch, is_active: boolean, date_booked: string): Promise<VehicleServiceReviewDto[]> {
+    
+    async executeAll(branch: Branch): Promise<VehicleServiceReviewDto[]> {
+        // Business Logic: กำหนด is_active=true และ date_booked=วันปัจจุบัน
+        const is_active = true;
+        const today = new Date();
+        const date_booked = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+        
         return this.vehicleServiceReviewRepository.getVehicleServiceReview(branch, is_active, date_booked);
     }
 }

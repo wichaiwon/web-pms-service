@@ -1,5 +1,5 @@
-import { Body, Controller, Param, Patch, Post, Put, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Get, Param, Patch, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
 import { VehicleServiceReviewService } from "src/vehicle-service-review/application/vehicle-service-review.service";
 import { CreateVehicleServiceReviewDto } from "../dtos/create-vehicle-service-review.dto";
@@ -7,6 +7,7 @@ import { UpdateVehicleServiceReviewDto } from "../dtos/update-vehicle-service-re
 import { PatchVehicleServiceReviewInProcessDto } from "../dtos/patch-vehicle-service-review-in-process.dto";
 import { PatchVehicleServiceReviewIsActiveDto } from "../dtos/patch-vehicle-service-review-is-active.dto";
 import { PatchVehicleServiceReviewSuccessFlagDto } from "../dtos/patch-vehicle-service-review-success-flag.dto";
+import { Branch } from "src/shared/enum/employee/employee.enum";
 
 @ApiTags('Vehicle Service Reviews')
 @Controller('vehicle-service-review')
@@ -16,6 +17,22 @@ export class VehicleServiceReviewController {
     constructor(
         private readonly vehicleServiceReviewService: VehicleServiceReviewService,
     ) { }
+
+    @Get()
+    @ApiOperation({
+        summary: 'Get vehicle service reviews',
+        description: 'Get vehicle service reviews by branch (active only, today only). Requires JWT authentication.'
+    })
+    @ApiQuery({
+        name: 'branch',
+        enum: Branch,
+        required: true,
+        description: 'Branch to filter',
+        example: Branch.HEAD_OFFICE
+    })
+    async getVehicleServiceReviews(@Query('branch') branch: Branch) {
+        return await this.vehicleServiceReviewService.getVehicleServiceReview(branch);
+    }
 
     @Post('create')
     @ApiOperation({

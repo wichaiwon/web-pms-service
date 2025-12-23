@@ -27,16 +27,17 @@ export class VehicleServiceReviewService implements IVehicleServiceReviewService
         private readonly patchActiveStatusUseCase: PatchIsActiveUseCase,
     ) { }
 
+
+    async getVehicleServiceReview(branch: Branch): Promise<VehicleServiceReviewDto[]> {
+        return this.getVehicleServiceReviewUseCase.executeAll(branch);
+    }
+
     async createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
         return this.createVehicleServiceReviewUseCase.execute(createDto);
     }
 
     async createVehicleServiceReviews(createDtos: CreateVehicleServiceReviewDto[]): Promise<VehicleServiceReviewDto[]> {
         return this.createVehicleServiceReviewsUseCase.execute(createDtos);
-    }
-
-    async getVehicleServiceReview(branch: Branch, is_active: boolean, date_booked: string): Promise<VehicleServiceReviewDto[]> {
-        return this.getVehicleServiceReviewUseCase.executeAll(branch, is_active, date_booked);
     }
 
     async updateVehicleServiceReview(id: string, updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
