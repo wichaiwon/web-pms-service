@@ -9,6 +9,8 @@ import { VehicleServiceReviewService } from "./application/vehicle-service-revie
 import { VehicleServiceReviewRepository } from "./infrastructure/repositories/vehicle-service-review.repository";
 import { UpdateVehicleServiceReviewUseCase } from "./application/commands/update-vehicle-service-review.use-case";
 import { PatchInProcessUseCase } from "./application/commands/patch-in-process.use-case";
+import { PatchIsActiveUseCase } from "./application/commands/patch-active-status.use-case";
+import { PatchSuccessFlagUseCase } from "./application/commands/patch-success-flag.use-case";
 
 @Module({
     imports: [
@@ -22,6 +24,8 @@ import { PatchInProcessUseCase } from "./application/commands/patch-in-process.u
         GetVehicleServiceReviewUseCase,
         UpdateVehicleServiceReviewUseCase,
         PatchInProcessUseCase,
+        PatchIsActiveUseCase,
+        PatchSuccessFlagUseCase,
         {
             provide: 'IVehicleServiceReviewRepository',
             useClass: VehicleServiceReviewRepository,

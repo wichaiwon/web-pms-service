@@ -5,6 +5,8 @@ import { VehicleServiceReviewService } from "src/vehicle-service-review/applicat
 import { CreateVehicleServiceReviewDto } from "../dtos/create-vehicle-service-review.dto";
 import { UpdateVehicleServiceReviewDto } from "../dtos/update-vehicle-service-review.dto";
 import { PatchVehicleServiceReviewInProcessDto } from "../dtos/patch-vehicle-service-review-in-process.dto";
+import { PatchVehicleServiceReviewIsActiveDto } from "../dtos/patch-vehicle-service-review-is-active.dto";
+import { PatchVehicleServiceReviewSuccessFlagDto } from "../dtos/patch-vehicle-service-review-success-flag.dto";
 
 @ApiTags('Vehicle Service Reviews')
 @Controller('vehicle-service-review')
@@ -102,7 +104,7 @@ export class VehicleServiceReviewController {
     })
     async updateVehicleServiceReview(@Param('id') id: string, @Body() updateVehicleServiceReviewDto: UpdateVehicleServiceReviewDto) {
         //responsible เอา string เพิ่มเข้าไปใน array
-        return await this.vehicleServiceReviewService.updateVehicleServiceReview(id,updateVehicleServiceReviewDto);
+        return await this.vehicleServiceReviewService.updateVehicleServiceReview(id, updateVehicleServiceReviewDto);
     }
 
     @Patch('in-process/:id')
@@ -125,5 +127,49 @@ export class VehicleServiceReviewController {
     })
     async patchInProcessFlag(@Param('id') id: string, @Body() patchInProcessDto: PatchVehicleServiceReviewInProcessDto) {
         return await this.vehicleServiceReviewService.patchInProcessFlag(id, patchInProcessDto);
+    }
+
+    @Patch('active-status/:id')
+    @ApiOperation({
+        summary: 'Patch active status of vehicle service review',
+        description: 'Patch the active status of a vehicle service review. Requires JWT authentication.'
+    })
+    @ApiBody({
+        type: PatchVehicleServiceReviewInProcessDto,
+        description: 'Data to patch active status',
+        examples: {
+            patch: {
+                summary: 'Patch active status',
+                value: {
+                    is_active: false,
+                    updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
+                }
+            }
+        }
+    })
+    async patchActiveStatus(@Param('id') id: string, @Body() patchActiveStatusDto: PatchVehicleServiceReviewIsActiveDto) {
+        return await this.vehicleServiceReviewService.patchActiveStatus(id, patchActiveStatusDto);
+    }
+
+    @Patch('success-flag/:id')
+    @ApiOperation({
+        summary: 'Patch success flag of vehicle service review',
+        description: 'Patch the success flag of a vehicle service review. Requires JWT authentication.'
+    })
+    @ApiBody({
+        type: PatchVehicleServiceReviewInProcessDto,
+        description: 'Data to patch success flag',
+        examples: {
+            patch: {
+                summary: 'Patch success flag',
+                value: {
+                    success_flag: true,
+                    updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
+                }
+            }
+        }
+    })
+    async patchSuccessFlag(@Param('id') id: string, @Body() patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto) {
+        return await this.vehicleServiceReviewService.patchSuccessFlag(id, patchSuccessDto);
     }
 }

@@ -4,7 +4,7 @@ import { Branch } from "src/shared/enum/employee/employee.enum";
 import { VehicleServiceReview } from "src/vehicle-service-review/domain/entities/vehicle-service-review.entity";
 import { IVehicleServiceReviewRepositoryInterface } from "src/vehicle-service-review/domain/interfaces/vehicle-service-review.repository.interface";
 import { CreateVehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/create-vehicle-service-review.dto";
-import { PatchVehicleServiceReviewActiveStatusDto } from "src/vehicle-service-review/interfaces/dtos/patch-vehicle-service-review-active-status.dto";
+import { PatchVehicleServiceReviewIsActiveDto } from "src/vehicle-service-review/interfaces/dtos/patch-vehicle-service-review-is-active.dto";
 import { PatchVehicleServiceReviewInProcessDto } from "src/vehicle-service-review/interfaces/dtos/patch-vehicle-service-review-in-process.dto";
 import { PatchVehicleServiceReviewSuccessFlagDto } from "src/vehicle-service-review/interfaces/dtos/patch-vehicle-service-review-success-flag.dto";
 import { UpdateVehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/update-vehicle-service-review.dto";
@@ -64,20 +64,20 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
         return updated;
     }
 
-    async patchSuccessFlag(patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReviewDto> {
-        await this.vehicleServiceReviewRepository.update(patchSuccessDto.id, { success_flag: patchSuccessDto.success_flag });
-        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id: patchSuccessDto.id });
+    async patchSuccessFlag(id: string, patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReviewDto> {
+        await this.vehicleServiceReviewRepository.update(id, patchSuccessDto);
+        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id });
         if (!updated) {
-            throw new NotFoundException(`Vehicle service review with ID ${patchSuccessDto.id} not found`);
+            throw new NotFoundException(`Vehicle service review with ID ${id} not found`);
         }
         return updated;
     }
 
-    async patchActiveStatus(patchActiveStatusDto: PatchVehicleServiceReviewActiveStatusDto): Promise<VehicleServiceReviewDto> {
-        await this.vehicleServiceReviewRepository.update(patchActiveStatusDto.id, { is_active: patchActiveStatusDto.is_active });
-        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id: patchActiveStatusDto.id });
+    async patchActiveStatus(id: string, patchActiveStatusDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReviewDto> {
+        await this.vehicleServiceReviewRepository.update(id, patchActiveStatusDto);
+        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id });
         if (!updated) {
-            throw new NotFoundException(`Vehicle service review with ID ${patchActiveStatusDto.id} not found`);
+            throw new NotFoundException(`Vehicle service review with ID ${id} not found`);
         }
         return updated;
     }

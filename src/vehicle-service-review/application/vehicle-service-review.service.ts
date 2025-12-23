@@ -8,10 +8,12 @@ import { CreateVehicleServiceReviewDto } from "../interfaces/dtos/create-vehicle
 import { UpdateVehicleServiceReviewDto } from "../interfaces/dtos/update-vehicle-service-review.dto";
 import { PatchVehicleServiceReviewInProcessDto } from "../interfaces/dtos/patch-vehicle-service-review-in-process.dto";
 import { PatchVehicleServiceReviewSuccessFlagDto } from "../interfaces/dtos/patch-vehicle-service-review-success-flag.dto";
-import { PatchVehicleServiceReviewActiveStatusDto } from "../interfaces/dtos/patch-vehicle-service-review-active-status.dto";
 import { Branch } from "src/shared/enum/employee/employee.enum";
 import { UpdateVehicleServiceReviewUseCase } from "./commands/update-vehicle-service-review.use-case";
 import { PatchInProcessUseCase } from "./commands/patch-in-process.use-case";
+import { PatchVehicleServiceReviewIsActiveDto } from "../interfaces/dtos/patch-vehicle-service-review-is-active.dto";
+import { PatchIsActiveUseCase } from "./commands/patch-active-status.use-case";
+import { PatchSuccessFlagUseCase } from "./commands/patch-success-flag.use-case";
 
 @Injectable()
 export class VehicleServiceReviewService implements IVehicleServiceReviewServiceInterface {
@@ -21,6 +23,8 @@ export class VehicleServiceReviewService implements IVehicleServiceReviewService
         private readonly getVehicleServiceReviewUseCase: GetVehicleServiceReviewUseCase,
         private readonly updateVehicleServiceReviewUseCase: UpdateVehicleServiceReviewUseCase,
         private readonly patchInProcessUseCase: PatchInProcessUseCase,
+        private readonly patchSuccessFlagUseCase: PatchSuccessFlagUseCase,
+        private readonly patchActiveStatusUseCase: PatchIsActiveUseCase,
     ) { }
 
     async createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
@@ -35,21 +39,19 @@ export class VehicleServiceReviewService implements IVehicleServiceReviewService
         return this.getVehicleServiceReviewUseCase.executeAll(branch, is_active, date_booked);
     }
 
-    async updateVehicleServiceReview(id: string,updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
-        return this.updateVehicleServiceReviewUseCase.execute(id,updateDto);
+    async updateVehicleServiceReview(id: string, updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
+        return this.updateVehicleServiceReviewUseCase.execute(id, updateDto);
     }
 
     async patchInProcessFlag(id: string, patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto> {
         return this.patchInProcessUseCase.execute(id, patchInprocessDto);
     }
 
-    async patchSuccessFlag(patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReviewDto> {
-        // TODO: สร้าง PatchSuccessFlagUseCase
-        throw new Error('Not implemented yet');
+    async patchSuccessFlag(id: string, patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReviewDto> {
+        return this.patchSuccessFlagUseCase.execute(id, patchSuccessDto);
     }
 
-    async patchActiveStatus(patchActiveStatusDto: PatchVehicleServiceReviewActiveStatusDto): Promise<VehicleServiceReviewDto> {
-        // TODO: สร้าง PatchActiveStatusUseCase
-        throw new Error('Not implemented yet');
+    async patchActiveStatus(id: string, patchActiveStatusDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReviewDto> {
+        return this.patchActiveStatusUseCase.execute(id, patchActiveStatusDto);
     }
 }
