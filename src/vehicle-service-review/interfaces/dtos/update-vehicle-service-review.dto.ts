@@ -3,6 +3,15 @@ import { ApiPropertyOptional } from '@nestjs/swagger'
 import { CarBrand, CarType, StatusRepairOrder, StatusReport } from 'src/shared/enum/vehicle-service-review.enum'
 
 export class UpdateVehicleServiceReviewDto {
+
+    @ApiPropertyOptional({
+        description: 'UUID of the vehicle service review to update',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+    })
+    @IsNotEmpty()
+    @IsUUID()
+    id: string
+
     @ApiPropertyOptional({
         description: 'Vehicle registration number',
         example: 'กข 1234',
