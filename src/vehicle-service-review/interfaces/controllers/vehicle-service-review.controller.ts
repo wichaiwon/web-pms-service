@@ -146,7 +146,7 @@ export class VehicleServiceReviewController {
         return await this.vehicleServiceReviewService.patchInProcessFlag(id, patchInProcessDto);
     }
 
-    @Patch('active-status/:id')
+    @Patch('is-active/:id')
     @ApiOperation({
         summary: 'Patch active status of vehicle service review',
         description: 'Patch the active status of a vehicle service review. Requires JWT authentication.'
