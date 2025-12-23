@@ -116,7 +116,7 @@ export class CreateEmployeeDto {
     required: false,
     default: 'system'
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsString({ message: 'created_by must be a string' })
-  created_by?: string
+  created_by: string
 }
