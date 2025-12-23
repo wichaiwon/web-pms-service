@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { Employee } from 'src/employee/domain/entities/employee.entity'
+import { VehicleServiceReview } from 'src/vehicle-service-review/domain/entities/vehicle-service-review.entity'
+
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -15,6 +17,7 @@ import { Employee } from 'src/employee/domain/entities/employee.entity'
         database: configService.get('DB_NAME', 'web-pms-service-db'),
         entities: [
           Employee,
+          VehicleServiceReview,
         ],
         synchronize: configService.get('NODE_ENV') !== 'production',
         logging: configService.get('NODE_ENV') === 'development',
