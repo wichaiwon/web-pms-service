@@ -1,9 +1,9 @@
 
-import { Branch, UserRole } from 'src/shared/enum/user/user.enum'
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm'
+import { Branch, EmployeeRole } from 'src/shared/enum/employee/employee.enum'
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm'
 
-@Entity('users')
-export class Users {
+@Entity('employee')
+export class Employee {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -21,11 +21,11 @@ export class Users {
 
   @Column({
     type: 'enum',
-    enum: UserRole,
-    default: UserRole.MECHANIC,
+    enum: EmployeeRole,
+    default: EmployeeRole.MECHANIC,
     nullable: false,
   })
-  role: UserRole
+  role: EmployeeRole
 
   @Column({ unique: true, nullable: false })
   mirai_id: string
@@ -37,7 +37,7 @@ export class Users {
   mirai_password: string
   
   @Column({ nullable: true, type: 'timestamp with time zone' })
-  password_updated_at: Date
+  mirai_password_updated_at: Date
 
   @Column({ nullable: true })
   pin_code: string
@@ -45,18 +45,18 @@ export class Users {
   @Column({ type: 'enum', nullable: false, enum: Branch, default: Branch.HEAD_OFFICE })
   branch: Branch
 
-  @Column({ nullable: false })
+  @Column({ nullable: false ,default: true})
   is_active: boolean
 
-  @Column({ nullable: false })
+  @Column({ nullable: false ,type:'uuid'})
   created_by: string
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   created_at: Date
 
-  @Column({ nullable: true })
+  @Column({ nullable: true ,type:'uuid'})
   updated_by: string
 
-  @Column({ type: 'timestamp with time zone', nullable: true })
+  @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true })
   updated_at: Date
 }
