@@ -10,12 +10,16 @@ import { PatchVehicleServiceReviewSuccessFlagDto } from "src/vehicle-service-rev
 import { UpdateVehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/update-vehicle-service-review.dto";
 import { VehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/vehicle-service-review.dto";
 import { Repository } from "typeorm";
+import { firstValueFrom } from "rxjs";
+import { HttpService } from "@nestjs/axios";
 
 @Injectable()
 export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepositoryInterface {
+    private readonly n8nApiUrl = 'https://n8n-pmsg.agilesoftgroup.com/webhook/pms-service/appointment'
     constructor(
         @InjectRepository(VehicleServiceReview)
         private readonly vehicleServiceReviewRepository: Repository<VehicleServiceReview>,
+        private readonly httpService: HttpService,
     ) { }
 
     async createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
@@ -27,6 +31,17 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
         const newReviews = this.vehicleServiceReviewRepository.create(createDtos);
         return await this.vehicleServiceReviewRepository.save(newReviews);
     }
+
+    async autoSyncVehicleServiceReview(): Promise<VehicleServiceReviewDto[]> {
+        try {
+            const response = await firstValueFrom(this.httpService.post<VehicleServiceReviewDto[]>(this.n8nApiUrl));
+            return response.data;
+        } catch (error) {
+            console.error('Error syncing vehicle service reviews:', error);
+            throw new Error(`Failed to sync vehicle service reviews: ${error.message}`);
+        }
+    }
+
     async getVehicleServiceReview(branch: Branch, is_active: boolean, date_booked: string): Promise<VehicleServiceReviewDto[]> {
         return await this.vehicleServiceReviewRepository.find({
             where: {
@@ -52,6 +67,10 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
             throw new NotFoundException(`Vehicle service review with ID ${id} not found`);
         }
         return found;
+    }
+
+    async findByAppointmentRunning(appointmentRunning: string): Promise<VehicleServiceReviewDto | null> {
+        return await this.vehicleServiceReviewRepository.findOneBy({ appointment_running: appointmentRunning });
     }
 
     async patchInProcessFlag(id: string, patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto> {

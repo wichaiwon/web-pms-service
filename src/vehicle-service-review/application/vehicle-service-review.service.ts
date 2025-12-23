@@ -14,6 +14,7 @@ import { PatchInProcessUseCase } from "./commands/patch-in-process.use-case";
 import { PatchVehicleServiceReviewIsActiveDto } from "../interfaces/dtos/patch-vehicle-service-review-is-active.dto";
 import { PatchIsActiveUseCase } from "./commands/patch-active-status.use-case";
 import { PatchSuccessFlagUseCase } from "./commands/patch-success-flag.use-case";
+import { AutoSyncVehicleServiceReviewUseCase } from "./commands/auto-sync-vehicle-service-review.use-case";
 
 @Injectable()
 export class VehicleServiceReviewService implements IVehicleServiceReviewServiceInterface {
@@ -25,11 +26,16 @@ export class VehicleServiceReviewService implements IVehicleServiceReviewService
         private readonly patchInProcessUseCase: PatchInProcessUseCase,
         private readonly patchSuccessFlagUseCase: PatchSuccessFlagUseCase,
         private readonly patchActiveStatusUseCase: PatchIsActiveUseCase,
+        private readonly autoSyncVehicleServiceReviewUseCase: AutoSyncVehicleServiceReviewUseCase,
     ) { }
 
 
     async getVehicleServiceReview(branch: Branch): Promise<VehicleServiceReviewDto[]> {
         return this.getVehicleServiceReviewUseCase.executeAll(branch);
+    }
+    
+    async autoSyncVehicleServiceReview(employeeId: string): Promise<{ synced: number; skipped: number; errors: number }> {
+        return this.autoSyncVehicleServiceReviewUseCase.execute(employeeId);
     }
 
     async createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {

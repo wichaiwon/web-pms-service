@@ -7,9 +7,10 @@ import { Branch } from "src/shared/enum/employee/employee.enum";
 import { PatchVehicleServiceReviewIsActiveDto } from "src/vehicle-service-review/interfaces/dtos/patch-vehicle-service-review-is-active.dto";
 
 export interface IVehicleServiceReviewServiceInterface {
+    getVehicleServiceReview(branch: Branch): Promise<VehicleServiceReviewDto[]>;
+    autoSyncVehicleServiceReview(employeeId: string): Promise<{ synced: number; skipped: number; errors: number }>;
     createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto>;
     createVehicleServiceReviews(createDtos: CreateVehicleServiceReviewDto[]): Promise<VehicleServiceReviewDto[]>;
-    getVehicleServiceReview(branch: Branch): Promise<VehicleServiceReviewDto[]>;
     updateVehicleServiceReview(id: string, updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto>;
     patchInProcessFlag(id: string, patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto>;
     patchSuccessFlag(id:string, patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReviewDto>;
