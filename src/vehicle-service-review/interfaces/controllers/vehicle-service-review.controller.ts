@@ -79,6 +79,7 @@ export class VehicleServiceReviewController {
                 value: {
                     success_flag: true,
                     in_process_flag: false,
+                    appointment_running: "19996",
                     vehicle_registration: "กข 1234ถ",
                     vehicle_registration_province: "จบ",
                     model_number: "NLR85Aฟฟ",
