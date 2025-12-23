@@ -48,13 +48,13 @@ export class Employee {
   @Column({ nullable: false ,default: true})
   is_active: boolean
 
-  @Column({ nullable: false })
+  @Column({ nullable: false ,type:'uuid'})
   created_by: string
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   created_at: Date
 
-  @Column({ nullable: true })
+  @Column({ nullable: true ,type:'uuid'})
   updated_by: string
 
   @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true })
