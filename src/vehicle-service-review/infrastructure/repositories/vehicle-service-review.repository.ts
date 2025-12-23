@@ -75,11 +75,16 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
         return updated;
     }
 
-    async patchInProcessFlag(patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto> {
-        await this.vehicleServiceReviewRepository.update(patchInprocessDto.id, { in_process_flag: patchInprocessDto.in_process_flag });
-        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id: patchInprocessDto.id });
+    async patchInProcessFlag(id: string, patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto> {
+        if (!id) {
+            throw new NotFoundException('Vehicle service review ID is required');
+        }
+        await this.vehicleServiceReviewRepository.update(
+            id, patchInprocessDto
+        );
+        const updated = await this.vehicleServiceReviewRepository.findOneBy({ id: id });
         if (!updated) {
-            throw new NotFoundException(`Vehicle service review with ID ${patchInprocessDto.id} not found`);
+            throw new NotFoundException(`Vehicle service review with ID ${id} not found`);
         }
         return updated;
     }

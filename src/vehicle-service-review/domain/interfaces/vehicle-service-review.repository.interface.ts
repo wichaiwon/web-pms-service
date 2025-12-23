@@ -11,7 +11,7 @@ export interface IVehicleServiceReviewRepositoryInterface {
     createVehicleServiceReviews(createDtos: CreateVehicleServiceReviewDto[]): Promise<VehicleServiceReviewDto[]>;
     getVehicleServiceReview(branch: Branch, is_active: boolean, date_booked: string): Promise<VehicleServiceReviewDto[]>;
     updateVehicleServiceReview(updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto>;
-    patchInProcessFlag(patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto>;
+    patchInProcessFlag(id:string,patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto>;
     patchSuccessFlag(patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReviewDto>;
     patchActiveStatus(patchActiveStatusDto: PatchVehicleServiceReviewActiveStatusDto): Promise<VehicleServiceReviewDto>;
 }

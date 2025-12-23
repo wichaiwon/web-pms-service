@@ -11,6 +11,7 @@ import { PatchVehicleServiceReviewSuccessFlagDto } from "../interfaces/dtos/patc
 import { PatchVehicleServiceReviewActiveStatusDto } from "../interfaces/dtos/patch-vehicle-service-review-active-status.dto";
 import { Branch } from "src/shared/enum/employee/employee.enum";
 import { UpdateVehicleServiceReviewUseCase } from "./commands/update-vehicle-service-review.use-case";
+import { PatchInProcessUseCase } from "./commands/patch-in-process.use-case";
 
 @Injectable()
 export class VehicleServiceReviewService implements IVehicleServiceReviewServiceInterface {
@@ -19,6 +20,7 @@ export class VehicleServiceReviewService implements IVehicleServiceReviewService
         private readonly createVehicleServiceReviewsUseCase: CreateVehicleServiceReviewsUseCase,
         private readonly getVehicleServiceReviewUseCase: GetVehicleServiceReviewUseCase,
         private readonly updateVehicleServiceReviewUseCase: UpdateVehicleServiceReviewUseCase,
+        private readonly patchInProcessUseCase: PatchInProcessUseCase,
     ) { }
 
     async createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
@@ -37,9 +39,8 @@ export class VehicleServiceReviewService implements IVehicleServiceReviewService
         return this.updateVehicleServiceReviewUseCase.execute(updateDto);
     }
 
-    async patchInProcessFlag(patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto> {
-        // TODO: สร้าง PatchInProcessFlagUseCase
-        throw new Error('Not implemented yet');
+    async patchInProcessFlag(id: string, patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto> {
+        return this.patchInProcessUseCase.execute(id, patchInprocessDto);
     }
 
     async patchSuccessFlag(patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReviewDto> {

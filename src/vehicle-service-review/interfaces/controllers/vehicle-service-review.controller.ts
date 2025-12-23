@@ -1,9 +1,10 @@
-import { Body, Controller, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Param, Patch, Post, Put, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
 import { VehicleServiceReviewService } from "src/vehicle-service-review/application/vehicle-service-review.service";
 import { CreateVehicleServiceReviewDto } from "../dtos/create-vehicle-service-review.dto";
 import { UpdateVehicleServiceReviewDto } from "../dtos/update-vehicle-service-review.dto";
+import { PatchVehicleServiceReviewInProcessDto } from "../dtos/patch-vehicle-service-review-in-process.dto";
 
 @ApiTags('Vehicle Service Reviews')
 @Controller('vehicle-service-review')
@@ -102,5 +103,27 @@ export class VehicleServiceReviewController {
         //responsible เอา string เพิ่มเข้าไปใน array
         updateVehicleServiceReviewDto.id = id;
         return await this.vehicleServiceReviewService.updateVehicleServiceReview(updateVehicleServiceReviewDto);
+    }
+
+    @Patch('in-process/:id')
+    @ApiOperation({
+        summary: 'Patch in-process flag of vehicle service review',
+        description: 'Patch the in-process flag of a vehicle service review. Requires JWT authentication.'
+    })
+    @ApiBody({
+        type: PatchVehicleServiceReviewInProcessDto,
+        description: 'Data to patch in-process flag',
+        examples: {
+            patch: {
+                summary: 'Patch in-process flag',
+                value: {
+                    in_process_flag: true,
+                    updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
+                }
+            }
+        }
+    })
+    async patchInProcessFlag(@Param('id') id: string, @Body() patchInProcessDto: PatchVehicleServiceReviewInProcessDto) {
+        return await this.vehicleServiceReviewService.patchInProcessFlag(id, patchInProcessDto);
     }
 }
