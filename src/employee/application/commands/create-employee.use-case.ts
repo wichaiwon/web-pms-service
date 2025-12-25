@@ -14,23 +14,18 @@ export class CreateEmployeeUseCase {
     ) { }
     async execute(createDto: CreateEmployeeDto): Promise<EmployeeDto> {
         const hashedPassword = await this.passwordHasher.hash(createDto.password);
-        const hashedMiraiPassword = await this.passwordHasher.hash(createDto.mirai_password);
-
         const employee = await this.employeeRepository.createEmployee({
             ...createDto,
             password: hashedPassword,
-            mirai_password: hashedMiraiPassword,
         });
         return employee;
     }
     async executeMultiple(createDtos: CreateEmployeeDto[]): Promise<EmployeeDto[]> {
         const employeesToCreate = await Promise.all(createDtos.map(async (dto) => {
             const hashedPassword = await this.passwordHasher.hash(dto.password);
-            const hashedMiraiPassword = await this.passwordHasher.hash(dto.mirai_password);
             return {
                 ...dto,
                 password: hashedPassword,
-                mirai_password: hashedMiraiPassword,
             };
         }));
 
