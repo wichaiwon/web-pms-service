@@ -11,17 +11,17 @@ import { UpdateVehicleServiceReviewUseCase } from "./application/commands/update
 import { PatchInProcessUseCase } from "./application/commands/patch-in-process.use-case";
 import { PatchIsActiveUseCase } from "./application/commands/patch-active-status.use-case";
 import { PatchSuccessFlagUseCase } from "./application/commands/patch-success-flag.use-case";
-import { EmployeeRepository } from "src/employee/infrastructure/repositories/employee.repository";
 import { HttpModule } from "@nestjs/axios";
 import { ScheduleModule } from "@nestjs/schedule";
-import { Employee } from "src/employee/domain/entities/employee.entity";
 import { AutoSyncVehicleServiceReviewUseCase } from "./application/commands/auto-sync-vehicle-service-review.use-case";
+import { EmployeeModule } from "src/employee/employee.module";
 
 @Module({
     imports: [
         HttpModule,
         ScheduleModule.forRoot(),
-        TypeOrmModule.forFeature([VehicleServiceReview, Employee]),
+        TypeOrmModule.forFeature([VehicleServiceReview]),
+        EmployeeModule,
     ],
     controllers: [VehicleServiceReviewController],
     providers: [
@@ -37,12 +37,7 @@ import { AutoSyncVehicleServiceReviewUseCase } from "./application/commands/auto
         {
             provide: 'IVehicleServiceReviewRepository',
             useClass: VehicleServiceReviewRepository,
-        },
-        {
-            provide: 'IEmployeeRepository',
-            useClass: EmployeeRepository,
         }
-
     ],
     exports: [VehicleServiceReviewService],
 })

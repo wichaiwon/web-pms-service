@@ -11,9 +11,6 @@ export class UpdateVehicleServiceReviewUseCase {
     ) { }
 
     async execute(id: string, updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
-        if (!id) {
-            throw new NotFoundException('Vehicle service review ID is required');
-        }
 
         // Business Logic: Handle responsible field - merge with existing, check duplicate
         if (updateDto.responsible) {
@@ -34,7 +31,6 @@ export class UpdateVehicleServiceReviewUseCase {
                     updateDto.responsible = Array.from(new Set(merged));
                 }
             } else {
-                // ถ้าไม่เจอข้อมูลเดิม: ใช้ค่าที่ส่งมา และ filter duplicate
                 updateDto.responsible = Array.isArray(updateDto.responsible)
                     ? Array.from(new Set(updateDto.responsible))
                     : [updateDto.responsible];

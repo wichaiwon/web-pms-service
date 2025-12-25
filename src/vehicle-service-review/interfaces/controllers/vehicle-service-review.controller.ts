@@ -11,8 +11,8 @@ import { Branch } from "src/shared/enum/employee/employee.enum";
 
 @ApiTags('Vehicle Service Reviews')
 @Controller('vehicle-service-review')
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth('JWT-auth')
+// @UseGuards(JwtAuthGuard)
+// @ApiBearerAuth('JWT-auth')
 export class VehicleServiceReviewController {
     constructor(
         private readonly vehicleServiceReviewService: VehicleServiceReviewService,
@@ -83,8 +83,8 @@ export class VehicleServiceReviewController {
         summary: 'manual-sync vehicle service reviews',
         description: 'Auto-sync vehicle service reviews from external source. Requires JWT authentication.'
     })
-    async autoSyncVehicleServiceReview(@Request() req) {
-        return await this.vehicleServiceReviewService.autoSyncVehicleServiceReview(req.user.sub);
+    async autoSyncVehicleServiceReview() {
+        return await this.vehicleServiceReviewService.autoSyncVehicleServiceReview();
     }
 
     @Put(':id')

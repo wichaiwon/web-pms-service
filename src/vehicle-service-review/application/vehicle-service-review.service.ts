@@ -34,9 +34,10 @@ export class VehicleServiceReviewService implements IVehicleServiceReviewService
         return this.getVehicleServiceReviewUseCase.executeAll(branch);
     }
     
-    async autoSyncVehicleServiceReview(employeeId: string): Promise<{ synced: number; skipped: number; errors: number }> {
-        return this.autoSyncVehicleServiceReviewUseCase.execute(employeeId);
+    async autoSyncVehicleServiceReview(): Promise<{ synced: number; skipped: number; errors: number }> {
+        return this.autoSyncVehicleServiceReviewUseCase.execute();
     }
+    
 
     async createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
         return this.createVehicleServiceReviewUseCase.execute(createDto);

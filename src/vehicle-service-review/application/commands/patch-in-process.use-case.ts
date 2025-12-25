@@ -11,12 +11,6 @@ export class PatchInProcessUseCase {
     ) { }
     
     async execute(id: string, patchDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto> {
-        // Business Logic: Validate ID
-        if (!id) {
-            throw new NotFoundException('Vehicle service review ID is required');
-        }
-
-        // เรียก Repository ทำ Data Access เท่านั้น
         return await this.vehicleServiceReviewRepository.patchInProcessFlag(id, patchDto);
     }
 }
