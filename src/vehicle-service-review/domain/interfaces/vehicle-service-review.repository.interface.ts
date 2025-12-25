@@ -12,7 +12,7 @@ export interface IVehicleServiceReviewRepositoryInterface {
     getVehicleServiceReview(branch: Branch, is_active: boolean, date_booked: string): Promise<VehicleServiceReview[]>;
     createVehicleServiceReview(create: CreateVehicleServiceReviewDto): Promise<VehicleServiceReview>;
     createVehicleServiceReviews(creates: CreateVehicleServiceReviewDto[]): Promise<VehicleServiceReview[]>;
-    findById(id: string): Promise<VehicleServiceReview>;
+    getVehicleServiceReviewById(id: string): Promise<VehicleServiceReview>;
     updateVehicleServiceReview(id: string, update: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReview>;
     patchInProcessFlag(id: string, patchInprocess: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReview>;
     patchSuccessFlag(id: string, patchSuccess: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReview>;

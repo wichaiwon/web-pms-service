@@ -31,7 +31,7 @@ export class VehicleServiceReviewService implements IVehicleServiceReviewService
 
 
     async getVehicleServiceReview(branch: Branch): Promise<VehicleServiceReviewDto[]> {
-        return this.getVehicleServiceReviewUseCase.executeAll(branch);
+        return this.getVehicleServiceReviewUseCase.execute(branch);
     }
     
     async autoSyncVehicleServiceReview(): Promise<{ synced: number; skipped: number; errors: number }> {

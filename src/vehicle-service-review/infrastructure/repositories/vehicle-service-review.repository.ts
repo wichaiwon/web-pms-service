@@ -70,7 +70,7 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
         return updated;
     }
 
-    async findById(id: string): Promise<VehicleServiceReview> {
+    async getVehicleServiceReviewById(id: string): Promise<VehicleServiceReview> {
         const found = await this.vehicleServiceReviewRepository.findOneBy({ id });
         if (!found) {
             throw new NotFoundException(`Vehicle service review with ID ${id} not found`);

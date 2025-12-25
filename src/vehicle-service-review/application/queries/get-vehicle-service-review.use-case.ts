@@ -10,7 +10,7 @@ export class GetVehicleServiceReviewUseCase {
         private readonly vehicleServiceReviewRepository: IVehicleServiceReviewRepositoryInterface,
     ) { }
     
-    async executeAll(branch: Branch): Promise<VehicleServiceReviewDto[]> {
+    async execute(branch: Branch): Promise<VehicleServiceReviewDto[]> {
         // Business Logic: กำหนด is_active=true และ date_booked=วันปัจจุบัน
         const is_active = true;
         const today = new Date();
