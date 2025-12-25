@@ -22,9 +22,8 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
         private readonly httpService: HttpService,
     ) { }
 
-    async fetchAppointmentsFromN8n(): Promise<any[]> {
+    async fetchAppointmentsFromN8n(): Promise<VehicleServiceReview[]> {
         try {
-            console.log(`Fetching appointments from: ${this.n8nApiUrl}`);
             const response = await firstValueFrom(
                 this.httpService.post(this.n8nApiUrl)
             );
