@@ -1,6 +1,7 @@
 import { Branch } from 'src/shared/enum/employee/employee.enum'
-import { CarBrand, CarType, StatusRepairOrder, StatusReport } from 'src/shared/enum/vehicle-service-review.enum'
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { CarBrand, CarType, StatusRepairOrder, StatusReport } from 'src/shared/enum/vehicle-service-review/vehicle-service-review.enum'
+import { VehicleServiceReviewDetail } from 'src/vehicle-service-review-detail/domain/entities/vehicle-service-review-detail.entity'
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity('vehicle_service_review')
 export class VehicleServiceReview {
@@ -9,7 +10,7 @@ export class VehicleServiceReview {
 
   @Column({ type: 'boolean', default: false })
   walk_in_flag: boolean
-  
+
   @Column({ type: 'boolean', default: false })
   in_process_flag: boolean
 
@@ -76,7 +77,7 @@ export class VehicleServiceReview {
   @Column({ type: 'enum', enum: StatusReport, default: StatusReport.NOT_ISSUED })
   status_report: StatusReport
 
-  @Column({ type: 'boolean', default: true , nullable: false })
+  @Column({ type: 'boolean', default: true, nullable: false })
   is_active: boolean
 
   @CreateDateColumn({ type: 'timestamp with time zone', nullable: false })
@@ -90,4 +91,8 @@ export class VehicleServiceReview {
 
   @Column({ type: 'uuid', nullable: true })
   updated_by: string
+
+  // // Relations
+  @OneToMany(() => VehicleServiceReviewDetail, detail => detail.vehicle_service_review, { cascade: true })
+  details: VehicleServiceReviewDetail[]
 }
