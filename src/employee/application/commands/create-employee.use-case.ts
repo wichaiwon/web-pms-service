@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { Employee } from "src/employee/domain/entities/employee.entity";
+import { plainToInstance } from "class-transformer";
 import type { IEmployeeRepository } from "src/employee/domain/interfaces/employee.repository.interface";
 import type { IPasswordHasher } from "src/employee/infrastructure/services/password-hasher.service";
 import { CreateEmployeeDto } from "src/employee/interfaces/dtos/create-employee.dto";
@@ -19,22 +19,7 @@ export class CreateEmployeeUseCase {
             ...createDto,
             password: hashedPassword,
         });
-        return this.mapToEmployeeDto(employee);
+        return plainToInstance(EmployeeDto, employee, { excludeExtraneousValues: true });
     }
-    private mapToEmployeeDto(employee: Employee): EmployeeDto {
-        return {
-            id: employee.id,
-            pkg_id_member: employee.pkg_id_member,
-            mirai_id: employee.mirai_id,
-            email: employee.email,
-            firstname: employee.firstname,
-            lastname: employee.lastname,
-            role: employee.role,
-            branch: employee.branch,
-            created_at: employee.created_at,
-            mirai_password_updated_at: employee.mirai_password_updated_at,
-            updated_at: employee.updated_at,
-        }
-    }   
 
 }

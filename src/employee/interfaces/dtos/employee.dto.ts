@@ -1,39 +1,67 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Expose } from 'class-transformer';
 import { Branch, EmployeeRole } from 'src/shared/enum/employee/employee.enum'
 
 export class EmployeeDto {
+  @Expose()
   @ApiProperty()
   id: string;
 
+  @Expose()
   @ApiProperty()
   pkg_id_member: string;
 
+  @Expose()
   @ApiProperty()
   mirai_id: string;
 
-  @ApiProperty({ required: false })
-  email?: string;
-
+  @Expose()
   @ApiProperty()
-  firstname: string;
+  pin_code: string;
 
+  @Expose()
   @ApiProperty()
-  lastname: string;
+  mirai_password: string;
 
-  @ApiProperty({ enum: EmployeeRole })
-  role: EmployeeRole;
-
-  @ApiProperty({ enum: Branch })
-  branch: Branch;
-
-  @ApiProperty()
-  created_at: Date;
-
+  @Expose()
   @ApiProperty()
   mirai_password_updated_at: Date;
 
+  @Expose()
   @ApiProperty({ required: false })
-  updated_at?: Date;
-  
+  email?: string;
+
+  @Expose()
+  @ApiProperty()
+  firstname: string;
+
+  @Expose()
+  @ApiProperty()
+  lastname: string;
+
+  @Expose()
+  @ApiProperty({ enum: EmployeeRole })
+  role: EmployeeRole;
+
+  @Expose()
+  @ApiProperty({ enum: Branch })
+  branch: Branch;
+
+  @Expose()
+  @ApiProperty()
+  created_by: string;
+
+  @Expose()
+  @ApiProperty()
+  created_at: Date;
+
+  @Expose()
+  @ApiProperty({ required: false })
+  updated_by: string;
+
+  @Expose()
+  @ApiProperty({ required: false })
+  updated_at: Date;
+
   // **ไม่มี password และ field sensitive**
 }

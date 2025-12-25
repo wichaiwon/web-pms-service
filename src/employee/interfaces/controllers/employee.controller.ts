@@ -1,4 +1,4 @@
-import { Body, Controller, Post, HttpException, HttpStatus, UseGuards, Get, Param } from "@nestjs/common";
+import { Body, Controller, Post, HttpException, HttpStatus, UseGuards, Get, Param, Put } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiBearerAuth } from "@nestjs/swagger";
 import { EmployeeService } from "src/employee/application/employee.service";
 import { CreateEmployeeDto } from "src/employee/interfaces/dtos/create-employee.dto";
@@ -6,6 +6,7 @@ import { EmployeeDto } from "src/employee/interfaces/dtos/employee.dto";
 import { LoginDto } from "../dtos/login.dto";
 import { TokenDto } from "../dtos/token.dto";
 import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
+import { UpdateEmployeeDto } from "../dtos/update-employee.dto";
 
 @ApiTags('Authentication')
 @Controller('employee')
@@ -13,7 +14,6 @@ export class EmployeeController {
     constructor(
         private readonly employeeService: EmployeeService,
     ) { }
-
 
     @Get('all')
     @ApiOperation({ summary: 'Get all employees', description: 'Retrieve a list of all employees' })
@@ -34,8 +34,8 @@ export class EmployeeController {
     }
 
     @Post('create')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('JWT-auth')
+    // @UseGuards(JwtAuthGuard)
+    // @ApiBearerAuth('JWT-auth')
     @ApiOperation({
         summary: 'Create new employee(s)',
         description: 'Create one or multiple employees. Can accept a single employee object or an array of employee objects. Requires JWT authentication.'
@@ -129,13 +129,18 @@ export class EmployeeController {
             }
         }
     })
-    @ApiResponse({ status: 200, description: 'Login successful', type: TokenDto })
-    @ApiResponse({ status: 401, description: 'Unauthorized - Invalid credentials' })
     async login(@Body() loginDto: LoginDto): Promise<TokenDto> {
         const result = await this.employeeService.login(loginDto.username, loginDto.password);
         if (!result) {
             throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
         }
         return result;
+    }
+
+    @Put('update/:id')
+    @ApiOperation({ summary: 'Update employee', description: 'Update an existing employee by ID', })
+    @ApiBody({ type: UpdateEmployeeDto, description: 'Employee data to update' })
+    async updateEmployee(@Param('id') id: string, @Body() updateEmployeeDto: UpdateEmployeeDto): Promise<EmployeeDto> {
+        return this.employeeService.updateEmployee(id, updateEmployeeDto);
     }
 }

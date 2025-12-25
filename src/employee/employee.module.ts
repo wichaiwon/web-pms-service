@@ -15,6 +15,7 @@ import { BcryptPasswordHasher } from "./infrastructure/services/password-hasher.
 import { GetEmployeeUseCase } from "./application/queries/get-employee.use-case";
 import { GetEmployeesUseCase } from "./application/queries/get-employees.use-case";
 import { GetEmployeeByFullNameUseCase } from "./application/queries/get-employee-by-fullname.use-case";
+import { UpdateEmployeeUseCase } from "./application/commands/update-employee.use-case";
 
 @Module({
     imports: [
@@ -41,6 +42,7 @@ import { GetEmployeeByFullNameUseCase } from "./application/queries/get-employee
         // Use Cases - Commands
         CreateEmployeeUseCase,
         CreateEmployeesUseCase,
+        UpdateEmployeeUseCase,
         LoginUseCase,
         
         // Use Cases - Queries

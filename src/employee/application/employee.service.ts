@@ -9,6 +9,8 @@ import { LoginUseCase } from "./commands/login.use-case";
 import { GetEmployeeByFullNameUseCase } from "./queries/get-employee-by-fullname.use-case";
 import { GetEmployeesUseCase } from "./queries/get-employees.use-case";
 import { GetEmployeeUseCase } from "./queries/get-employee.use-case";
+import { UpdateEmployeeUseCase } from "./commands/update-employee.use-case";
+import { UpdateEmployeeDto } from "../interfaces/dtos/update-employee.dto";
 
 /**
  * EmployeeService - Application Service
@@ -24,6 +26,7 @@ import { GetEmployeeUseCase } from "./queries/get-employee.use-case";
 @Injectable()
 export class EmployeeService implements IEmployeeService {
     constructor(
+        private readonly updateEmployeeUseCase: UpdateEmployeeUseCase,
         private readonly createEmployeeUseCase: CreateEmployeeUseCase,
         private readonly createEmployeesUseCase: CreateEmployeesUseCase,
         private readonly loginUseCase: LoginUseCase,
@@ -31,6 +34,13 @@ export class EmployeeService implements IEmployeeService {
         private readonly getEmployeesUseCase: GetEmployeesUseCase,
         private readonly getEmployeeByFullNameUseCase: GetEmployeeByFullNameUseCase,
     ) { }
+
+    /**
+     * อัพเดทข้อมูลพนักงาน
+     */
+    async updateEmployee(id: string, updateEmployeeDto: UpdateEmployeeDto): Promise<EmployeeDto> {
+        return this.updateEmployeeUseCase.execute(id, updateEmployeeDto)
+    }
 
     /**
      * สร้างพนักงานคนเดียว

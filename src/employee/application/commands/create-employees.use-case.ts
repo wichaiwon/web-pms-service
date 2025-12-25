@@ -1,4 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
+import { plainToInstance } from "class-transformer";
 import type { IEmployeeRepository } from "src/employee/domain/interfaces/employee.repository.interface";
 import type { IPasswordHasher } from "src/employee/infrastructure/services/password-hasher.service";
 import { CreateEmployeeDto } from "src/employee/interfaces/dtos/create-employee.dto";
@@ -24,6 +25,6 @@ export class CreateEmployeesUseCase {
 
         const employees = await this.employeeRepository.createEmployees(employeesWithHashedPasswords);
         
-        return employees;
+        return plainToInstance(EmployeeDto, employees, { excludeExtraneousValues: true });
     }
 }
