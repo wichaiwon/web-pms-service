@@ -1,26 +1,20 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Employee } from "src/employee/domain/entities/employee.entity";
 import type { IEmployeeRepository } from "src/employee/domain/interfaces/employee.repository.interface";
-import type { IPasswordHasher } from "src/employee/infrastructure/services/password-hasher.service";
-import { CreateEmployeeDto } from "src/employee/interfaces/dtos/create-employee.dto";
 import { EmployeeDto } from "src/employee/interfaces/dtos/employee.dto";
 
 @Injectable()
-export class CreateEmployeeUseCase {
+export class GetEmployeesUseCase {
     constructor(
         @Inject('IEmployeeRepository')
         private readonly employeeRepository: IEmployeeRepository,
-        @Inject('IPasswordHasher')
-        private readonly passwordHasher: IPasswordHasher
     ) { }
-    async execute(createDto: CreateEmployeeDto): Promise<EmployeeDto> {
-        const hashedPassword = await this.passwordHasher.hash(createDto.password);
-        const employee = await this.employeeRepository.createEmployee({
-            ...createDto,
-            password: hashedPassword,
-        });
-        return this.mapToEmployeeDto(employee);
+
+    async execute(): Promise<EmployeeDto[]> {
+        const employees =  await this.employeeRepository.getEmployees();
+        return employees.map(emp => this.mapToEmployeeDto(emp));
     }
+
     private mapToEmployeeDto(employee: Employee): EmployeeDto {
         return {
             id: employee.id,
@@ -35,6 +29,5 @@ export class CreateEmployeeUseCase {
             mirai_password_updated_at: employee.mirai_password_updated_at,
             updated_at: employee.updated_at,
         }
-    }   
-
+    }
 }

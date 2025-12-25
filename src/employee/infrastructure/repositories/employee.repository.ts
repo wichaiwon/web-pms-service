@@ -16,15 +16,42 @@ export class EmployeeRepository implements IEmployeeRepository {
         return this.employeeRepository.save(newEmployee);
     }
     
-    async findByUsername(username: string): Promise<Employee | null> {
-        return this.employeeRepository.findOne({ 
+    async findByUsername(username: string): Promise<Employee> {
+        const employee = await this.employeeRepository.findOne({ 
             where: [
                 { mirai_id: username },
                 { pkg_id_member: username },
                 { email: username }
             ]
         });
+        if (!employee) {
+            throw new Error('Employee not found');
+        }
+        return employee;
     }
+
+    async getEmployee(id: string): Promise<Employee> {
+        const employee = await this.employeeRepository.findOne({ where: { id } });
+        if (!employee) {
+            throw new Error('Employee not found');
+        }
+        return employee;
+    }
+
+    async getEmployees(): Promise<Employee[]> {
+        return this.employeeRepository.find();
+    }
+
+    async getEmployeeByFullName(firstname: string, lastname: string): Promise<Employee | null> {
+        const employee = await this.employeeRepository.findOne({
+            where: {
+                firstname: firstname,
+                lastname: lastname
+            }
+        });
+        return employee;
+    }
+
     async createEmployees(createEmployeeDtos: CreateEmployeeDto[]): Promise<Employee[]> {
         const newEmployees = this.employeeRepository.create(createEmployeeDtos);
         return this.employeeRepository.save(newEmployees);

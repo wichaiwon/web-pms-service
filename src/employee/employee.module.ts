@@ -9,7 +9,12 @@ import { EmployeeService } from "./application/employee.service";
 import { EmployeeRepository } from "./infrastructure/repositories/employee.repository";
 import { JwtStrategy } from "./infrastructure/services/jwt.strategy";
 import { CreateEmployeeUseCase } from "./application/commands/create-employee.use-case";
+import { CreateEmployeesUseCase } from "./application/commands/create-employees.use-case";
+import { LoginUseCase } from "./application/commands/login.use-case";
 import { BcryptPasswordHasher } from "./infrastructure/services/password-hasher.service";
+import { GetEmployeeUseCase } from "./application/queries/get-employee.use-case";
+import { GetEmployeesUseCase } from "./application/queries/get-employees.use-case";
+import { GetEmployeeByFullNameUseCase } from "./application/queries/get-employee-by-fullname.use-case";
 
 @Module({
     imports: [
@@ -27,13 +32,29 @@ import { BcryptPasswordHasher } from "./infrastructure/services/password-hasher.
     ],
     controllers: [EmployeeController],
     providers: [
+        // Application Service (Orchestrator)
         EmployeeService,
+        
+        // Infrastructure
         JwtStrategy,
+        
+        // Use Cases - Commands
         CreateEmployeeUseCase,
+        CreateEmployeesUseCase,
+        LoginUseCase,
+        
+        // Use Cases - Queries
+        GetEmployeeUseCase,
+        GetEmployeesUseCase,
+        GetEmployeeByFullNameUseCase,
+        
+        // Repository
         {
             provide: 'IEmployeeRepository',
             useClass: EmployeeRepository,
         },
+        
+        // Infrastructure Services
         {
             provide: 'IPasswordHasher',
             useClass: BcryptPasswordHasher,

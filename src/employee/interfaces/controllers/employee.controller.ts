@@ -1,4 +1,4 @@
-import { Body, Controller, Post, HttpException, HttpStatus, UseGuards } from "@nestjs/common";
+import { Body, Controller, Post, HttpException, HttpStatus, UseGuards, Get, Param } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiBearerAuth } from "@nestjs/swagger";
 import { EmployeeService } from "src/employee/application/employee.service";
 import { CreateEmployeeDto } from "src/employee/interfaces/dtos/create-employee.dto";
@@ -13,7 +13,26 @@ export class EmployeeController {
     constructor(
         private readonly employeeService: EmployeeService,
     ) { }
-    
+
+
+    @Get('all')
+    @ApiOperation({ summary: 'Get all employees', description: 'Retrieve a list of all employees' })
+    async getAllEmployees(): Promise<EmployeeDto[]> {
+        return this.employeeService.getEmployees();
+    }
+
+    @Get(':id')
+    @ApiOperation({ summary: 'Get employee by ID', description: 'Retrieve an employee by their ID' })
+    async getEmployee(@Param('id') id: string): Promise<EmployeeDto> {
+        return this.employeeService.getEmployee(id);
+    }
+
+    @Get(':firstname/:lastname')
+    @ApiOperation({ summary: 'Get employee by full name', description: 'Retrieve an employee by their first and last name' })
+    async getEmployeeByFullName(@Param('firstname') firstname: string, @Param('lastname') lastname: string): Promise<EmployeeDto | null> {
+        return this.employeeService.getEmployeeByFullName(firstname, lastname);
+    }
+
     @Post('create')
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('JWT-auth')

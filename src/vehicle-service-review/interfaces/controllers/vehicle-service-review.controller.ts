@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, Put, Query, Request, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
 import { VehicleServiceReviewService } from "src/vehicle-service-review/application/vehicle-service-review.service";
@@ -83,8 +83,8 @@ export class VehicleServiceReviewController {
         summary: 'manual-sync vehicle service reviews',
         description: 'Auto-sync vehicle service reviews from external source. Requires JWT authentication.'
     })
-    async autoSyncVehicleServiceReview() {
-        return await this.vehicleServiceReviewService.autoSyncVehicleServiceReview('system');
+    async autoSyncVehicleServiceReview(@Request() req) {
+        return await this.vehicleServiceReviewService.autoSyncVehicleServiceReview(req.user.sub);
     }
 
     @Put(':id')
