@@ -14,7 +14,7 @@ export class UpdateVehicleServiceReviewUseCase {
 
         // Business Logic: Handle responsible field - merge with existing, check duplicate
         if (updateDto.responsible) {
-            const existing = await this.vehicleServiceReviewRepository.findById(id);
+            const existing = await this.vehicleServiceReviewRepository.getVehicleServiceReviewById(id);
             if (existing) {
                 const currentResponsible = existing.responsible || [];
 

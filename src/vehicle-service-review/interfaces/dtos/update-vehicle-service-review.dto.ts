@@ -1,6 +1,6 @@
 import { IsUUID, IsOptional, IsBoolean, IsEnum, IsArray, IsString, IsNotEmpty } from 'class-validator'
 import { ApiPropertyOptional } from '@nestjs/swagger'
-import { CarBrand, CarType, StatusRepairOrder, StatusReport } from 'src/shared/enum/vehicle-service-review.enum'
+import { CarBrand, CarType, StatusRepairOrder, StatusReport } from 'src/shared/enum/vehicle-service-review/vehicle-service-review.enum'
 import { Branch } from 'src/shared/enum/employee/employee.enum'
 
 export class UpdateVehicleServiceReviewDto {

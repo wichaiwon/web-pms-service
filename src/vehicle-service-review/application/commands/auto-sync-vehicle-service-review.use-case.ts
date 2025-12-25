@@ -2,7 +2,7 @@ import { Injectable, Inject } from "@nestjs/common";
 import { EmployeeService } from "src/employee/application/employee.service";
 import type { IVehicleServiceReviewRepositoryInterface } from "src/vehicle-service-review/domain/interfaces/vehicle-service-review.repository.interface";
 import { Branch } from "src/shared/enum/employee/employee.enum";
-import { CarBrand, CarType, StatusRepairOrder, StatusReport } from "src/shared/enum/vehicle-service-review.enum";
+import { CarBrand, CarType, StatusRepairOrder, StatusReport } from "src/shared/enum/vehicle-service-review/vehicle-service-review.enum";
 import { CreateVehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/create-vehicle-service-review.dto";
 import { UpdateVehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/update-vehicle-service-review.dto";
 
