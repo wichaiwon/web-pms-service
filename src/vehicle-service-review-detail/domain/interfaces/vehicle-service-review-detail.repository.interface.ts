@@ -3,5 +3,6 @@ import { VehicleServiceReviewDetail } from "../entities/vehicle-service-review-d
 
 export interface IVehicleServiceReviewDetailRepositoryInterface {
     createVehicleServiceReviewDetail(createDto: CreateVehicleServiceReviewDetailDto): Promise<VehicleServiceReviewDetail>;
+    createVehicleServiceReviewDetails(createDto: CreateVehicleServiceReviewDetailDto[]): Promise<VehicleServiceReviewDetail[]>;
     getVehicleServiceReviewById(vehicleServiceReviewId: string): Promise<VehicleServiceReviewDetail | null>;
 }

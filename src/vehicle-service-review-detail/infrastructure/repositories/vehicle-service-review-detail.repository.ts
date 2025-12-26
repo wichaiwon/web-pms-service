@@ -19,10 +19,18 @@ export class VehicleServiceReviewDetailRepository implements IVehicleServiceRevi
         return await this.vehicleServiceReviewDetailRepository.save(newDetail);
     }
 
-    async getVehicleServiceReviewById(vehicleServiceReviewId: string): Promise<VehicleServiceReviewDetail | null> {
-        return await this.vehicleServiceReviewDetailRepository.findOne({
-            where: { vehicle_service_review_id: vehicleServiceReviewId , is_active: true }
+    async createVehicleServiceReviewDetails(
+        createDto: CreateVehicleServiceReviewDetailDto[]
+    ): Promise<VehicleServiceReviewDetail[]> {
+        const newDetails = this.vehicleServiceReviewDetailRepository.create(createDto);
+        return await this.vehicleServiceReviewDetailRepository.save(newDetails);
+    }
+
+    async getVehicleServiceReviewById(vehicleServiceReviewId: string): Promise<VehicleServiceReviewDetail|null> {
+        const detail = await this.vehicleServiceReviewDetailRepository.findOne({
+            where: { vehicle_service_review_id: vehicleServiceReviewId,is_active: true },
         });
+        return detail;
     }
 
 }

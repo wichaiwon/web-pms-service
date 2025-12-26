@@ -6,6 +6,7 @@ import { VehicleServiceReviewDetailController } from "./interfaces/controllers/v
 import { VehicleServiceReviewDetailService } from "./application/vehicle-service-review-detail.service";
 import { VehicleServiceReviewDetailRepository } from "./infrastructure/repositories/vehicle-service-review-detail.repository";
 import { GetVehicleServiceReviewDetailByIdUseCase } from "./application/queies/get-by-vehicle-service-review-id.use-case";
+import { CreateVehicleServiceReviewDetailsUseCase } from "./application/commands/create-vehicle-service-review-details.use-case";
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { GetVehicleServiceReviewDetailByIdUseCase } from "./application/queies/g
     controllers: [VehicleServiceReviewDetailController],
     providers: [
         CreateVehicleServiceReviewDetailUseCase,
+        CreateVehicleServiceReviewDetailsUseCase,
         GetVehicleServiceReviewDetailByIdUseCase,
         VehicleServiceReviewDetailService,
         {
