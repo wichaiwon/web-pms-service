@@ -87,7 +87,7 @@ export class VehicleServiceReviewController {
         return await this.vehicleServiceReviewService.autoSyncVehicleServiceReview();
     }
 
-    @Put(':id')
+    @Put('update/:id')
     @ApiOperation({
         summary: 'Update vehicle service review',
         description: 'Update a vehicle service review by ID. Requires JWT authentication.'
