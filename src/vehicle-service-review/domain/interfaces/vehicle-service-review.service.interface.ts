@@ -8,7 +8,7 @@ import { PatchVehicleServiceReviewIsActiveDto } from "src/vehicle-service-review
 
 export interface IVehicleServiceReviewServiceInterface {
     getVehicleServiceReview(branch: Branch): Promise<VehicleServiceReviewDto[]>;
-    autoSyncVehicleServiceReview(employeeId: string): Promise<{ synced: number; skipped: number; errors: number }>;
+    autoSyncVehicleServiceReview(): Promise<{ synced: number; skipped: number; errors: number }>;
     createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto>;
     createVehicleServiceReviews(createDtos: CreateVehicleServiceReviewDto[]): Promise<VehicleServiceReviewDto[]>;
     updateVehicleServiceReview(id: string, updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto>;

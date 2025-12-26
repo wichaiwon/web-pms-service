@@ -14,6 +14,7 @@ import { PatchSuccessFlagUseCase } from "./application/commands/patch-success-fl
 import { HttpModule } from "@nestjs/axios";
 import { ScheduleModule } from "@nestjs/schedule";
 import { AutoSyncVehicleServiceReviewUseCase } from "./application/commands/auto-sync-vehicle-service-review.use-case";
+import { AppointmentSyncScheduler } from "./infrastructure/scheduler/auto-sync-vehicle-service-review.scheduler";
 import { EmployeeModule } from "src/employee/employee.module";
 
 @Module({
@@ -34,6 +35,7 @@ import { EmployeeModule } from "src/employee/employee.module";
         PatchIsActiveUseCase,
         PatchSuccessFlagUseCase,
         AutoSyncVehicleServiceReviewUseCase,
+        AppointmentSyncScheduler,
         {
             provide: 'IVehicleServiceReviewRepository',
             useClass: VehicleServiceReviewRepository,
