@@ -173,8 +173,8 @@ export class VehicleServiceReviewController {
             }
         }
     })
-    async patchActiveStatus(@Param('id') id: string, @Body() patchActiveStatusDto: PatchVehicleServiceReviewIsActiveDto) {
-        return await this.vehicleServiceReviewService.patchActiveStatus(id, patchActiveStatusDto);
+    async patchIsActive(@Param('id') id: string, @Body() patchIsActiveDto: PatchVehicleServiceReviewIsActiveDto) {
+        return await this.vehicleServiceReviewService.patchIsActive(id, patchIsActiveDto);
     }
 
     @Patch('success-flag/:id')
