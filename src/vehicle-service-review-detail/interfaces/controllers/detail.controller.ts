@@ -9,7 +9,7 @@ import { CreateDetailAdditionalDto } from "../dtos/create-detail-additional.dto"
 import { DetailAdditionalDto } from "../dtos/detail-additional.dto";
 import { UpdateDetailAdditionalDto } from "../dtos/update-detail-additional.dto";
 
-@ApiTags('Vehicle Service ReviewDetails')
+@ApiTags('Vehicle Service Review Details')
 @Controller('detail')
 // @UseGuards(JwtAuthGuard)
 // @ApiBearerAuth('JWT-auth')
