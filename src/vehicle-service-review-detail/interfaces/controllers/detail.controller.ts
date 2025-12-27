@@ -1,10 +1,10 @@
 import { Body, Controller, Patch, Post, Put, UseGuards } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
-import { DetailService } from "src/detail/application/detail.service";
 import { CreateDetailDto } from "../dtos/create-detail.dto";
 import { DetailDto } from "../dtos/detail.dto";
 import { UpdateDetailDto } from "../dtos/update-detail.dto";
 import { PatchDetailDto } from "../dtos/patch-detail.dto";
+import { DetailService } from "src/vehicle-service-review-detail/application/detail.service";
 
 @ApiTags('Details')
 @Controller('detail')

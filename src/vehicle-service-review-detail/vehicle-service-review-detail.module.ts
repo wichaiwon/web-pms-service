@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { Detail } from "./domain/entities/detail.entity";
 import { DetailController } from "./interfaces/controllers/detail.controller";
 import { DetailService } from "./application/detail.service";
 import { DetailRepository } from "./infrastructure/repositories/detail.repository";
@@ -10,10 +9,11 @@ import { CreateDetailsUseCase } from "./application/commands/create-details.use-
 import { UpdateDetailUseCase } from "./application/commands/update-detail.use-case";
 import { PatchIsActiveUseCase } from "./application/commands/patch-detail-is-active.use-case";
 import { PatchSuccessFlagUseCase } from "./application/commands/patch-detail-success-flag.use-case";
+import { VehicleServiceReviewDetail } from "./domain/entities/detail.entity";
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Detail]),
+        TypeOrmModule.forFeature([VehicleServiceReviewDetail]),
     ],
     controllers: [DetailController],
     providers: [
@@ -31,4 +31,4 @@ import { PatchSuccessFlagUseCase } from "./application/commands/patch-detail-suc
     ],
     exports: [DetailService],
 })
-export class DetailModule { }
+export class VehicleServiceReviewDetailModule { }

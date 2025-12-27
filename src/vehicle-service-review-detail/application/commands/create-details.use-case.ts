@@ -1,8 +1,8 @@
 import { Injectable, Inject, ConflictException } from "@nestjs/common";
-import { Detail } from "src/detail/domain/entities/detail.entity";
-import type { IDetailRepositoryInterface } from "src/detail/domain/interfaces/detail.repository.interface";
-import { CreateDetailDto } from "src/detail/interfaces/dtos/create-detail.dto";
-import { DetailDto } from "src/detail/interfaces/dtos/detail.dto";
+import { VehicleServiceReviewDetail } from "src/vehicle-service-review-detail/domain/entities/detail.entity";
+import type { IDetailRepositoryInterface } from "src/vehicle-service-review-detail/domain/interfaces/detail.repository.interface";
+import { CreateDetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/create-detail.dto";
+import { DetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/detail.dto";
 
 @Injectable()
 export class CreateDetailsUseCase {
@@ -19,7 +19,7 @@ export class CreateDetailsUseCase {
                 throw new ConflictException(`Detail already exists for vehicle service review ID: ${dto.vehicle_service_review_id}.`);
             }
         }
-        const createdDetails: Detail[] = [];
+        const createdDetails: VehicleServiceReviewDetail[] = [];
         for (const dto of createDto) {
             const createdDetail = await this.detailRepository.createDetail(dto);
             createdDetails.push(createdDetail);

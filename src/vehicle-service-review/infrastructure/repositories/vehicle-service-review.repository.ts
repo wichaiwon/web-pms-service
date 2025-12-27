@@ -98,7 +98,7 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
         return updated;
     }
 
-    async patchActiveStatus(id: string, patchActiveStatusDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReview> {
+    async patchIsActive(id: string, patchActiveStatusDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReview> {
         await this.vehicleServiceReviewRepository.update(id, patchActiveStatusDto);
         const updated = await this.vehicleServiceReviewRepository.findOneBy({ id });
         if (!updated) {

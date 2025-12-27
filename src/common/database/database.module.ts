@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { Employee } from 'src/employee/domain/entities/employee.entity'
 import { VehicleServiceReview } from 'src/vehicle-service-review/domain/entities/vehicle-service-review.entity'
-import { VehicleServiceReviewDetail } from 'src/vehicle-service-review-detail/domain/entities/vehicle-service-review-detail.entity'
+import { VehicleServiceReviewDetail } from 'src/vehicle-service-review-detail/domain/entities/detail.entity'
 
 @Module({
   imports: [

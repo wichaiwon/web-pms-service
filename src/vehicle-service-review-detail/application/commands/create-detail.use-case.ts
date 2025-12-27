@@ -1,7 +1,8 @@
 import { Injectable, Inject, ConflictException } from "@nestjs/common";
-import type { IDetailRepositoryInterface } from "src/detail/domain/interfaces/detail.repository.interface";
-import { CreateDetailDto } from "src/detail/interfaces/dtos/create-detail.dto";
-import { DetailDto } from "src/detail/interfaces/dtos/detail.dto";
+import type { IDetailRepositoryInterface } from "src/vehicle-service-review-detail/domain/interfaces/detail.repository.interface";
+import { CreateDetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/create-detail.dto";
+import { DetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/detail.dto";
+
 
 @Injectable()
 export class CreateDetailUseCase {

@@ -10,6 +10,6 @@ export class PatchIsActiveUseCase {
         private readonly vehicleServiceReviewRepository: IVehicleServiceReviewRepositoryInterface,
     ) { }
     async execute(id:string , patchDto:PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReviewDto> {
-        return await this.vehicleServiceReviewRepository.patchIsActiveStatus(id, patchDto);
+        return await this.vehicleServiceReviewRepository.patchIsActive(id, patchDto);
     }
 }

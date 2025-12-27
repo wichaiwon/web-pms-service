@@ -1,19 +1,21 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Detail } from "src/detail/domain/entities/detail.entity";
-import { IDetailRepositoryInterface } from "src/detail/domain/interfaces/detail.repository.interface";
-import { CreateDetailDto } from "src/detail/interfaces/dtos/create-detail.dto";
-import { UpdateDetailDto } from "src/detail/interfaces/dtos/update-detail.dto";
+import { VehicleServiceReviewDetail } from "src/vehicle-service-review-detail/domain/entities/detail.entity";
+import { IDetailRepositoryInterface } from "src/vehicle-service-review-detail/domain/interfaces/detail.repository.interface";
+import { CreateDetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/create-detail.dto";
+import { PatchDetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/patch-detail.dto";
+import { UpdateDetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/update-detail.dto";
+
 import { Repository } from "typeorm";
 
 @Injectable()
 export class DetailRepository implements IDetailRepositoryInterface {
     constructor(
-        @InjectRepository(Detail)
-        private readonly detailRepository: Repository<Detail>,
+        @InjectRepository(VehicleServiceReviewDetail)
+        private readonly detailRepository: Repository<VehicleServiceReviewDetail>,
     ) { }
 
-    async getDetailById(vehicleServiceReviewId: string): Promise<Detail|null> {
+    async getDetailById(vehicleServiceReviewId: string): Promise<VehicleServiceReviewDetail|null> {
         const detail = await this.detailRepository.findOne({
             where: { vehicle_service_review_id: vehicleServiceReviewId, is_active: true },
         });
@@ -22,14 +24,14 @@ export class DetailRepository implements IDetailRepositoryInterface {
 
     async createDetail(
         createDto: CreateDetailDto
-    ): Promise<Detail> {
+    ): Promise<VehicleServiceReviewDetail> {
         const newDetail = this.detailRepository.create(createDto);
         return await this.detailRepository.save(newDetail);
     }
 
     async createDetails(
         createDto: CreateDetailDto[]
-    ): Promise<Detail[]> {
+    ): Promise<VehicleServiceReviewDetail[]> {
         const newDetails = this.detailRepository.create(createDto);
         return await this.detailRepository.save(newDetails);
     }
@@ -37,7 +39,7 @@ export class DetailRepository implements IDetailRepositoryInterface {
     async updateDetail(
         id: string,
         updateDto: UpdateDetailDto
-    ): Promise<Detail> {
+    ): Promise<VehicleServiceReviewDetail> {
         const existingDetail = await this.detailRepository.findOne({ where: { id } });
         if (!existingDetail) {
             throw new NotFoundException(`Detail with ID ${id} not found.`);
@@ -48,8 +50,8 @@ export class DetailRepository implements IDetailRepositoryInterface {
 
     async patchSuccessFlag(
         id: string,
-        patchDto: Partial<UpdateDetailDto>
-    ): Promise<Detail> {
+        patchDto: PatchDetailDto
+    ): Promise<VehicleServiceReviewDetail> {
         const existingDetail = await this.detailRepository.findOne({ where: { id } });
         if (!existingDetail) {
             throw new NotFoundException(`Detail with ID ${id} not found.`);
@@ -60,8 +62,8 @@ export class DetailRepository implements IDetailRepositoryInterface {
 
     async patchIsActive(
         id: string,
-        patchDto: Partial<UpdateDetailDto>
-    ): Promise<Detail> {
+        patchDto: PatchDetailDto
+    ): Promise<VehicleServiceReviewDetail> {
         const existingDetail = await this.detailRepository.findOne({ where: { id } });
         if (!existingDetail) {
             throw new NotFoundException(`Detail with ID ${id} not found.`);

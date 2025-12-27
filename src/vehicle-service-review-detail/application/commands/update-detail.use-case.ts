@@ -1,7 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
-import type { IDetailRepositoryInterface } from "src/detail/domain/interfaces/detail.repository.interface";
-import { DetailDto } from "src/detail/interfaces/dtos/detail.dto";
-import { UpdateDetailDto } from "src/detail/interfaces/dtos/update-detail.dto";
+import type { IDetailRepositoryInterface } from "src/vehicle-service-review-detail/domain/interfaces/detail.repository.interface";
+import { DetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/detail.dto";
+import { UpdateDetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/update-detail.dto";
+
 
 @Injectable()
 export class UpdateDetailUseCase {

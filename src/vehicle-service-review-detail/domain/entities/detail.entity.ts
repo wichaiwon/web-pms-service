@@ -3,7 +3,7 @@ import { VehicleServiceReview } from 'src/vehicle-service-review/domain/entities
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity('vehicle_service_review_detail')
-export class Detail {
+export class VehicleServiceReviewDetail {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
