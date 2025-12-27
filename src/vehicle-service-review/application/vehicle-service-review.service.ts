@@ -12,7 +12,7 @@ import { Branch } from "src/shared/enum/employee/employee.enum";
 import { UpdateVehicleServiceReviewUseCase } from "./commands/update-vehicle-service-review.use-case";
 import { PatchInProcessUseCase } from "./commands/patch-in-process.use-case";
 import { PatchVehicleServiceReviewIsActiveDto } from "../interfaces/dtos/patch-vehicle-service-review-is-active.dto";
-import { PatchIsActiveUseCase } from "./commands/patch-active-status.use-case";
+import { PatchIsActiveUseCase } from "./commands/patch-is-active.use-case";
 import { PatchSuccessFlagUseCase } from "./commands/patch-success-flag.use-case";
 import { AutoSyncVehicleServiceReviewUseCase } from "./commands/auto-sync-vehicle-service-review.use-case";
 
@@ -25,7 +25,7 @@ export class VehicleServiceReviewService implements IVehicleServiceReviewService
         private readonly updateVehicleServiceReviewUseCase: UpdateVehicleServiceReviewUseCase,
         private readonly patchInProcessUseCase: PatchInProcessUseCase,
         private readonly patchSuccessFlagUseCase: PatchSuccessFlagUseCase,
-        private readonly patchActiveStatusUseCase: PatchIsActiveUseCase,
+        private readonly patchIsActiveUseCase: PatchIsActiveUseCase,
         private readonly autoSyncVehicleServiceReviewUseCase: AutoSyncVehicleServiceReviewUseCase,
     ) { }
 
@@ -59,7 +59,7 @@ export class VehicleServiceReviewService implements IVehicleServiceReviewService
         return this.patchSuccessFlagUseCase.execute(id, patchSuccessDto);
     }
 
-    async patchActiveStatus(id: string, patchActiveStatusDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReviewDto> {
-        return this.patchActiveStatusUseCase.execute(id, patchActiveStatusDto);
+    async patchIsActive(id: string, patchIsActiveDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReviewDto> {
+        return this.patchIsActiveUseCase.execute(id, patchIsActiveDto);
     }
 }
