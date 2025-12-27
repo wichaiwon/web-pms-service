@@ -5,7 +5,7 @@ import { AppService } from './app.service'
 import { DatabaseModule } from './common/database/database.module'
 import { EmployeeModule } from './employee/employee.module'
 import { VehicleServiceReviewModule } from './vehicle-service-review/vehicle-service-review.module'
-import { VehicleServiceReviewDetailModule } from './vehicle-service-review-detail/vehicle-service-review-detail.module'
+import { DetailModule } from './detail/detail.module'
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { VehicleServiceReviewDetailModule } from './vehicle-service-review-detai
     DatabaseModule,
     EmployeeModule,
     VehicleServiceReviewModule,
-    VehicleServiceReviewDetailModule
+    DetailModule
   ],
   controllers: [AppController],
   providers: [AppService],

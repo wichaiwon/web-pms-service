@@ -2,8 +2,8 @@ import { IsNotEmpty, IsUUID, IsOptional, IsEnum, IsNumber, IsBoolean, IsString }
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { FuelLevel } from 'src/shared/enum/vehicle-service-review-detail/vehicle-service-review-detail.enum'
 
-export class CreateVehicleServiceReviewDetailDto {
-    @ApiProperty({ description: 'Vehicle Service Review ID' ,example:'550e8400-e29b-41d4-a716-446655440000'})
+export class CreateDetailDto {
+    @ApiProperty({ description: 'Vehicle Service Review ID', example: '550e8400-e29b-41d4-a716-446655440000' })
     @IsNotEmpty()
     @IsUUID()
     vehicle_service_review_id: string
@@ -28,7 +28,7 @@ export class CreateVehicleServiceReviewDetailDto {
     @IsNumber()
     mileage?: number
 
-    @ApiPropertyOptional({ description: 'Fuel Level' , enum: FuelLevel, example: FuelLevel.LEVEL_20 })
+    @ApiPropertyOptional({ description: 'Fuel Level', enum: FuelLevel, example: FuelLevel.LEVEL_20 })
     @IsOptional()
     @IsEnum(FuelLevel)
     fuel_level?: FuelLevel
@@ -38,7 +38,7 @@ export class CreateVehicleServiceReviewDetailDto {
     @IsBoolean()
     success_flag?: boolean
 
-    @ApiProperty({ description: 'Created By User ID', example:'550e8400-e29b-41d4-a716-446655440000' })
+    @ApiProperty({ description: 'Created By User ID', example: '550e8400-e29b-41d4-a716-446655440000' })
     @IsNotEmpty()
     @IsUUID()
     created_by: string
