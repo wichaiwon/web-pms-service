@@ -9,6 +9,13 @@ import { PatchSuccessFlagUseCase } from "./commands/patch-detail-success-flag.us
 import { PatchIsActiveUseCase } from "./commands/patch-detail-is-active.use-case";
 import { UpdateDetailDto } from "../interfaces/dtos/update-detail.dto";
 import { PatchDetailDto } from "../interfaces/dtos/patch-detail.dto";
+import { CreateDetailAdditionalUseCase } from "./commands/create-detail-additional.use-case";
+import { CreateDetailAdditionalDto } from "../interfaces/dtos/create-detail-additional.dto";
+import { DetailAdditionalDto } from "../interfaces/dtos/detail-additional.dto";
+import { UpdateDetailAdditionalUseCase } from "./commands/update-detail-additional.use-case";
+import { UpdateDetailAdditionalDto } from "../interfaces/dtos/update-detail-additional.dto";
+import { PatchDetailAdditionalIsActiveUseCase } from "./commands/patch-detail-additional-is-active.use-case";
+import { PatchDetailAdditionalSuccessFlagUseCase } from "./commands/patch-detail-additional-success-flag.use-case";
 
 
 @Injectable()
@@ -19,6 +26,10 @@ export class DetailService implements IDetailServiceInterface {
         private readonly updateDetailUseCase: UpdateDetailUseCase, 
         private readonly patchSuccessFlagUseCase: PatchSuccessFlagUseCase,
         private readonly patchIsActiveUseCase: PatchIsActiveUseCase,
+        private readonly createDetailAdditionalUseCase: CreateDetailAdditionalUseCase,
+        private readonly updateDetailAdditionalUseCase: UpdateDetailAdditionalUseCase,
+        private readonly patchDetailAdditionalIsActiveUseCase: PatchDetailAdditionalIsActiveUseCase,
+        private readonly patchDetailAdditionalSuccessFlagUseCase: PatchDetailAdditionalSuccessFlagUseCase,        
     ) { }
 
     async createDetail(createDto: CreateDetailDto): Promise<DetailDto> {
@@ -39,5 +50,18 @@ export class DetailService implements IDetailServiceInterface {
 
     async patchIsActive(id: string, patchDto: PatchDetailDto): Promise<DetailDto> {
         return await this.patchIsActiveUseCase.execute(id, patchDto);
+    }
+
+    async createDetailAdditional( createDto: CreateDetailAdditionalDto): Promise<DetailAdditionalDto> {
+        return await this.createDetailAdditionalUseCase.execute(createDto);
+    }
+    async updateDetailAdditional(id: string, updateDto: UpdateDetailAdditionalDto): Promise<DetailAdditionalDto> {
+        return await this.updateDetailAdditionalUseCase.execute(id, updateDto);
+    }
+    async patchDetailAdditionalIsActive(id: string, patchDto: PatchDetailDto): Promise<DetailAdditionalDto> {
+        return await this.patchDetailAdditionalIsActiveUseCase.execute(id, patchDto);
+    }
+    async patchDetailAdditionalSuccessFlag(id: string, patchDto: PatchDetailDto): Promise<DetailAdditionalDto> {
+        return await this.patchDetailAdditionalSuccessFlagUseCase.execute(id, patchDto);
     }
 }

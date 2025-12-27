@@ -1,0 +1,13 @@
+import { TirePressure } from "src/shared/enum/vehicle-service-review-detail/vehicle-service-review-detail.enum";
+
+export class DetailAdditionalDto {
+    vehicle_service_review_detail_id: string;
+    tire_pressure : TirePressure;
+    front_tire_pressure: number;
+    back_tire_pressure: number;
+    comment: string;
+    created_by: string;
+    created_at: Date;
+    updated_by: string;
+    updated_at: Date;
+}
