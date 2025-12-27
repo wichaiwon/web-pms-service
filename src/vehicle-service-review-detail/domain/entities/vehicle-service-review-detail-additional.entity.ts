@@ -1,4 +1,4 @@
-import { AdditionalService, TirePressure } from 'src/shared/enum/vehicle-service-review-detail/vehicle-service-review-detail.enum'
+import { AdditionalService, TirePressure } from 'src/shared/enum/vehicle-service-review-detail/detail.enum'
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
 import { VehicleServiceReviewDetail } from './vehicle-service-review-detail.entity'
 

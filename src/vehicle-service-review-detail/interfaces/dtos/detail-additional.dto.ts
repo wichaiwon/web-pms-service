@@ -1,4 +1,4 @@
-import { TirePressure } from "src/shared/enum/vehicle-service-review-detail/vehicle-service-review-detail.enum";
+import { TirePressure } from "src/shared/enum/vehicle-service-review-detail/detail.enum";
 
 export class DetailAdditionalDto {
     vehicle_service_review_detail_id: string;

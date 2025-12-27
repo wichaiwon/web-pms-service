@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsNotEmpty, IsOptional, IsUUID } from "class-validator";
-import { TirePressure } from "src/shared/enum/vehicle-service-review-detail/vehicle-service-review-detail.enum";
+import { TirePressure } from "src/shared/enum/vehicle-service-review-detail/detail.enum";
 
 export class CreateDetailAdditionalDto {
     @ApiProperty({ description: 'Vehicle Service Review ID', example: '550e8400-e29b-41d4-a716-446655440000' })

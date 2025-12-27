@@ -1,4 +1,4 @@
-import { FuelLevel } from 'src/shared/enum/vehicle-service-review-detail/vehicle-service-review-detail.enum'
+import { FuelLevel } from 'src/shared/enum/vehicle-service-review-detail/detail.enum'
 import { VehicleServiceReview } from 'src/vehicle-service-review/domain/entities/vehicle-service-review.entity'
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
