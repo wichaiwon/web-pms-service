@@ -1,6 +1,7 @@
 import { FuelLevel } from 'src/shared/enum/vehicle-service-review-detail/detail.enum'
 import { VehicleServiceReview } from 'src/vehicle-service-review/domain/entities/vehicle-service-review.entity'
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { VehicleServiceReviewDetailAdditional } from './vehicle-service-review-detail-additional.entity'
 
 @Entity('vehicle_service_review_detail')
 export class VehicleServiceReviewDetail {
@@ -44,6 +45,8 @@ export class VehicleServiceReviewDetail {
   updated_by: string
 
   // Relations
+  @OneToMany(() => VehicleServiceReviewDetailAdditional, detail => detail.vehicle_service_review_detail, { cascade: true })
+  additionals: VehicleServiceReviewDetailAdditional[]
   @ManyToOne(() => VehicleServiceReview, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'vehicle_service_review_id' })
   vehicle_service_review: VehicleServiceReview
