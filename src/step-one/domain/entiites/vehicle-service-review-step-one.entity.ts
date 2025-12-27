@@ -1,29 +1,23 @@
-import { FuelLevel } from 'src/shared/enum/vehicle-service-review-detail/detail.enum'
+import { DamageCar } from 'src/shared/enum/vehicle-service-review-step-one/step-one.enum'
 import { VehicleServiceReview } from 'src/vehicle-service-review/domain/entities/vehicle-service-review.entity'
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
-@Entity('vehicle_service_review_detail')
-export class VehicleServiceReviewDetail {
+@Entity('vehicle_service_review_step_one')
+export class TaskDetailStepOneEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column({ type: 'uuid' })
+  @Column({ type: 'uuid', nullable: false })
   vehicle_service_review_id: string
 
   @Column({ type: 'varchar', nullable: true })
   session_id: string
 
-  @Column({ type: 'varchar', nullable: true })
-  image1: string
+  @Column({ type: 'enum', enum: DamageCar, nullable: true })
+  damage_car: DamageCar
 
   @Column({ type: 'varchar', nullable: true })
-  image2: string
-
-  @Column({ type: 'integer', nullable: true })
-  mileage: number
-
-  @Column({ type: 'enum', enum: FuelLevel, nullable: true })
-  fuel_level: FuelLevel
+  damage_car_image: string
 
   @Column({ type: 'boolean', default: false })
   success_flag: boolean
@@ -31,10 +25,10 @@ export class VehicleServiceReviewDetail {
   @Column({ type: 'boolean', default: true })
   is_active: boolean
 
-  @CreateDateColumn({ type: 'timestamp with time zone', nullable: false })
+  @CreateDateColumn({ type: 'timestamp with time zone', nullable: false})
   created_at: Date
 
-  @Column({ type: 'uuid', nullable: false })
+  @Column({ type: 'uuid', nullable: true })
   created_by: string
 
   @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true })
@@ -43,8 +37,7 @@ export class VehicleServiceReviewDetail {
   @Column({ type: 'uuid', nullable: true })
   updated_by: string
 
-  // Relations
   @ManyToOne(() => VehicleServiceReview, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'vehicle_service_review_id' })
-  vehicle_service_review: VehicleServiceReview
+  task: VehicleServiceReview
 }
