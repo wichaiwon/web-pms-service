@@ -1,6 +1,6 @@
 import { Branch } from 'src/shared/enum/employee/employee.enum'
 import { CarBrand, CarType, StatusRepairOrder, StatusReport } from 'src/shared/enum/vehicle-service-review/vehicle-service-review.enum'
-import { VehicleServiceReviewDetail } from 'src/vehicle-service-review-detail/domain/entities/detail.entity'
+import { VehicleServiceReviewDetail } from 'src/vehicle-service-review-detail/domain/entities/vehicle-service-review-detail.entity'
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity('vehicle_service_review')

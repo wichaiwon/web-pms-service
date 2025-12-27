@@ -9,11 +9,16 @@ import { CreateDetailsUseCase } from "./application/commands/create-details.use-
 import { UpdateDetailUseCase } from "./application/commands/update-detail.use-case";
 import { PatchIsActiveUseCase } from "./application/commands/patch-detail-is-active.use-case";
 import { PatchSuccessFlagUseCase } from "./application/commands/patch-detail-success-flag.use-case";
-import { VehicleServiceReviewDetail } from "./domain/entities/detail.entity";
+import { VehicleServiceReviewDetail } from "./domain/entities/vehicle-service-review-detail.entity";
+import { VehicleServiceReviewDetailAdditional } from "./domain/entities/vehicle-service-review-detail-additional.entity";
+import { CreateDetailAdditionalUseCase } from "./application/commands/create-detail-additional.use-case";
+import { UpdateDetailAdditionalUseCase } from "./application/commands/update-detail-additional.use-case";
+import { PatchDetailAdditionalSuccessFlagUseCase } from "./application/commands/patch-detail-additional-success-flag.use-case";
+import { PatchDetailAdditionalIsActiveUseCase } from "./application/commands/patch-detail-additional-is-active.use-case";
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([VehicleServiceReviewDetail]),
+        TypeOrmModule.forFeature([VehicleServiceReviewDetail, VehicleServiceReviewDetailAdditional]),
     ],
     controllers: [DetailController],
     providers: [
@@ -24,11 +29,15 @@ import { VehicleServiceReviewDetail } from "./domain/entities/detail.entity";
         PatchSuccessFlagUseCase,
         PatchIsActiveUseCase,
         DetailService,
+        CreateDetailAdditionalUseCase,
+        UpdateDetailAdditionalUseCase,
+        PatchDetailAdditionalSuccessFlagUseCase,
+        PatchDetailAdditionalIsActiveUseCase,
         {
             provide: 'IDetailRepository',
             useClass: DetailRepository,
         }
     ],
-    exports: [DetailService],
+    exports: [DetailService, 'IDetailRepository'],
 })
 export class VehicleServiceReviewDetailModule { }

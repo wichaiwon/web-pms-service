@@ -1,5 +1,5 @@
 import { Injectable, Inject, ConflictException } from "@nestjs/common";
-import { VehicleServiceReviewDetail } from "src/vehicle-service-review-detail/domain/entities/detail.entity";
+import { VehicleServiceReviewDetail } from "src/vehicle-service-review-detail/domain/entities/vehicle-service-review-detail.entity";
 import type { IDetailRepositoryInterface } from "src/vehicle-service-review-detail/domain/interfaces/detail.repository.interface";
 import { CreateDetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/create-detail.dto";
 import { DetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/detail.dto";
