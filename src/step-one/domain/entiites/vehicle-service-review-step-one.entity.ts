@@ -37,7 +37,7 @@ export class TaskDetailStepOneEntity {
   @Column({ type: 'uuid', nullable: true })
   updated_by: string
 
-  @ManyToOne(() => VehicleServiceReview, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'vehicle_service_review_id' })
-  task: VehicleServiceReview
+  // @ManyToOne(() => VehicleServiceReview, { onDelete: 'CASCADE' })
+  // @JoinColumn({ name: 'vehicle_service_review_id' })
+  // task: VehicleServiceReview
 }
