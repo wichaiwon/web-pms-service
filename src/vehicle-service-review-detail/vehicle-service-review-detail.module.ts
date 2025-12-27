@@ -29,6 +29,6 @@ import { VehicleServiceReviewDetail } from "./domain/entities/detail.entity";
             useClass: DetailRepository,
         }
     ],
-    exports: [DetailService],
+    exports: [DetailService, 'IDetailRepository'],
 })
 export class VehicleServiceReviewDetailModule { }
