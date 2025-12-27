@@ -10,9 +10,6 @@ export class PatchSuccessFlagUseCase {
         private readonly vehicleServiceReviewRepository: IVehicleServiceReviewRepositoryInterface,
     ) { }
     async execute(id: string, patchDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReviewDto> {
-        if (!id) {
-            throw new Error('Vehicle service review ID is required');
-        }
         return await this.vehicleServiceReviewRepository.patchSuccessFlag(id, patchDto);
     }
 }

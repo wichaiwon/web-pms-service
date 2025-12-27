@@ -5,24 +5,12 @@ import { VehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/d
 
 @Injectable()
 export class CreateVehicleServiceReviewsUseCase {
-    private readonly MAX_BULK_SIZE = 100;
-
     constructor(
         @Inject('IVehicleServiceReviewRepository')
         private readonly vehicleServiceReviewRepository: IVehicleServiceReviewRepositoryInterface,
     ) {}
 
     async execute(createDtos: CreateVehicleServiceReviewDto[]): Promise<VehicleServiceReviewDto[]> {
-        // Validate bulk size
-        if (createDtos.length === 0) {
-            throw new BadRequestException('Cannot create empty array of records');
-        }
-
-        if (createDtos.length > this.MAX_BULK_SIZE) {
-            throw new BadRequestException(`Cannot create more than ${this.MAX_BULK_SIZE} records at once`);
-        }
-
-        // Bulk insert
         return this.vehicleServiceReviewRepository.createVehicleServiceReviews(createDtos);
     }
 }

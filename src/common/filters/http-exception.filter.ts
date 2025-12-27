@@ -52,6 +52,16 @@ export class GlobalHttpExceptionFilter implements ExceptionFilter {
         } else {
           message = 'Duplicate entry found.';
         }
+      } else if (exception['code'] === '23503' && 'detail' in exception) {
+        // Postgres FOREIGN KEY constraint violation
+        const detail = exception['detail'] as string;
+        // Extract table and key from detail: "Key (field_name)=(value) is not present in table \"table_name\"."
+        const match = detail.match(/Key \(([^)]+)\)=\([^)]+\) is not present in table "([^"]+)"/);
+        if (match) {
+          message = `Invalid ${match[1]}: referenced ${match[2]} does not exist.`;
+        } else {
+          message = 'Foreign key constraint violation.';
+        }
       }
     } else if (
       typeof exception === 'object' &&
