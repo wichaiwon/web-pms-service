@@ -3,7 +3,7 @@ import { VehicleServiceReview } from 'src/vehicle-service-review/domain/entities
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity('vehicle_service_review_step_one')
-export class TaskDetailStepOneEntity {
+export class VehicleServiceReviewStepOne {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -37,7 +37,7 @@ export class TaskDetailStepOneEntity {
   @Column({ type: 'uuid', nullable: true })
   updated_by: string
 
-  // @ManyToOne(() => VehicleServiceReview, { onDelete: 'CASCADE' })
-  // @JoinColumn({ name: 'vehicle_service_review_id' })
-  // task: VehicleServiceReview
+  @ManyToOne(() => VehicleServiceReview, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'vehicle_service_review_id' })
+  task: VehicleServiceReview
 }
