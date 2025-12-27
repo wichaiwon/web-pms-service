@@ -16,6 +16,9 @@ import { ScheduleModule } from "@nestjs/schedule";
 import { AutoSyncVehicleServiceReviewUseCase } from "./application/commands/auto-sync-vehicle-service-review.use-case";
 import { AppointmentSyncScheduler } from "./infrastructure/scheduler/auto-sync-vehicle-service-review.scheduler";
 import { EmployeeModule } from "src/employee/employee.module";
+import { VehicleServiceReviewDetailModule } from "src/vehicle-service-review-detail/vehicle-service-review-detail.module";
+import { CancelVehicleServiceReviewUseCase } from "./application/commands/cancel-vehicle-service-review.use-case";
+import { ReIssueVehicleServiceReviewUseCase } from "./application/commands/reissue-vehicle-service-review.use-case";
 
 @Module({
     imports: [
@@ -23,9 +26,12 @@ import { EmployeeModule } from "src/employee/employee.module";
         ScheduleModule.forRoot(),
         TypeOrmModule.forFeature([VehicleServiceReview]),
         EmployeeModule,
+        VehicleServiceReviewDetailModule
     ],
     controllers: [VehicleServiceReviewController],
     providers: [
+        AutoSyncVehicleServiceReviewUseCase,
+        AppointmentSyncScheduler,
         VehicleServiceReviewService,
         CreateVehicleServiceReviewUseCase,
         CreateVehicleServiceReviewsUseCase,
@@ -34,8 +40,8 @@ import { EmployeeModule } from "src/employee/employee.module";
         PatchInProcessUseCase,
         PatchIsActiveUseCase,
         PatchSuccessFlagUseCase,
-        AutoSyncVehicleServiceReviewUseCase,
-        AppointmentSyncScheduler,
+        CancelVehicleServiceReviewUseCase,
+        ReIssueVehicleServiceReviewUseCase,
         {
             provide: 'IVehicleServiceReviewRepository',
             useClass: VehicleServiceReviewRepository,
