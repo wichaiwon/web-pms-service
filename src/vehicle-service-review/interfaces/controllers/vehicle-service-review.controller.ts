@@ -78,6 +78,76 @@ export class VehicleServiceReviewController {
         return await this.vehicleServiceReviewService.createVehicleServiceReview(createVehicleServiceReviewDto);
     }
 
+    @Post('create-multiple')
+    @ApiOperation({
+        summary: 'Create multiple vehicle service reviews',
+        description: 'Create multiple vehicle service reviews in bulk. Requires JWT authentication.'
+    })
+    @ApiBody({
+        type: [CreateVehicleServiceReviewDto],
+        description: 'Array of vehicle service review data to create',
+        examples: {
+            multiple: {
+                summary: 'Create multiple vehicle service reviews',
+                value: [
+                    {
+                        walk_in_flag: true,
+                        appointment_running: null,
+                        vin_number: "TFS1234567890",
+                        engine_number: "ENG1234567890",
+                        chassis_number: "CHS1234567890",
+                        vehicle_registration: "กข 1234",
+                        vehicle_registration_province: "กท",
+                        model_number: "NLR85A",
+                        model_name: "ISUZU ELF",
+                        customer_firstname: "สมชาย",
+                        customer_lastname: "ใจดี",
+                        customer_contact: "0812345678",
+                        lift: "Y",
+                        branch_booked: "สำนักงานใหญ่",
+                        date_booked: "2024-07-01",
+                        time_booked: "10:00",
+                        car_type: "รถยนต์ขนาดเล็ก (LCV)",
+                        car_brand: "รถยนต์ ISUZU",
+                        status_report: "ยังไม่ออกใบสรุปรถ",
+                        status_repair_order: "ยังไม่เปิดใบสั่งซ่อม",
+                        responsible: [],
+                        created_by: "system"
+                    },
+                    {
+                        walk_in_flag: false,
+                        appointment_running: "19997",
+                        vin_number: "TFS0987654321",
+                        engine_number: "ENG0987654321",
+                        chassis_number: "CHS0987654321",
+                        vehicle_registration: "ขค 5678",
+                        vehicle_registration_province: "ชลบุรี",
+                        model_number: "NMR130A",
+                        model_name: "ISUZU NMR",
+                        customer_firstname: "สมหญิง",
+                        customer_lastname: "ใจงาม",
+                        customer_contact: "0898765432",
+                        lift: "N",
+                        branch_booked: "สาขาชลบุรี",
+                        date_booked: "2024-07-01",
+                        time_booked: "11:00",
+                        car_type: "รถยนต์ขนาดใหญ่ (CV)",
+                        car_brand: "รถยนต์ ISUZU",
+                        status_report: "ยังไม่ออกใบสรุปรถ",
+                        status_repair_order: "ยังไม่เปิดใบสั่งซ่อม",
+                        responsible: [],
+                        created_by: "system"
+                    }
+                ]
+            }
+        }
+    })
+    async createVehicleServiceReviews(
+        @Body() createVehicleServiceReviewDtos: CreateVehicleServiceReviewDto[]
+    ) {
+        return await this.vehicleServiceReviewService.createVehicleServiceReviews(createVehicleServiceReviewDtos);
+    }
+
     @Post('sync')
     @ApiOperation({
         summary: 'manual-sync vehicle service reviews',
@@ -197,5 +267,56 @@ export class VehicleServiceReviewController {
     })
     async patchSuccessFlag(@Param('id') id: string, @Body() patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto) {
         return await this.vehicleServiceReviewService.patchSuccessFlag(id, patchSuccessDto);
+    }
+
+    @Patch('cancel/:id')
+    @ApiOperation({
+        summary: 'Cancel vehicle service review',
+        description: 'Cancel a vehicle service review by setting is_active to false. Requires JWT authentication.'
+    })
+    @ApiBody({
+        type: PatchVehicleServiceReviewIsActiveDto,
+        description: 'Data to cancel vehicle service review',
+        examples: {
+            patch: {
+                summary: 'Cancel vehicle service review',
+                value: {
+                    is_active: false,
+                    updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
+                }
+            }
+        }
+    })
+    async cancelVehicleServiceReview(@Param('id') id: string, @Body() patchIsActiveDto: PatchVehicleServiceReviewIsActiveDto) {
+        return await this.vehicleServiceReviewService.cancelVehicleServiceReview(id, patchIsActiveDto);
+    }
+
+    @Patch('reissue/:id')
+    @ApiOperation({
+        summary: 'Reissue vehicle service review',
+        description: 'Reissue a vehicle service review by deactivating the old one and creating a new detail record. Requires JWT authentication.'
+    })
+    @ApiBody({
+        description: 'Data to reissue vehicle service review',
+        examples: {
+            patch: {
+                summary: 'Reissue vehicle service review',
+                value: {
+                    is_active: false,
+                    updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522',
+                    created_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
+                }
+            }
+        }
+    })
+    async reissueVehicleServiceReview(
+        @Param('id') id: string,
+        @Body() patchDto: PatchVehicleServiceReviewIsActiveDto & { created_by: string }
+    ) {
+        const { created_by, ...patchIsActiveDto } = patchDto;
+        return await this.vehicleServiceReviewService.reissueVehicleServiceReview(
+            id,
+            patchIsActiveDto
+        );
     }
 }

@@ -1,5 +1,6 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { EmployeeService } from "src/employee/application/employee.service";
+import type { IDetailRepositoryInterface } from "src/vehicle-service-review-detail/domain/interfaces/detail.repository.interface";
 import type { IVehicleServiceReviewRepositoryInterface } from "src/vehicle-service-review/domain/interfaces/vehicle-service-review.repository.interface";
 import { Branch } from "src/shared/enum/employee/employee.enum";
 import { CarBrand, CarType, StatusRepairOrder, StatusReport } from "src/shared/enum/vehicle-service-review/vehicle-service-review.enum";
@@ -12,6 +13,8 @@ export class AutoSyncVehicleServiceReviewUseCase {
     constructor(
         @Inject('IVehicleServiceReviewRepository')
         private readonly vehicleServiceReviewRepository: IVehicleServiceReviewRepositoryInterface,
+        @Inject('IDetailRepository')
+        private readonly detailRepository: IDetailRepositoryInterface,
         private readonly employeeService: EmployeeService,
     ) { }
 
@@ -143,7 +146,14 @@ export class AutoSyncVehicleServiceReviewUseCase {
                         created_by: responsibleIds[0] || this.defaultCreatedBy
                     };
 
-                    await this.vehicleServiceReviewRepository.createVehicleServiceReview(dataToCreate);
+                    const createdReview = await this.vehicleServiceReviewRepository.createVehicleServiceReview(dataToCreate);
+                    
+                    // สร้าง detail อัตโนมัติสำหรับ review ที่สร้างใหม่
+                    await this.detailRepository.createDetail({
+                        vehicle_service_review_id: createdReview.id,
+                        created_by: dataToCreate.created_by,
+                    });
+                    
                     synced++;
                 }
             } catch (error) {

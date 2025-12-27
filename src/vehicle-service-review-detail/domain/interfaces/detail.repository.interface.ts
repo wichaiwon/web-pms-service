@@ -8,7 +8,7 @@ import { UpdateDetailAdditionalDto } from "src/vehicle-service-review-detail/int
 
 
 export interface IDetailRepositoryInterface {
-    getDetailById(vehicleServiceReviewId: string): Promise<VehicleServiceReviewDetail | null>;
+    getDetailByReviewId(vehicleServiceReviewId: string): Promise<VehicleServiceReviewDetail | null>;
     createDetail(createDto: CreateDetailDto): Promise<VehicleServiceReviewDetail>;
     createDetails(createDto: CreateDetailDto[]): Promise<VehicleServiceReviewDetail[]>;
     updateDetail(id: string, updateDto: UpdateDetailDto): Promise<VehicleServiceReviewDetail>;

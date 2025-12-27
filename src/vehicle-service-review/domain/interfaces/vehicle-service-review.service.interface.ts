@@ -15,4 +15,6 @@ export interface IVehicleServiceReviewServiceInterface {
     patchInProcessFlag(id: string, patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto>;
     patchSuccessFlag(id:string, patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReviewDto>;
     patchIsActive(id:string, patchActiveStatusDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReviewDto>;
+    cancelVehicleServiceReview(id:string, patchIsActiveDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReviewDto>;
+    reissueVehicleServiceReview(id:string, patchDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReviewDto>;
 }

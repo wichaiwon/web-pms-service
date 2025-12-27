@@ -14,7 +14,7 @@ export class CreateDetailsUseCase {
     async execute(createDto: CreateDetailDto[]): Promise<DetailDto[]> {
         // ต้องเช็คทุกตัวก่อนว่ามีตัวไหนซ้ำไหม
         for (const dto of createDto) {
-            const existingActive = await this.detailRepository.getDetailById(dto.vehicle_service_review_id);
+            const existingActive = await this.detailRepository.getDetailByReviewId(dto.vehicle_service_review_id);
             if (existingActive) {
                 throw new ConflictException(`Detail already exists for vehicle service review ID: ${dto.vehicle_service_review_id}.`);
             }

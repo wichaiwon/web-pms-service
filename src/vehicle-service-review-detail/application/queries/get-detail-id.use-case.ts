@@ -11,6 +11,6 @@ export class GetDetailByIdUseCase {
     ) { }
 
     async execute(vehicleServiceReviewId: string): Promise<DetailDto | null> {
-        return this.detailRepository.getDetailById(vehicleServiceReviewId);
+        return this.detailRepository.getDetailByReviewId(vehicleServiceReviewId);
     }
 }

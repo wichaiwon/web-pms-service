@@ -20,7 +20,7 @@ export class DetailRepository implements IDetailRepositoryInterface {
         private readonly detailAdditionalRepository: Repository<VehicleServiceReviewDetailAdditional>,
     ) { }
 
-    async getDetailById(vehicleServiceReviewId: string): Promise<VehicleServiceReviewDetail | null> {
+    async getDetailByReviewId(vehicleServiceReviewId: string): Promise<VehicleServiceReviewDetail|null> {
         const detail = await this.detailRepository.findOne({
             where: { vehicle_service_review_id: vehicleServiceReviewId, is_active: true },
         });
