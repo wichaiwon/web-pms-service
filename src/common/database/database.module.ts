@@ -5,6 +5,7 @@ import { Employee } from 'src/employee/domain/entities/employee.entity'
 import { VehicleServiceReview } from 'src/vehicle-service-review/domain/entities/vehicle-service-review.entity'
 import { VehicleServiceReviewDetail } from 'src/vehicle-service-review-detail/domain/entities/vehicle-service-review-detail.entity'
 import { VehicleServiceReviewDetailAdditional } from 'src/vehicle-service-review-detail/domain/entities/vehicle-service-review-detail-additional.entity'
+import { VehicleServiceReviewStepOne } from 'src/vehicle-service-review-step-one/domain/entities/vehicle-service-review-step-one.entity'
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { VehicleServiceReviewDetailAdditional } from 'src/vehicle-service-review
           VehicleServiceReview,
           VehicleServiceReviewDetail,
           VehicleServiceReviewDetailAdditional,
+          VehicleServiceReviewStepOne,
         ],
         synchronize: configService.get('NODE_ENV') !== 'production',
         logging: configService.get('NODE_ENV') === 'development',

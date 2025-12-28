@@ -3,7 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { DetailController } from "./interfaces/controllers/detail.controller";
 import { DetailService } from "./application/detail.service";
 import { DetailRepository } from "./infrastructure/repositories/detail.repository";
-import { GetDetailByIdUseCase } from "./application/queries/get-detail-id.use-case";
+import { GetDetailByIdUseCase } from "./application/queries/get-detail-by-review-id.use-case";
 import { CreateDetailUseCase } from "./application/commands/create-detail.use-case";
 import { CreateDetailsUseCase } from "./application/commands/create-details.use-case";
 import { UpdateDetailUseCase } from "./application/commands/update-detail.use-case";
