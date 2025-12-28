@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import type { IDetailServiceInterface } from "../domain/interfaces/detail.service.interface";
+import { IDetailServiceInterface } from "../domain/interfaces/detail.service.interface";
 import { CreateDetailUseCase } from "./commands/create-detail.use-case";
 import { CreateDetailDto } from "../interfaces/dtos/create-detail.dto";
 import { DetailDto } from "../interfaces/dtos/detail.dto";

@@ -7,6 +7,7 @@ import { EmployeeModule } from './employee/employee.module'
 import { VehicleServiceReviewModule } from './vehicle-service-review/vehicle-service-review.module'
 import { VehicleServiceReviewDetailModule } from './vehicle-service-review-detail/vehicle-service-review-detail.module'
 import { VehicleServiceReviewStepOneModule } from './vehicle-service-review-step-one/vehicle-service-review-step-one.module'
+import { VehicleServiceReviewStepTwoModule } from './vehicle-service-review-step-two/vehicle-service-review-step-two.module'
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { VehicleServiceReviewStepOneModule } from './vehicle-service-review-step
     VehicleServiceReviewModule,
     VehicleServiceReviewDetailModule,
     VehicleServiceReviewStepOneModule,
+    VehicleServiceReviewStepTwoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
