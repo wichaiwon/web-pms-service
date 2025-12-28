@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CreateStepOneUseCase } from "./commands/create-step-one.use-case";
-import type { IStepOneServiceInterface } from "../domain/interfaces/step-one.service.interface";
+import { IStepOneServiceInterface } from "../domain/interfaces/step-one.service.interface";
 import { CreateStepOneDto } from "../interfaces/dtos/create-step-one.dto";
 import { StepOneDto } from "../interfaces/dtos/step-one.dto";
 import { GetStepOneByReviewIdUseCase } from "./queries/get-step-one-by-review-id.use-case";
