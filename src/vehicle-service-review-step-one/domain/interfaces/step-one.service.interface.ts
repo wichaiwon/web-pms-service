@@ -1,6 +1,9 @@
+import { CreateStepOneAdditionalDto } from "src/vehicle-service-review-step-one/interfaces/dtos/create-step-one-additional.dto";
 import { CreateStepOneDto } from "src/vehicle-service-review-step-one/interfaces/dtos/create-step-one.dto";
 import { PatchStepOneDto } from "src/vehicle-service-review-step-one/interfaces/dtos/patch-step-one.dto";
+import { StepOneAdditionalDto } from "src/vehicle-service-review-step-one/interfaces/dtos/step-one-additional.dto";
 import { StepOneDto } from "src/vehicle-service-review-step-one/interfaces/dtos/step-one.dto";
+import { UpdateStepOneAdditionalDto } from "src/vehicle-service-review-step-one/interfaces/dtos/update-step-one-additional.dto";
 import { UpdateStepOneDto } from "src/vehicle-service-review-step-one/interfaces/dtos/update-step-one.dto";
 
 export interface IStepOneServiceInterface {
@@ -9,4 +12,9 @@ export interface IStepOneServiceInterface {
     updateStepOne(id: string, updateDto: UpdateStepOneDto): Promise<StepOneDto>;
     patchIsActiveStepOne(id: string, patchDto: PatchStepOneDto): Promise<StepOneDto>;
     patchSuccessFlagStepOne(id: string, patchDto: PatchStepOneDto): Promise<StepOneDto>;
+    createStepOneAdditional(createDto: CreateStepOneAdditionalDto): Promise<StepOneAdditionalDto>;
+    updateStepOneAdditional(id: string, updateDto: UpdateStepOneAdditionalDto): Promise<StepOneAdditionalDto>;
+    patchIsActiveStepOneAdditional(id: string, patchDto: PatchStepOneDto): Promise<StepOneAdditionalDto>;
+    patchSuccessFlagStepOneAdditional(id: string, patchDto: PatchStepOneDto): Promise<StepOneAdditionalDto>;
+
 }

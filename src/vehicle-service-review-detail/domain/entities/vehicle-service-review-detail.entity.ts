@@ -46,7 +46,7 @@ export class VehicleServiceReviewDetail {
 
   // Relations
   @OneToMany(() => VehicleServiceReviewDetailAdditional, detail => detail.vehicle_service_review_detail, { cascade: true })
-  additionals: VehicleServiceReviewDetailAdditional[]
+  additional: VehicleServiceReviewDetailAdditional[]
   @ManyToOne(() => VehicleServiceReview, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'vehicle_service_review_id' })
   vehicle_service_review: VehicleServiceReview
