@@ -6,6 +6,9 @@ import { CreateStepOneUseCase } from "./application/commands/create-step-one.use
 import { StepOneRepository } from "./infrastructure/step-one.repository";
 import { StepOneService } from "./application/step-one.service";
 import { GetStepOneByReviewIdUseCase } from "./application/queries/get-step-one-by-review-id.use-case";
+import { UpdateStepOneUseCase } from "./application/commands/update-step-one.use-case";
+import { PatchIsActiveStepOneUseCase } from "./application/commands/patch-is-active.use-case";
+import { PatchSuccessFlagStepOneUseCase } from "./application/commands/patch-success-flag.use-case";
 
 @Module({
     imports: [TypeOrmModule.forFeature([VehicleServiceReviewStepOne])],
@@ -13,6 +16,9 @@ import { GetStepOneByReviewIdUseCase } from "./application/queries/get-step-one-
     providers: [
         GetStepOneByReviewIdUseCase,
         CreateStepOneUseCase,
+        UpdateStepOneUseCase,
+        PatchIsActiveStepOneUseCase,
+        PatchSuccessFlagStepOneUseCase,
         StepOneService,
         {
             provide: 'IStepOneRepository',

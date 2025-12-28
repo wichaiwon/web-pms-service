@@ -20,13 +20,10 @@ export class CreateStepOneDto {
     @IsOptional()
     damage_car_image?: string;
 
-    @ApiProperty({ example: true, description: 'Success Flag', default: false })
-    success_flag?: boolean;
-
-    @ApiProperty({ example: true, description: 'Is Active Flag', default: true })
-    is_active?: boolean;
-
-    @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000', description: 'Created By User ID', required: false })
-    created_by?: string;
+    @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000', description: 'Created By User ID' })
+    @IsNotEmpty()
+    @IsUUID()
+    created_by: string;
+    // removed success_flag, is_active, created_by (not allowed in create dto)
 
 }
