@@ -1,5 +1,5 @@
 import { Body, Controller, Param, Patch, Post, Put, UseGuards } from "@nestjs/common";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { StepOneService } from "src/vehicle-service-review-step-one/application/step-one.service";
 import { CreateStepOneDto } from "../dtos/create-step-one.dto";
 import { DamageCar } from "src/shared/enum/vehicle-service-review-step-one/step-one.enum";
@@ -8,11 +8,12 @@ import { CreateStepOneAdditionalDto } from "../dtos/create-step-one-additional.d
 import { StepOneAdditionalDto } from "../dtos/step-one-additional.dto";
 import { UpdateStepOneAdditionalDto } from "../dtos/update-step-one-additional.dto";
 import { PatchStepOneDto } from "../dtos/patch-step-one.dto";
+import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
 
 @ApiTags('Vehicle Service Review Step One')
 @Controller('step-one')
-// @UseGuards(JwtAuthGuard)
-// @ApiBearerAuth('JWT-auth')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('JWT-auth')
 export class StepOneController {
     constructor(
         private readonly stepOneService: StepOneService,

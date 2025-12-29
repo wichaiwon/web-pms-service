@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Put, Query, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
 import { VehicleServiceReviewService } from "src/vehicle-service-review/application/vehicle-service-review.service";
@@ -11,8 +11,8 @@ import { Branch } from "src/shared/enum/employee/employee.enum";
 
 @ApiTags('Vehicle Service Reviews')
 @Controller('vehicle-service-review')
-// @UseGuards(JwtAuthGuard)
-// @ApiBearerAuth('JWT-auth')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('JWT-auth')
 export class VehicleServiceReviewController {
     constructor(
         private readonly vehicleServiceReviewService: VehicleServiceReviewService,
@@ -175,9 +175,6 @@ export class VehicleServiceReviewController {
             update: {
                 summary: 'Update vehicle service review',
                 value: {
-                    success_flag: true,
-                    in_process_flag: false,
-                    appointment_running: "19996",
                     vehicle_registration: "กข 1234ถ",
                     vehicle_registration_province: "จบ",
                     model_number: "NLR85Aฟฟ",
@@ -216,6 +213,7 @@ export class VehicleServiceReviewController {
                 summary: 'Patch in-process flag',
                 value: {
                     in_process_flag: true,
+                    responsible: ["edc6a03a-6285-4a09-aab6-decb494cf522"],
                     updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
                 }
             }
@@ -238,6 +236,7 @@ export class VehicleServiceReviewController {
                 summary: 'Patch active status',
                 value: {
                     is_active: false,
+                    responsible: ["edc6a03a-6285-4a09-aab6-decb494cf522"],
                     updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
                 }
             }
@@ -260,6 +259,7 @@ export class VehicleServiceReviewController {
                 summary: 'Patch success flag',
                 value: {
                     success_flag: true,
+                    responsible: ["edc6a03a-6285-4a09-aab6-decb494cf522"],
                     updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
                 }
             }
@@ -267,6 +267,36 @@ export class VehicleServiceReviewController {
     })
     async patchSuccessFlag(@Param('id') id: string, @Body() patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto) {
         return await this.vehicleServiceReviewService.patchSuccessFlag(id, patchSuccessDto);
+    }
+
+    @Patch('reissue/:id')
+    @ApiOperation({
+        summary: 'Reissue vehicle service review',
+        description: 'Reissue a vehicle service review by deactivating the old one and creating a new detail record. Requires JWT authentication.'
+    })
+    @ApiBody({
+        description: 'Data to reissue vehicle service review',
+        examples: {
+            patch: {
+                summary: 'Reissue vehicle service review',
+                value: {
+                    is_active: false,
+                    responsible: ["edc6a03a-6285-4a09-aab6-decb494cf522"],
+                    created_by: 'edc6a03a-6285-4a09-aab6-decb494cf522',
+                    updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
+                }
+            }
+        }
+    })
+    async reissueVehicleServiceReview(
+        @Param('id') id: string,
+        @Body() patchDto: PatchVehicleServiceReviewIsActiveDto & { created_by: string }
+    ) {
+        const { created_by, ...patchIsActiveDto } = patchDto;
+        return await this.vehicleServiceReviewService.reissueVehicleServiceReview(
+            id,
+            patchIsActiveDto
+        );
     }
 
     @Patch('cancel/:id')
@@ -291,32 +321,4 @@ export class VehicleServiceReviewController {
         return await this.vehicleServiceReviewService.cancelVehicleServiceReview(id, patchIsActiveDto);
     }
 
-    @Patch('reissue/:id')
-    @ApiOperation({
-        summary: 'Reissue vehicle service review',
-        description: 'Reissue a vehicle service review by deactivating the old one and creating a new detail record. Requires JWT authentication.'
-    })
-    @ApiBody({
-        description: 'Data to reissue vehicle service review',
-        examples: {
-            patch: {
-                summary: 'Reissue vehicle service review',
-                value: {
-                    is_active: false,
-                    updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522',
-                    created_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
-                }
-            }
-        }
-    })
-    async reissueVehicleServiceReview(
-        @Param('id') id: string,
-        @Body() patchDto: PatchVehicleServiceReviewIsActiveDto & { created_by: string }
-    ) {
-        const { created_by, ...patchIsActiveDto } = patchDto;
-        return await this.vehicleServiceReviewService.reissueVehicleServiceReview(
-            id,
-            patchIsActiveDto
-        );
-    }
 }

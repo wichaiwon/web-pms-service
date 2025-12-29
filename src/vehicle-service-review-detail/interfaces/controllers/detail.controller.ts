@@ -1,5 +1,5 @@
 import { Body, Controller, Patch, Post, Put, UseGuards } from "@nestjs/common";
-import { ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { CreateDetailDto } from "../dtos/create-detail.dto";
 import { DetailDto } from "../dtos/detail.dto";
 import { UpdateDetailDto } from "../dtos/update-detail.dto";
@@ -8,11 +8,12 @@ import { DetailService } from "src/vehicle-service-review-detail/application/det
 import { CreateDetailAdditionalDto } from "../dtos/create-detail-additional.dto";
 import { DetailAdditionalDto } from "../dtos/detail-additional.dto";
 import { UpdateDetailAdditionalDto } from "../dtos/update-detail-additional.dto";
+import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
 
 @ApiTags('Vehicle Service Review Details')
 @Controller('detail')
-// @UseGuards(JwtAuthGuard)
-// @ApiBearerAuth('JWT-auth')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('JWT-auth')
 
 export class DetailController {
     constructor(
