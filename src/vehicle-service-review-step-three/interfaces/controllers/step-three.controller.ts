@@ -6,6 +6,9 @@ import { CreateStepThreeDto } from "../dtos/create-step-three.dto";
 import { StepThreeDto } from "../dtos/step-three.dto";
 import { UpdateStepThreeDto } from "../dtos/update-step-three.dto";
 import { PatchStepThreeDto } from "../dtos/patch-step-three.dto";
+import { CreateStepThreeAdditionalDto } from "../dtos/create-step-three-additional.dto";
+import { StepThreeAdditionalDto } from "../dtos/step-three-additional.dto";
+import { UpdateStepThreeAdditionalDto } from "../dtos/update-step-three-additional.dto";
 
 @ApiTags('Vehicle Service Review Step Three')
 @Controller('step-three')
@@ -102,5 +105,80 @@ export class StepThreeController {
     })
     async patchStepThreeIsActive(@Param('id') id: string, @Body() patchDto: PatchStepThreeDto): Promise<StepThreeDto> {
         return this.stepThreeService.patchStepThreeIsActive(id, patchDto);
+    }   
+    @Post('additional/create')
+    @ApiOperation({ summary: 'Create Vehicle Service Review Step Three Additional' })
+    @ApiBody({
+        type: CreateStepThreeAdditionalDto,
+        description: 'Payload to create Vehicle Service Review Step Three Additional',
+        examples: {
+            example1: {
+                summary: 'Create Step Three Additional Example',
+                value: {
+                    vehicle_service_review_step_three_id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+                    additional_image: ['image1.jpg', 'image2.jpg'],
+                    comment: 'This is an additional comment for step three.',
+                    created_by: '123e4567-e89b-12d3-a456-426614174000',
+                },
+            },
+        },
+    })
+    async createStepThreeAdditional(@Body() createDto: CreateStepThreeAdditionalDto): Promise<StepThreeAdditionalDto> {
+        return this.stepThreeService.createStepThreeAdditional(createDto);
+    }
+    @Put('additional/update/:id')
+    @ApiOperation({ summary: 'Update Vehicle Service Review Step Three Additional' })
+    @ApiBody({
+        type: UpdateStepThreeAdditionalDto,
+        description: 'Payload to update Vehicle Service Review Step Three Additional',
+        examples: {
+            example1: {
+                summary: 'Update Step Three Additional Example',
+                value: {
+                    additional_image: ['updated_image1.jpg', 'updated_image2.jpg'],
+                    comment: 'This is an updated additional comment for step three.',
+                    updated_by: '123e4567-e89b-12d3-a456-426614174000',
+                },
+            },
+        },
+    })
+    async updateStepThreeAdditional(@Param('id') id: string, @Body() updateDto: UpdateStepThreeAdditionalDto): Promise<StepThreeAdditionalDto> {
+        return this.stepThreeService.updateStepThreeAdditional(id, updateDto);
+    }
+    @Patch('additional/is-active/:id')
+    @ApiOperation({ summary: 'Patch Vehicle Service Review Step Three Additional Is Active Flag' })
+    @ApiBody({
+        type: PatchStepThreeDto,
+        description: 'Payload to patch Vehicle Service Review Step Three Additional is active flag',
+        examples: {
+            example1: {
+                summary: 'Patch Step Three Additional Is Active Flag Example',
+                value: {
+                    is_active: false,
+                    updated_by: '123e4567-e89b-12d3-a456-426614174000',
+                },
+            },
+        },
+    })
+    async patchStepThreeAdditionalIsActive(@Param('id') id: string, @Body() patchDto: PatchStepThreeDto): Promise<StepThreeAdditionalDto> {
+        return this.stepThreeService.patchStepThreeAdditionalIsActive(id, patchDto);
+    }
+    @Patch('additional/success-flag/:id')
+    @ApiOperation({ summary: 'Patch Vehicle Service Review Step Three Additional Success Flag' })
+    @ApiBody({
+        type: PatchStepThreeDto,
+        description: 'Payload to patch Vehicle Service Review Step Three Additional success flag',
+        examples: {
+            example1: {
+                summary: 'Patch Step Three Additional Success Flag Example',
+                value: {
+                    sucess_flag: true,
+                    updated_by: '123e4567-e89b-12d3-a456-426614174000',
+                },
+            },
+        },
+    })
+    async patchStepThreeAdditionalSuccessFlag(@Param('id') id: string, @Body() patchDto: PatchStepThreeDto): Promise<StepThreeAdditionalDto> {
+        return this.stepThreeService.patchStepThreeAdditionalSuccessFlag(id, patchDto);
     }   
 }
