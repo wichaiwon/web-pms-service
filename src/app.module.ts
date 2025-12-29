@@ -9,6 +9,7 @@ import { VehicleServiceReviewDetailModule } from './vehicle-service-review-detai
 import { VehicleServiceReviewStepOneModule } from './vehicle-service-review-step-one/vehicle-service-review-step-one.module'
 import { VehicleServiceReviewStepTwoModule } from './vehicle-service-review-step-two/vehicle-service-review-step-two.module'
 import { VehicleServiceReviewStepThreeModule } from './vehicle-service-review-step-three/vehicle-step-three.module'
+import { VehicleServiceReviewStepFourModule } from './vehicle-service-review-step-four/vehicle-service-review-step-four.module'
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { VehicleServiceReviewStepThreeModule } from './vehicle-service-review-st
     VehicleServiceReviewStepOneModule,
     VehicleServiceReviewStepTwoModule,
     VehicleServiceReviewStepThreeModule,
+    VehicleServiceReviewStepFourModule,
   ],
   controllers: [AppController],
   providers: [AppService],
