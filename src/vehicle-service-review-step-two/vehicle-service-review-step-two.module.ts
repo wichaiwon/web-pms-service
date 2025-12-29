@@ -13,10 +13,11 @@ import { CreateStepTwoAdditionalUseCase } from "./application/commands/create-st
 import { PatchStepTwoAdditionalIsActiveUseCase } from "./application/commands/patch-step-two-additional-is-active-.use-case";
 import { UpdateStepTwoAdditionalUseCase } from "./application/commands/update-step-two-additional.use-case";
 import { PatchStepTwoAdditionalSuccessFlagUseCase } from "./application/commands/patch-step-two-additional-success-flag.use-case";
+import { VehicleServiceReviewStepTwoAdditional } from "./domain/entities/vehicle-service-review-step-two-additional.entity";
 
 @Module({
     imports: [TypeOrmModule.forFeature([VehicleServiceReviewStepTwo,
-        //VehicileServiceReviewStepTwoAdditional
+        VehicleServiceReviewStepTwoAdditional
     ])],
     controllers: [StepTwoController],
     providers: [
