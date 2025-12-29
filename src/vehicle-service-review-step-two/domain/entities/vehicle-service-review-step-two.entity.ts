@@ -100,7 +100,7 @@ export class VehicleServiceReviewStepTwo {
   @Column({ type: 'uuid', nullable: false })
   created_by: string
 
-  @Column({ type: 'timestamp with time zone', nullable: true})
+  @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true})
   updated_at: Date
 
   @Column({ type: 'uuid', nullable: true })
