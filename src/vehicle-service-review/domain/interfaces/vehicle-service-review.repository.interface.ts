@@ -10,11 +10,11 @@ export interface IVehicleServiceReviewRepositoryInterface {
     fetchAppointmentsFromN8n(): Promise<CreateVehicleServiceReviewDto[]>;
     findByAppointmentRunning(appointmentRunning: string): Promise<VehicleServiceReview | null>;
     getVehicleServiceReview(branch: Branch, is_active: boolean, date_booked: string): Promise<VehicleServiceReview[]>;
-    createVehicleServiceReview(create: CreateVehicleServiceReviewDto): Promise<VehicleServiceReview>;
-    createVehicleServiceReviews(creates: CreateVehicleServiceReviewDto[]): Promise<VehicleServiceReview[]>;
+    createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReview>;
+    createVehicleServiceReviews(createDtos: CreateVehicleServiceReviewDto[]): Promise<VehicleServiceReview[]>;
     getVehicleServiceReviewById(id: string): Promise<VehicleServiceReview>;
-    updateVehicleServiceReview(id: string, update: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReview>;
-    patchInProcessFlag(id: string, patchInprocess: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReview>;
-    patchSuccessFlag(id: string, patchSuccess: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReview>;
-    patchIsActive(id: string, patchActiveStatus: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReview>;
+    updateVehicleServiceReview(id: string, updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReview>;
+    patchInProcess(id: string, patchDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReview>;
+    patchSuccessFlag(id: string, patchDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReview>;
+    patchIsActive(id: string, patchDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReview>;
 }

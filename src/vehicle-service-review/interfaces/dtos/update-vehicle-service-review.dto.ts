@@ -1,36 +1,15 @@
-import { IsUUID, IsOptional, IsBoolean, IsEnum, IsArray, IsString, IsNotEmpty } from 'class-validator'
+import { IsUUID, IsOptional, IsEnum, IsArray, IsString, IsNotEmpty } from 'class-validator'
 import { ApiPropertyOptional } from '@nestjs/swagger'
 import { CarBrand, CarType, StatusRepairOrder, StatusReport } from 'src/shared/enum/vehicle-service-review/vehicle-service-review.enum'
 import { Branch } from 'src/shared/enum/employee/employee.enum'
 
 export class UpdateVehicleServiceReviewDto {
 
-    @ApiPropertyOptional({
-        description: 'Success flag',
-        example: false,
-        type: Boolean,
-    })
-    @IsOptional()
-    @IsBoolean()
-    success_flag?: boolean
-
-    @ApiPropertyOptional({
-        description: 'In process flag',
-        example: false,
-        type: Boolean,
-    })
-    @IsOptional()
-    @IsBoolean()
-    in_process_flag?: boolean
 
     @ApiPropertyOptional({
         description: 'Customer first name',
         example: 'สมชาย',
     })
-    @IsOptional()
-    @IsString()
-    appointment_running?: string
-
     @IsOptional()
     @IsString()
     customer_firstname?: string
@@ -85,8 +64,16 @@ export class UpdateVehicleServiceReviewDto {
     vehicle_registration?: string
 
     @ApiPropertyOptional({
+        description: 'Vehicle registration province',
+        example: 'กท',
+    })
+    @IsOptional()
+    @IsString()
+    vehicle_registration_province?: string
+
+    @ApiPropertyOptional({
         description: 'Vehicle model number',
-        example: 'Civic 2020',
+        example: 'TFR85HPRM1234',
     })
     @IsOptional()
     @IsString()
@@ -95,23 +82,16 @@ export class UpdateVehicleServiceReviewDto {
 
     @ApiPropertyOptional({
         description: 'Vehicle model name',
-        example: 'Honda Civic',
+        example: '4door pickup',
     })
     @IsOptional()
     @IsString()
     model_name?: string
 
-    @ApiPropertyOptional({
-        description: 'Vehicle registration province',
-        example: 'กรุงเทพมหานคร',
-    })
-    @IsOptional()
-    @IsString()
-    vehicle_registration_province?: string
 
     @ApiPropertyOptional({
         description: 'Vehicle VIN number',
-        example: '1HGBH41JXMN109186',
+        example: 'MP1TFR85HPRM12345',
     })
     @IsOptional()
     @IsString()
@@ -119,7 +99,7 @@ export class UpdateVehicleServiceReviewDto {
 
     @ApiPropertyOptional({
         description: 'Engine number',
-        example: '4G63T123456',
+        example: 'XT12345',
     })
     @IsOptional()
     @IsString()
@@ -127,7 +107,7 @@ export class UpdateVehicleServiceReviewDto {
 
     @ApiPropertyOptional({
         description: 'Chassis number',
-        example: 'JHMCM56557C404453',
+        example: 'NG01234',
     })
     @IsOptional()
     @IsString()
@@ -184,15 +164,6 @@ export class UpdateVehicleServiceReviewDto {
     @IsOptional()
     @IsEnum(StatusReport)
     status_report?: StatusReport
-
-    @ApiPropertyOptional({
-        description: 'Active status flag',
-        example: true,
-        type: Boolean,
-    })
-    @IsOptional()
-    @IsBoolean()
-    is_active?: boolean
 
     @ApiPropertyOptional({
         description: 'User ID who updated this task',

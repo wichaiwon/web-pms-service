@@ -79,9 +79,9 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
     }
 
 
-    async patchInProcessFlag(id: string, patchInprocessDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReview> {
+    async patchInProcess(id: string, patchDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReview> {
         // Data Access Only: Update และ return ข้อมูล
-        await this.vehicleServiceReviewRepository.update(id, patchInprocessDto);
+        await this.vehicleServiceReviewRepository.update(id, patchDto);
         const updated = await this.vehicleServiceReviewRepository.findOneBy({ id });
         if (!updated) {
             throw new NotFoundException(`Vehicle service review with ID ${id} not found`);
@@ -89,8 +89,8 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
         return updated;
     }
 
-    async patchSuccessFlag(id: string, patchSuccessDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReview> {
-        await this.vehicleServiceReviewRepository.update(id, patchSuccessDto);
+    async patchSuccessFlag(id: string, patchDto: PatchVehicleServiceReviewSuccessFlagDto): Promise<VehicleServiceReview> {
+        await this.vehicleServiceReviewRepository.update(id, patchDto);
         const updated = await this.vehicleServiceReviewRepository.findOneBy({ id });
         if (!updated) {
             throw new NotFoundException(`Vehicle service review with ID ${id} not found`);
@@ -98,8 +98,8 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
         return updated;
     }
 
-    async patchIsActive(id: string, patchActiveStatusDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReview> {
-        await this.vehicleServiceReviewRepository.update(id, patchActiveStatusDto);
+    async patchIsActive(id: string, patchDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReview> {
+        await this.vehicleServiceReviewRepository.update(id, patchDto);
         const updated = await this.vehicleServiceReviewRepository.findOneBy({ id });
         if (!updated) {
             throw new NotFoundException(`Vehicle service review with ID ${id} not found`);
