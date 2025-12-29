@@ -5,7 +5,7 @@ export class CreateStepTwoAdditionalDto {
     @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000' })
     @IsNotEmpty()
     @IsUUID()
-    vehicle_service_review_id: string;
+    vehicle_service_review_step_two_id: string;
 
     @ApiProperty({isArray: true, type: String, example: ['550e8400-e29b-41d4-a716-446655440000']})
     @IsOptional()
