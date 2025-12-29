@@ -2,6 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsOptional, IsUUID } from "class-validator";
 
 export class UpdateStepTwoAdditionalDto {
+    
     @ApiProperty({ isArray: true, type: String, example: ['https://image4.com'] })
     @IsOptional()
     left_front_tire_image: string[];

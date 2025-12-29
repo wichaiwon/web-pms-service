@@ -14,6 +14,8 @@ import { CreateStepTwoAdditionalUseCase } from "./commands/create-step-two-addit
 import { StepTwoAdditionalDto } from "../interfaces/dtos/step-two-additional.dto";
 import { PatchStepTwoAdditionalIsActiveUseCase } from "./commands/patch-step-two-additional-is-active-.use-case";
 import { PatchStepTwoAdditionalSuccessFlagUseCase } from "./commands/patch-step-two-additional-success-flag.use-case";
+import { UpdateStepTwoAdditionalDto } from "../interfaces/dtos/update-step-two-additional.dto";
+import { UpdateStepTwoAdditionalUseCase } from "./commands/update-step-two-additional.use-case";
 
 @Injectable()
 export class StepTwoService implements IStepTwoServiceInterface {
@@ -24,6 +26,7 @@ export class StepTwoService implements IStepTwoServiceInterface {
         private readonly patchStepTwoSuccessFlagUseCase: PatchStepTwoSuccessFlagUseCase,
         private readonly patchStepTwoIsActiveUseCase: PatchStepTwoIsActiveUseCase,
         private readonly createStepTwoAdditionalUseCase: CreateStepTwoAdditionalUseCase,
+        private readonly updateStepTwoAdditionalUseCase: UpdateStepTwoAdditionalUseCase,
         private readonly patchStepTwoAdditionalIsActiveUseCase: PatchStepTwoAdditionalIsActiveUseCase,
         private readonly patchStepTwoAdditionalSuccessFlagUseCase: PatchStepTwoAdditionalSuccessFlagUseCase,
     ) { }
@@ -44,6 +47,9 @@ export class StepTwoService implements IStepTwoServiceInterface {
     }
     async createStepTwoAdditional(createDto: CreateStepTwoAdditionalDto): Promise<StepTwoAdditionalDto> {
         return this.createStepTwoAdditionalUseCase.execute(createDto);
+    }
+    async updateStepTwoAdditional(id: string, updateDto: UpdateStepTwoAdditionalDto): Promise<StepTwoAdditionalDto> {
+        return this.updateStepTwoAdditionalUseCase.execute(id, updateDto);
     }
     async patchStepTwoAdditionalIsActive(id: string, patchDto: PatchStepTwoDto): Promise<StepTwoAdditionalDto> {
         return this.patchStepTwoAdditionalIsActiveUseCase.execute(id, patchDto);
