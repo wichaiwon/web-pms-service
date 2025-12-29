@@ -9,6 +9,10 @@ import { UpdateStepTwoUseCase } from "./application/commands/update-step-two.use
 import { PatchStepTwoIsActiveUseCase } from "./application/commands/patch-step-two-is-active.use-case";
 import { PatchStepTwoSuccessFlagUseCase } from "./application/commands/patch-step-two-success-flag.use-case";
 import { GetStepTwoByReviewIdUseCase } from "./application/queries/get-step-two-by-review-id.use-case";
+import { CreateStepTwoAdditionalUseCase } from "./application/commands/create-step-two-additional.use-case";
+import { PatchStepTwoAdditionalIsActiveUseCase } from "./application/commands/patch-step-two-additional-is-active-.use-case";
+import { UpdateStepTwoAdditionalUseCase } from "./application/commands/update-step-two-additional.use-case";
+import { PatchStepTwoAdditionalSuccessFlagUseCase } from "./application/commands/patch-step-two-additional-success-flag.use-case";
 
 @Module({
     imports: [TypeOrmModule.forFeature([VehicleServiceReviewStepTwo,
@@ -21,6 +25,10 @@ import { GetStepTwoByReviewIdUseCase } from "./application/queries/get-step-two-
         UpdateStepTwoUseCase,
         PatchStepTwoIsActiveUseCase,
         PatchStepTwoSuccessFlagUseCase,
+        CreateStepTwoAdditionalUseCase,
+        UpdateStepTwoAdditionalUseCase,
+        PatchStepTwoAdditionalIsActiveUseCase,
+        PatchStepTwoAdditionalSuccessFlagUseCase,
         StepTwoService,
         {
             provide: 'IStepTwoRepository',
