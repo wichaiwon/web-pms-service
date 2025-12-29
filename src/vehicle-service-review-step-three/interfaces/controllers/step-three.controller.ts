@@ -12,8 +12,8 @@ import { UpdateStepThreeAdditionalDto } from "../dtos/update-step-three-addition
 
 @ApiTags('Vehicle Service Review Step Three')
 @Controller('step-three')
-// @UseGuards(JwtAuthGuard)
-// @ApiBearerAuth('JWT-auth')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('JWT-auth')
 export class StepThreeController {
     constructor(
         private readonly stepThreeService: StepThreeService,
