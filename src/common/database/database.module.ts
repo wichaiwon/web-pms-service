@@ -30,6 +30,7 @@ import { VehicleServiceReviewStepTwoAdditional } from 'src/vehicle-service-revie
           VehicleServiceReviewStepOneAdditional,
           VehicleServiceReviewStepTwo,
           VehicleServiceReviewStepTwoAdditional,
+          VehicleServiceReviewStepThree,
         ],
         synchronize: configService.get('NODE_ENV') !== 'production',
         logging: configService.get('NODE_ENV') === 'development',
