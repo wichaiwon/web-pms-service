@@ -7,7 +7,7 @@ export class VehicleServiceReviewStepTwoAdditional {
   id: string
 
   @Column({ type: 'uuid', nullable: false })
-  vehicle_service_review_id: string
+  vehicle_service_review_step_two_id: string
 
   @Column({ type: 'varchar', nullable: true })
   session_id: string
@@ -46,6 +46,6 @@ export class VehicleServiceReviewStepTwoAdditional {
   updated_by: string
   
   @ManyToOne(() => VehicleServiceReviewStepTwo, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'vehicle_service_review_id' })
+  @JoinColumn({ name: 'vehicle_service_review_step_two_id' })
   vehicle_service_review_step_two: VehicleServiceReviewStepTwo
 }
