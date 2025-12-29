@@ -219,8 +219,8 @@ export class VehicleServiceReviewController {
             }
         }
     })
-    async patchInProcessFlag(@Param('id') id: string, @Body() patchInProcessDto: PatchVehicleServiceReviewInProcessDto) {
-        return await this.vehicleServiceReviewService.patchInProcessFlag(id, patchInProcessDto);
+    async patchInProcess(@Param('id') id: string, @Body() patchInProcessDto: PatchVehicleServiceReviewInProcessDto) {
+        return await this.vehicleServiceReviewService.patchInProcess(id, patchInProcessDto);
     }
 
     @Patch('is-active/:id')
@@ -236,7 +236,6 @@ export class VehicleServiceReviewController {
                 summary: 'Patch active status',
                 value: {
                     is_active: false,
-                    responsible: ["edc6a03a-6285-4a09-aab6-decb494cf522"],
                     updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
                 }
             }
@@ -259,7 +258,6 @@ export class VehicleServiceReviewController {
                 summary: 'Patch success flag',
                 value: {
                     success_flag: true,
-                    responsible: ["edc6a03a-6285-4a09-aab6-decb494cf522"],
                     updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
                 }
             }
@@ -281,7 +279,6 @@ export class VehicleServiceReviewController {
                 summary: 'Reissue vehicle service review',
                 value: {
                     is_active: false,
-                    responsible: ["edc6a03a-6285-4a09-aab6-decb494cf522"],
                     created_by: 'edc6a03a-6285-4a09-aab6-decb494cf522',
                     updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
                 }
