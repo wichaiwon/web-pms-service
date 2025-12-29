@@ -6,6 +6,9 @@ import { StepTwoDto } from "../dtos/step-two.dto";
 import { Cargo, SpareTire, TireCondition, TireDepth, TruckToolSet, WheelControlCover } from "src/shared/enum/vehicle-service-review-step-two/step-two.enum";
 import { UpdateStepTwoDto } from "../dtos/update-step-two.dto";
 import { PatchStepTwoDto } from "../dtos/patch-step-two.dto";
+import { CreateStepTwoAdditionalDto } from "../dtos/create-step-two-additional.dto";
+import { StepTwoAdditionalDto } from "../dtos/step-two-additional.dto";
+import { UpdateStepTwoAdditionalDto } from "../dtos/update-step-two-additional.dto";
 
 @ApiTags('Vehicle Service Review Step Two')
 @Controller('step-two')
@@ -116,5 +119,67 @@ export class StepTwoController {
         @Body() patchDto: PatchStepTwoDto,
     ): Promise<StepTwoDto> {
         return this.stepTwoService.patchStepTwoSuccessFlag(id, patchDto);
+    }
+    @Post('additional/create')
+    @ApiOperation({ summary: 'Create Vehicle Service Review Step Two Additional' })
+    @ApiBody({
+        type: CreateStepTwoAdditionalDto,
+        description: 'Data for creating Vehicle Service Review Step Two Additional',
+        examples: {
+            example1: {
+                summary: 'Create Step Two Additional Example',
+                value: {
+                    vehicle_service_review_step_two_id: '123e4567-e89b-12d3-a456-426614174000',
+                    left_front_tire_image: ["image1.jpg", "image2.jpg"],
+                    right_front_tire_image: ["image1.jpg", "image2.jpg"],
+                    left_back_tire_image: ["image1.jpg", "image2.jpg"],
+                    right_back_tire_image: ["image1.jpg", "image2.jpg"],
+                    Comment: 'All tires are in good condition.',
+                    created_by: '550e8400-e29b-41d4-a716-446655440000',
+                },
+            },
+        },
+    })
+    async createStepTwoAdditional(@Body() createDto: CreateStepTwoAdditionalDto): Promise<StepTwoAdditionalDto> {
+        return this.stepTwoService.createStepTwoAdditional(createDto);
+    }
+    @Put('additional/update/:id')
+    @ApiOperation({ summary: 'Patch is_active of Vehicle Service Review Step Two Additional' })
+    @ApiBody({
+        type: UpdateStepTwoAdditionalDto,
+        description: 'Data for patching is_active of Vehicle Service Review Step Two Additional',
+        examples: {
+            example1: {
+                summary: 'Patch is_active Step Two Additional Example',
+                value: {
+                    is_active: false,
+                    updated_by: '550e8400-e29b-41d4-a716-446655440000',
+                },
+            },
+        },
+    })
+    async updateStepTwoAdditional(
+        @Param('id') id: string,
+        @Body() updateDto: UpdateStepTwoAdditionalDto,
+    ): Promise<StepTwoAdditionalDto> {
+        return this.stepTwoService.updateStepTwoAdditional(id, updateDto);
+    }
+
+    @Patch('additional/is-active/:id')
+    @ApiOperation({ summary: 'Patch is_active of Vehicle Service Review Step Two Additional' })
+    async patchIsActiveStepTwoAdditional(
+        @Param('id') id: string,
+        @Body() patchDto: PatchStepTwoDto,
+    ): Promise<StepTwoAdditionalDto> {
+        return this.stepTwoService.patchStepTwoAdditionalIsActive(id, patchDto);
+    }
+
+    @Patch('additional/success-flag/:id')
+    @ApiOperation({ summary: 'Patch success_flag of Vehicle Service Review Step Two Additional' })
+    async patchSuccessFlagStepTwoAdditional(
+        @Param('id') id: string,
+        @Body() patchDto: PatchStepTwoDto,
+    ): Promise<StepTwoAdditionalDto> {
+        return this.stepTwoService.patchStepTwoAdditionalSuccessFlag(id, patchDto);
     }
 }
