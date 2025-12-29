@@ -8,8 +8,7 @@ import { VehicleServiceReviewModule } from './vehicle-service-review/vehicle-ser
 import { VehicleServiceReviewDetailModule } from './vehicle-service-review-detail/vehicle-service-review-detail.module'
 import { VehicleServiceReviewStepOneModule } from './vehicle-service-review-step-one/vehicle-service-review-step-one.module'
 import { VehicleServiceReviewStepTwoModule } from './vehicle-service-review-step-two/vehicle-service-review-step-two.module'
-import { VehicleServiceReviewStepOneAdditional } from './vehicle-service-review-step-one/domain/entities/vehicle-service-review-step-one-additional.entity'
-import { VehicleServiceReviewStepTwoAdditional } from './vehicle-service-review-step-two/domain/entities/vehicle-service-review-step-two-additional.entity'
+import { VehicleServiceReviewStepThreeModule } from './vehicle-service-review-step-three/vehicle-step-three.module'
 
 @Module({
   imports: [
@@ -22,9 +21,8 @@ import { VehicleServiceReviewStepTwoAdditional } from './vehicle-service-review-
     VehicleServiceReviewModule,
     VehicleServiceReviewDetailModule,
     VehicleServiceReviewStepOneModule,
-    VehicleServiceReviewStepOneAdditional,
     VehicleServiceReviewStepTwoModule,
-    VehicleServiceReviewStepTwoAdditional,
+    VehicleServiceReviewStepThreeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

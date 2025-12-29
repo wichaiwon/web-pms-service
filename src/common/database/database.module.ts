@@ -9,6 +9,7 @@ import { VehicleServiceReviewStepOne } from 'src/vehicle-service-review-step-one
 import { VehicleServiceReviewStepTwo } from 'src/vehicle-service-review-step-two/domain/entities/vehicle-service-review-step-two.entity'
 import { VehicleServiceReviewStepOneAdditional } from 'src/vehicle-service-review-step-one/domain/entities/vehicle-service-review-step-one-additional.entity'
 import { VehicleServiceReviewStepTwoAdditional } from 'src/vehicle-service-review-step-two/domain/entities/vehicle-service-review-step-two-additional.entity'
+import { VehicleServiceReviewStepThree } from 'src/vehicle-service-review-step-three/domain/entities/vehicle-service-review-step-three.entity'
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { VehicleServiceReviewStepTwoAdditional } from 'src/vehicle-service-revie
           VehicleServiceReviewStepOneAdditional,
           VehicleServiceReviewStepTwo,
           VehicleServiceReviewStepTwoAdditional,
+          VehicleServiceReviewStepThree,
         ],
         synchronize: configService.get('NODE_ENV') !== 'production',
         logging: configService.get('NODE_ENV') === 'development',
