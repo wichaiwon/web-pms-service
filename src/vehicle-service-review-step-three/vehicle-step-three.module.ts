@@ -9,12 +9,17 @@ import { GetStepThreeByReviewIdUseCase } from "./application/queries/get-step-th
 import { UpdateStepThreeUseCase } from "./application/commands/update-step-three.use-case";
 import { PatchStepthreeIsActiveUseCase } from "./application/commands/patch-step-three-is-active.use-case";
 import { PatchStepthreeSuccessFlagUseCase } from "./application/commands/patch-step-three-success-flag.use-case";
+import { CreateStepThreeAdditionalUseCase } from "./application/commands/create-step-three-additional.use-case";
+import { UpdateStepThreeAdditionalUseCase } from "./application/commands/update-step-three-additional.use-case";
+import { VehicleServiceReviewStepThreeAdditional } from "./domain/entities/vehicle-service-review-step-three-additional.entity";
+import { PatchStepThreeAdditionalIsActiveUseCase } from "./application/commands/patch-step-three-additional-is-active.use-case";
+import { PatchStepThreeAdditionalSuccessFlagUseCase } from "./application/commands/patch-step-three-additional-success-flag.use-case";
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([
             VehicleServiceReviewStepThree,
-            //VehicileServiceReviewStepThreeAdditional
+            VehicleServiceReviewStepThreeAdditional    
         ])
     ],
     controllers: [StepThreeController],
@@ -24,6 +29,10 @@ import { PatchStepthreeSuccessFlagUseCase } from "./application/commands/patch-s
         UpdateStepThreeUseCase,
         PatchStepthreeIsActiveUseCase,
         PatchStepthreeSuccessFlagUseCase,
+        CreateStepThreeAdditionalUseCase,
+        UpdateStepThreeAdditionalUseCase,
+        PatchStepThreeAdditionalIsActiveUseCase,
+        PatchStepThreeAdditionalSuccessFlagUseCase,
         StepThreeService,
         {
             provide: 'IStepThreeRepository',
