@@ -8,7 +8,6 @@ import { CreateDetailDto } from "src/vehicle-service-review-detail/interfaces/dt
 import { DetailAdditionalDto } from "src/vehicle-service-review-detail/interfaces/dtos/detail-additional.dto";
 import { PatchDetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/patch-detail.dto";
 import { UpdateDetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/update-detail.dto";
-
 import { Repository } from "typeorm";
 
 @Injectable()
@@ -20,9 +19,16 @@ export class DetailRepository implements IDetailRepositoryInterface {
         private readonly detailAdditionalRepository: Repository<VehicleServiceReviewDetailAdditional>,
     ) { }
 
-    async getDetailByReviewId(vehicleServiceReviewId: string): Promise<VehicleServiceReviewDetail|null> {
+    async getDetailById(id: string): Promise<VehicleServiceReviewDetail | null> {
         const detail = await this.detailRepository.findOne({
-            where: { vehicle_service_review_id: vehicleServiceReviewId },
+            where: { id },
+        });
+        return detail;
+    }
+
+    async getDetailByReviewId(vehicleServiceReviewId: string): Promise<VehicleServiceReviewDetail | null> {
+        const detail = await this.detailRepository.findOne({
+            where: { vehicle_service_review_id: vehicleServiceReviewId, is_active: true },
         });
         return detail;
     }
@@ -45,7 +51,7 @@ export class DetailRepository implements IDetailRepositoryInterface {
         id: string,
         updateDto: UpdateDetailDto
     ): Promise<VehicleServiceReviewDetail> {
-        const existingDetail = await this.detailRepository.findOne({ where: { id } });
+        const existingDetail = await this.detailRepository.findOne({ where: { id, is_active: true } });
         if (!existingDetail) {
             throw new NotFoundException(`Detail with ID ${id} not found.`);
         }
@@ -57,24 +63,44 @@ export class DetailRepository implements IDetailRepositoryInterface {
         id: string,
         patchDto: PatchDetailDto
     ): Promise<VehicleServiceReviewDetail> {
-        const existingDetail = await this.detailRepository.findOne({ where: { id } });
-        if (!existingDetail) {
+        const result = await this.detailRepository.update(id, patchDto);
+        if (result.affected === 0) {
             throw new NotFoundException(`Detail with ID ${id} not found.`);
         }
-        const patchedDetail = Object.assign(existingDetail, patchDto);
-        return await this.detailRepository.save(patchedDetail);
+        const updatedDetail = await this.detailRepository.findOne({ where: { id } });
+        if (!updatedDetail) {
+            throw new NotFoundException(`Detail with ID ${id} not found after update.`);
+        }
+        return updatedDetail;
     }
 
     async patchIsActive(
         id: string,
         patchDto: PatchDetailDto
     ): Promise<VehicleServiceReviewDetail> {
-        const existingDetail = await this.detailRepository.findOne({ where: { id } });
-        if (!existingDetail) {
+        const result = await this.detailRepository.update(id, patchDto);
+        if (result.affected === 0) {
             throw new NotFoundException(`Detail with ID ${id} not found.`);
         }
-        const patchedDetail = Object.assign(existingDetail, patchDto);
-        return await this.detailRepository.save(patchedDetail);
+        const updatedDetail = await this.detailRepository.findOne({ where: { id } });
+        if (!updatedDetail) {
+            throw new NotFoundException(`Detail with ID ${id} not found after update.`);
+        }
+        return updatedDetail;
+    }
+
+    async getAdditionalById(id: string): Promise<DetailAdditionalDto | null> {
+        const detailAdditional = await this.detailAdditionalRepository.findOne({
+            where: { id },
+        });
+        return detailAdditional;
+    }
+
+    async getAdditionalByDetailId(detailId: string): Promise<DetailAdditionalDto | null> {
+        const detailAdditional = await this.detailAdditionalRepository.findOne({
+            where: { vehicle_service_review_detail_id: detailId, is_active: true },
+        });
+        return detailAdditional;
     }
 
     async createDetailAdditional(createDto: CreateDetailAdditionalDto): Promise<DetailAdditionalDto> {
@@ -91,19 +117,25 @@ export class DetailRepository implements IDetailRepositoryInterface {
         return await this.detailAdditionalRepository.save(updatedDetailAdditional);
     }
     async patchAdditionalIsActive(id: string, patchDto: PatchDetailDto): Promise<DetailAdditionalDto> {
-        const existingDetailAdditional = await this.detailAdditionalRepository.findOne({ where: { id } });
-        if (!existingDetailAdditional) {
+        const result = await this.detailAdditionalRepository.update(id, patchDto);
+        if (result.affected === 0) {
             throw new NotFoundException(`Detail Additional with ID ${id} not found.`);
         }
-        const patchedDetailAdditional = Object.assign(existingDetailAdditional, patchDto);
-        return await this.detailAdditionalRepository.save(patchedDetailAdditional);
+        const updatedDetailAdditional = await this.detailAdditionalRepository.findOne({ where: { id } });
+        if (!updatedDetailAdditional) {
+            throw new NotFoundException(`Detail Additional with ID ${id} not found after update.`);
+        }
+        return updatedDetailAdditional;
     }
     async patchAdditionalSuccessFlag(id: string, patchDto: PatchDetailDto): Promise<DetailAdditionalDto> {
-        const existingDetailAdditional = await this.detailAdditionalRepository.findOne({ where: { id } });
-        if (!existingDetailAdditional) {
+        const result = await this.detailAdditionalRepository.update(id, patchDto);
+        if (result.affected === 0) {
             throw new NotFoundException(`Detail Additional with ID ${id} not found.`);
         }
-        const patchedDetailAdditional = Object.assign(existingDetailAdditional, patchDto);
-        return await this.detailAdditionalRepository.save(patchedDetailAdditional);
+        const updatedDetailAdditional = await this.detailAdditionalRepository.findOne({ where: { id } });
+        if (!updatedDetailAdditional) {
+            throw new NotFoundException(`Detail Additional with ID ${id} not found after update.`);
+        }
+        return updatedDetailAdditional;
     }
 }
