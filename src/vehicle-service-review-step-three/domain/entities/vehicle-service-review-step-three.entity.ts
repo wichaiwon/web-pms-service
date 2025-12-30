@@ -15,19 +15,19 @@ export class VehicleServiceReviewStepThree {
     @Column({ type: 'double precision', nullable: true })
     first_battery_voltage: number
 
-    @Column({ type: 'numeric', nullable: true })
+    @Column({ type: 'double precision', nullable: true })
     first_measurement: number
 
-    @Column({ type: 'numeric', nullable: true })
+    @Column({ type: 'double precision', nullable: true })
     first_rating: number
 
     @Column({ type: 'double precision', nullable: true })
     second_battery_voltage: number
 
-    @Column({ type: 'numeric', nullable: true })
+    @Column({ type: 'double precision', nullable: true })
     second_measurement: number
 
-    @Column({ type: 'numeric', nullable: true })
+    @Column({ type: 'double precision', nullable: true })
     second_rating: number
 
     @Column({ type: 'boolean', default: false })
