@@ -16,25 +16,38 @@ import { PatchStepTwoAdditionalIsActiveUseCase } from "./commands/patch-step-two
 import { PatchStepTwoAdditionalSuccessFlagUseCase } from "./commands/patch-step-two-additional-success-flag.use-case";
 import { UpdateStepTwoAdditionalDto } from "../interfaces/dtos/update-step-two-additional.dto";
 import { UpdateStepTwoAdditionalUseCase } from "./commands/update-step-two-additional.use-case";
+import { GetStepTwoAdditionalByStepTwoIdUseCase } from "./queries/get-step-two-additional-by-review-id.use-case";
+import { GetStepTwoAdditionalByIdUseCase } from "./queries/get-step-two-additional-by-id.use-case";
+import { CreateStepTwosUseCase } from "./commands/create-step-twos.use-case";
 
 @Injectable()
 export class StepTwoService implements IStepTwoServiceInterface {
     constructor(
-        private readonly createStepTwoUseCase: CreateStepTwoUseCase,
         private readonly getStepTwoUseCase: GetStepTwoByReviewIdUseCase,
+        private readonly getStepTwoByReviewIdUseCase: GetStepTwoByReviewIdUseCase,
+        private readonly createStepTwoUseCase: CreateStepTwoUseCase,
+        private readonly createStepTwosUseCase: CreateStepTwosUseCase,
         private readonly updateStepTwoUseCase: UpdateStepTwoUseCase,
         private readonly patchStepTwoSuccessFlagUseCase: PatchStepTwoSuccessFlagUseCase,
         private readonly patchStepTwoIsActiveUseCase: PatchStepTwoIsActiveUseCase,
+        private readonly getStepTwoAdditionalByIdUseCase: GetStepTwoAdditionalByIdUseCase,
+        private readonly getStepTwoAdditionalByStepTwoIdUseCase: GetStepTwoAdditionalByStepTwoIdUseCase,
         private readonly createStepTwoAdditionalUseCase: CreateStepTwoAdditionalUseCase,
         private readonly updateStepTwoAdditionalUseCase: UpdateStepTwoAdditionalUseCase,
         private readonly patchStepTwoAdditionalIsActiveUseCase: PatchStepTwoAdditionalIsActiveUseCase,
         private readonly patchStepTwoAdditionalSuccessFlagUseCase: PatchStepTwoAdditionalSuccessFlagUseCase,
     ) { }
-    async createStepTwo(createDto: CreateStepTwoDto): Promise<StepTwoDto> {
-        return this.createStepTwoUseCase.execute(createDto);
+    async getStepTwoById(id: string): Promise<StepTwoDto | null> {
+        return this.getStepTwoByReviewIdUseCase.execute(id);
     }
     async getStepTwoByReviewId(reviewId: string): Promise<StepTwoDto | null> {
         return this.getStepTwoUseCase.execute(reviewId);
+    }
+    async createStepTwo(createDto: CreateStepTwoDto): Promise<StepTwoDto> {
+        return this.createStepTwoUseCase.execute(createDto);
+    }
+    async createStepTwos(createDto: CreateStepTwoDto[]): Promise<StepTwoDto[]> {
+        return this.createStepTwosUseCase.execute(createDto);
     }
     async updateStepTwo(id: string, updateDto: UpdateStepTwoDto): Promise<StepTwoDto> {
         return this.updateStepTwoUseCase.execute(id, updateDto);
@@ -44,6 +57,12 @@ export class StepTwoService implements IStepTwoServiceInterface {
     }
     async patchStepTwoSuccessFlag(id: string, patchDto: PatchStepTwoDto): Promise<StepTwoDto> {
         return this.patchStepTwoSuccessFlagUseCase.execute(id, patchDto);
+    }
+    async getStepTwoAdditionalById(id: string): Promise<StepTwoAdditionalDto | null> {
+        return this.getStepTwoAdditionalByIdUseCase.execute(id);
+    }
+    async getStepTwoAdditionalByStepTwoId(stepTwoId: string): Promise<StepTwoAdditionalDto | null> {
+        return this.getStepTwoAdditionalByStepTwoIdUseCase.execute(stepTwoId);
     }
     async createStepTwoAdditional(createDto: CreateStepTwoAdditionalDto): Promise<StepTwoAdditionalDto> {
         return this.createStepTwoAdditionalUseCase.execute(createDto);
