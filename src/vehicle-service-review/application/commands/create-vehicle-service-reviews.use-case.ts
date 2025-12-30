@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { IDetailRepositoryInterface } from "src/vehicle-service-review-detail/domain/interfaces/detail.repository.interface";
 import type { IStepOneRepositoryInterface } from "src/vehicle-service-review-step-one/domain/interfaces/step-one.repository.interface";
+import type { IStepThreeRepositoryInterface } from "src/vehicle-service-review-step-three/domain/interfaces/step-three.repository.interface";
 import type { IStepTwoRepositoryInterface } from "src/vehicle-service-review-step-two/domain/interfaces/step-two.repository.inface";
 import type { IVehicleServiceReviewRepositoryInterface } from "src/vehicle-service-review/domain/interfaces/vehicle-service-review.repository.interface";
 import { CreateVehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/create-vehicle-service-review.dto";
@@ -17,6 +18,8 @@ export class CreateVehicleServiceReviewsUseCase {
         private readonly stepOneRepository: IStepOneRepositoryInterface,
         @Inject('IStepTwoRepository')
         private readonly stepTwoRepository: IStepTwoRepositoryInterface,
+        @Inject('IStepThreeRepository')
+        private readonly stepThreeRepository: IStepThreeRepositoryInterface,
     ) {}
 
     async execute(createDtos: CreateVehicleServiceReviewDto[]): Promise<VehicleServiceReviewDto[]> {
@@ -33,6 +36,7 @@ export class CreateVehicleServiceReviewsUseCase {
             this.detailRepository.createDetails(dtos),
             this.stepOneRepository.createStepOnes(dtos),
             this.stepTwoRepository.createStepTwos(dtos),
+            this.stepThreeRepository.createStepThrees(dtos),
         ]);
         
         return createdReviews;
