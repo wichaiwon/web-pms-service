@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from 'src/employee/domain/entities/employee.entity';
 import { IEmployeeRepository } from 'src/employee/domain/interfaces/employee.repository.interface';
@@ -22,7 +22,7 @@ export class EmployeeRepository implements IEmployeeRepository {
             ]
         });
         if (!employee) {
-            throw new Error('Employee not found');
+            throw new NotFoundException('Employee not found');
         }
         return employee;
     }
@@ -30,7 +30,7 @@ export class EmployeeRepository implements IEmployeeRepository {
     async getEmployee(id: string): Promise<Employee> {
         const employee = await this.employeeRepository.findOne({ where: { id } });
         if (!employee) {
-            throw new Error('Employee not found');
+            throw new NotFoundException('Employee not found');
         }
         return employee;
     }
@@ -47,7 +47,7 @@ export class EmployeeRepository implements IEmployeeRepository {
             }
         });
         if (!employee) {
-            throw new Error('Employee not found');
+            throw new NotFoundException('Employee not found');
         }
         return employee;
     }
@@ -66,7 +66,7 @@ export class EmployeeRepository implements IEmployeeRepository {
         await this.employeeRepository.update(id, updateData);
         const updatedEmployee = await this.employeeRepository.findOne({ where: { id } });
         if (!updatedEmployee) {
-            throw new Error('Employee not found after update');
+            throw new NotFoundException('Employee not found after update');
         }
         return updatedEmployee;
     }

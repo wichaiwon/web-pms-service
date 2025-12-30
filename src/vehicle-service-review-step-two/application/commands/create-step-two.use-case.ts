@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { ConflictException, Inject, Injectable } from "@nestjs/common";
 import type { IStepTwoRepositoryInterface } from "src/vehicle-service-review-step-two/domain/interfaces/step-two.repository.inface";
 import { CreateStepTwoDto } from "src/vehicle-service-review-step-two/interfaces/dtos/create-step-two.dto";
 import { StepTwoDto } from "src/vehicle-service-review-step-two/interfaces/dtos/step-two.dto";
@@ -11,6 +11,11 @@ export class CreateStepTwoUseCase {
     ) {}
 
     async execute(createDto: CreateStepTwoDto): Promise<StepTwoDto> {
-        return this.stepTwoRepository.createStepTwo(createDto);
+        const existReview = await this.stepTwoRepository.getStepTwoByReviewId(createDto.vehicle_service_review_id);
+        if (existReview) {
+            throw new ConflictException('Step two review already exists for this review ID.');
+        }
+        const stepTwo = await this.stepTwoRepository.createStepTwo(createDto);
+        return stepTwo;
     }
 }

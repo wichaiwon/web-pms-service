@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import type { IDetailRepositoryInterface } from "src/vehicle-service-review-detail/domain/interfaces/detail.repository.interface";
 import { DetailAdditionalDto } from "src/vehicle-service-review-detail/interfaces/dtos/detail-additional.dto";
 import { PatchDetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/patch-detail.dto";
@@ -12,7 +12,7 @@ export class PatchDetailAdditionalSuccessFlagUseCase {
     async execute(id: string, patchDto:PatchDetailDto): Promise<DetailAdditionalDto> {
         const existingDetailAdditional = await this.detailRepository.getAdditionalById(id);
         if (!existingDetailAdditional) {
-            throw new Error(`Detail Additional with ID ${id} not found.`);
+            throw new NotFoundException(`Detail Additional with ID ${id} not found.`);
         }
         const updatedSuccessFlag = { ...patchDto, success_flag: !existingDetailAdditional.success_flag };
         const updatedDetailAdditional = await this.detailRepository.patchAdditionalSuccessFlag(id, updatedSuccessFlag);

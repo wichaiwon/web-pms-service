@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import type { IDetailRepositoryInterface } from "src/vehicle-service-review-detail/domain/interfaces/detail.repository.interface";
 import { DetailAdditionalDto } from "src/vehicle-service-review-detail/interfaces/dtos/detail-additional.dto";
 import { UpdateDetailAdditionalDto } from "src/vehicle-service-review-detail/interfaces/dtos/update-detail-additional.dto";
@@ -12,7 +12,7 @@ export class UpdateDetailAdditionalUseCase {
     async execute(id: string, updateDto: UpdateDetailAdditionalDto): Promise<DetailAdditionalDto> {
         const existingDetail = await this.detailRepository.getAdditionalByDetailId(id);
         if (!existingDetail) {
-            throw new Error(`Detail ID ${id} not found.`);
+            throw new NotFoundException(`Detail ID ${id} not found.`);
         }
         const updatedDetailAdditional = await this.detailRepository.updateDetailAdditional(id, updateDto);
         return updatedDetailAdditional;
