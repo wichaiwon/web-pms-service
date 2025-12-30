@@ -8,12 +8,15 @@ import { UpdateDetailAdditionalDto } from "src/vehicle-service-review-detail/int
 
 
 export interface IDetailRepositoryInterface {
+    getDetailById(id: string): Promise<VehicleServiceReviewDetail | null>;
     getDetailByReviewId(vehicleServiceReviewId: string): Promise<VehicleServiceReviewDetail | null>;
     createDetail(createDto: CreateDetailDto): Promise<VehicleServiceReviewDetail>;
     createDetails(createDto: CreateDetailDto[]): Promise<VehicleServiceReviewDetail[]>;
     updateDetail(id: string, updateDto: UpdateDetailDto): Promise<VehicleServiceReviewDetail>;
     patchSuccessFlag(id: string, patchDto: PatchDetailDto): Promise<VehicleServiceReviewDetail>;
     patchIsActive(id: string, patchDto: PatchDetailDto): Promise<VehicleServiceReviewDetail>;
+    getAdditionalById(id: string): Promise<DetailAdditionalDto | null>;
+    getAdditionalByDetailId(detailId: string): Promise<DetailAdditionalDto | null>;
     createDetailAdditional(createDto:CreateDetailAdditionalDto): Promise<DetailAdditionalDto>;
     updateDetailAdditional(id: string, updateDto: UpdateDetailAdditionalDto): Promise<DetailAdditionalDto>;
     patchAdditionalIsActive(id: string, patchDto: PatchDetailDto): Promise<DetailAdditionalDto>;

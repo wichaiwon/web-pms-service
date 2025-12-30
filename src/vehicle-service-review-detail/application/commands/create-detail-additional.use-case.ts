@@ -11,6 +11,11 @@ export class CreateDetailAdditionalUseCase {
     ) { }
 
     async execute(createDto: CreateDetailAdditionalDto): Promise<DetailAdditionalDto> {
-        return this.detailAdditionalRepository.createDetailAdditional(createDto);
+        const existingDetailAdditional = await this.detailAdditionalRepository.getAdditionalByDetailId(createDto.vehicle_service_review_detail_id);
+        if (existingDetailAdditional) {
+            throw new Error(`Detail Additional with ID ${createDto.vehicle_service_review_detail_id} already exists.`);
+        }
+        const newDetailAdditional = await this.detailAdditionalRepository.createDetailAdditional(createDto);
+        return newDetailAdditional;
     }
 }

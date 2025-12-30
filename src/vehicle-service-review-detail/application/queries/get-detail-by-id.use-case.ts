@@ -3,16 +3,16 @@ import type { IDetailRepositoryInterface } from "src/vehicle-service-review-deta
 import { DetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/detail.dto";
 
 @Injectable()
-export class GetDetailByReviewIdUseCase {
+export class GetDetailByIdUseCase {
     constructor(
         @Inject('IDetailRepository')
         private readonly detailRepository: IDetailRepositoryInterface
     ) { }
 
-    async execute(ReviewId: string): Promise<DetailDto | null> {
-        const detail = await this.detailRepository.getDetailByReviewId(ReviewId);
+    async execute(id: string): Promise<DetailDto | null> {
+        const detail = await this.detailRepository.getDetailById(id);
         if (!detail) {
-            throw new Error(`Detail with Review ID ${ReviewId} not found.`);
+            throw new Error(`Detail with ID ${id} not found.`);
         }
         return detail;
     }

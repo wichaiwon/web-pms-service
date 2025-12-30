@@ -11,6 +11,12 @@ export class PatchIsActiveUseCase {
     ) { }
 
     async execute(id: string, patchDto: PatchDetailDto): Promise<DetailDto> {
-        return await this.detailRepository.patchIsActive(id, patchDto);
+        const existingDetail = await this.detailRepository.getDetailById(id);
+        if (!existingDetail) {
+            throw new Error(`Detail with ID ${id} not found.`);
+        }
+        const updatedIsActive = { ...patchDto, is_active: !existingDetail.is_active };
+        const updatedDetail = await this.detailRepository.patchIsActive(id, updatedIsActive);
+        return updatedDetail;
     }
 }
