@@ -34,7 +34,7 @@ export class VehicleServiceReviewStepFour {
   @Column({ type: 'uuid', nullable: true })
   created_by: string
 
-  @Column({ type: 'timestamp with time zone', nullable: true })
+  @UpdateDateColumn({ type: 'timestamp with time zone', nullable: true })
   updated_at: Date
 
   @Column({ type: 'uuid', nullable: true })
