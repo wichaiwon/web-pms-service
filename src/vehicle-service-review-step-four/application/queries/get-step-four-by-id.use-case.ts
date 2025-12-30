@@ -3,16 +3,16 @@ import type { IStepFourRepositoryInterface } from "src/vehicle-service-review-st
 import { StepFourDto } from "src/vehicle-service-review-step-four/interfaces/dtos/step-four.dto";
 
 @Injectable()
-export class GetStepFourByReviewIdUseCase {
+export class GetStepFourByIdUseCase {
     constructor(
         @Inject('IStepFourRepository')
         private readonly stepFourRepository: IStepFourRepositoryInterface,
     ) { }
 
-    async execute(reviewId: string): Promise<StepFourDto | null> {
-        const existingStepFour = await this.stepFourRepository.getStepFourByReviewId(reviewId);
+    async execute(id: string): Promise<StepFourDto | null> {
+        const existingStepFour = await this.stepFourRepository.getStepFourById(id);
         if (!existingStepFour) {
-            throw new NotFoundException(`Step Four for review ID ${reviewId} not found`);
+            throw new NotFoundException(`Step Four for ID ${id} not found`);
         }
         return existingStepFour;
     }

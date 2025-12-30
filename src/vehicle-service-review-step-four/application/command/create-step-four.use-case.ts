@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { ConflictException, Inject, Injectable } from "@nestjs/common";
 import type { IStepFourRepositoryInterface } from "src/vehicle-service-review-step-four/domain/interfaces/step-four.repsitory.interface";
 import { CreateStepfourDto } from "src/vehicle-service-review-step-four/interfaces/dtos/create-step-four.dto";
 import { StepFourDto } from "src/vehicle-service-review-step-four/interfaces/dtos/step-four.dto";
@@ -10,6 +10,10 @@ export class CreateStepFourUseCase {
         private readonly stepFourRepository: IStepFourRepositoryInterface,
     ) {}
     async execute(createDto:CreateStepfourDto): Promise<StepFourDto> {
+        const existingStepFour = await this.stepFourRepository.getStepFourByReviewId(createDto.vehicle_service_review_id);
+        if (existingStepFour) {
+            throw new ConflictException('Step Four for this review already exists');
+        }
         return this.stepFourRepository.createStepFour(createDto);
     }
 }

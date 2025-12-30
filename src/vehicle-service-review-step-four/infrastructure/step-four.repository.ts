@@ -13,12 +13,20 @@ export class StepFourRepository implements IStepFourRepositoryInterface {
         @InjectRepository(VehicleServiceReviewStepFour)
         private readonly stepFourRepository: Repository<VehicleServiceReviewStepFour>,
     ) { }
+    async getStepFourById(id: string): Promise<VehicleServiceReviewStepFour | null> {
+        return this.stepFourRepository.findOne({ where: { id } });
+    }
+
     async getStepFourByReviewId(reviewId: string): Promise<VehicleServiceReviewStepFour | null> {
         return this.stepFourRepository.findOne({ where: { vehicle_service_review_id: reviewId } });
     }
     async createStepFour(createDto: CreateStepfourDto): Promise<any> {
         const stepFour = this.stepFourRepository.create(createDto);
         return this.stepFourRepository.save(stepFour);
+    }
+    async createStepFours(createDtos: CreateStepfourDto[]): Promise<VehicleServiceReviewStepFour[]> {
+        const stepFours = this.stepFourRepository.create(createDtos);
+        return this.stepFourRepository.save(stepFours);
     }
     async updateStepFour(id: string, updateDto: UpdateStepfourDto): Promise<VehicleServiceReviewStepFour> {
         await this.stepFourRepository.update(id, updateDto);

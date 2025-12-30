@@ -9,6 +9,7 @@ import { UpdateVehicleServiceReviewDto } from "src/vehicle-service-review/interf
 import type { IStepOneRepositoryInterface } from "src/vehicle-service-review-step-one/domain/interfaces/step-one.repository.interface";
 import type { IStepTwoRepositoryInterface } from "src/vehicle-service-review-step-two/domain/interfaces/step-two.repository.inface";
 import type { IStepThreeRepositoryInterface } from "src/vehicle-service-review-step-three/domain/interfaces/step-three.repository.interface";
+import type { IStepFourRepositoryInterface } from "src/vehicle-service-review-step-four/domain/interfaces/step-four.repsitory.interface";
 
 @Injectable()
 export class AutoSyncVehicleServiceReviewUseCase {
@@ -25,6 +26,8 @@ export class AutoSyncVehicleServiceReviewUseCase {
         private readonly stepTwoRepository: IStepTwoRepositoryInterface,
         @Inject('IStepThreeRepository')
         private readonly stepThreeRepository: IStepThreeRepositoryInterface,
+        @Inject('IStepFourRepository')
+        private readonly stepFourRepository: IStepFourRepositoryInterface,
     ) { }
 
     async execute(): Promise<{ synced: number; skipped: number; errors: number }> {
@@ -186,6 +189,7 @@ export class AutoSyncVehicleServiceReviewUseCase {
                 this.stepOneRepository.createStepOnes(dtos),
                 this.stepTwoRepository.createStepTwos(dtos),
                 this.stepThreeRepository.createStepThrees(dtos),
+                this.stepFourRepository.createStepFours(dtos),
             ]);
 
         }
