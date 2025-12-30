@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Put, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
 import { StepFourDto } from "../dtos/step-four.dto";
 import { StepFourService } from "src/vehicle-service-review-step-four/application/step-four.service";
@@ -16,8 +16,17 @@ export class StepFourController {
     constructor(
          private readonly stepFourService: StepFourService,
     ) { }
-    @Get(':reviewId')
+
+    @Get(':id')
+    @ApiOperation({ summary: 'Get Step Four by ID' })
+    @ApiParam({ name: 'id', description: 'Step Four ID', type: 'string', format: 'uuid' })
+    async getStepFourById(@Param('id') id: string): Promise<StepFourDto | null> {
+        return this.stepFourService.getStepFourById(id);
+    }
+
+    @Get('review/:reviewId')
     @ApiOperation({ summary: 'Get Step Four by Vehicle Service Review ID' })
+    @ApiParam({ name: 'reviewId', description: 'Vehicle Service Review ID', type: 'string', format: 'uuid' })
     async getStepFourByReviewId(@Param('reviewId') reviewId: string): Promise<StepFourDto | null> {
         return this.stepFourService.getStepFourByReviewId(reviewId);
     }
@@ -43,7 +52,38 @@ export class StepFourController {
         return this.stepFourService.createStepFour(createDto);
     }
 
-    @Put(':id')
+    @Post('create-multiple')
+    @ApiOperation({ summary: 'Create Multiple Vehicle Service Review Step Four Records' })
+    @ApiBody({
+        type: [CreateStepfourDto],
+        description: 'Array of data for creating multiple Vehicle Service Review Step Four records',
+        examples: {
+            example1: {
+                summary: 'Create Multiple Step Four Example',
+                value: [
+                    {
+                        vehicle_service_review_id: '123e4567-e89b-12d3-a456-426614174000',
+                        signature_customer: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...',
+                        signature_status: SignatureStatus.SIGNED,
+                        customer_absent_flag: false,
+                        created_by: '550e8400-e29b-41d4-a716-446655440000',
+                    },
+                    {
+                        vehicle_service_review_id: '223e4567-e89b-12d3-a456-426614174001',
+                        signature_customer: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...',
+                        signature_status: SignatureStatus.ABSENT,
+                        customer_absent_flag: true,
+                        created_by: '550e8400-e29b-41d4-a716-446655440000',
+                    },
+                ],
+            },
+        },
+    })
+    async createStepFours(@Body() createDtos: CreateStepfourDto[]): Promise<StepFourDto[]> {
+        return this.stepFourService.createStepFours(createDtos);
+    }
+
+    @Put('update/:id')
     @ApiOperation({ summary: 'Update Vehicle Service Review Step Four' })
     @ApiBody({
         type: UpdateStepfourDto,
@@ -60,6 +100,7 @@ export class StepFourController {
             },
         },
     })
+    
     async updateStepFour(
         @Param('id') id: string,
         @Body() updateDto: UpdateStepfourDto,
@@ -72,17 +113,11 @@ export class StepFourController {
     @ApiBody({
         type: PatchStepfourDto,
         description: 'Data for patching success_flag of Vehicle Service Review Step Four',
-        schema: {
-            type: 'object',
-            properties: {
-                success_flag: {
-                    type: 'boolean',
-                    example: true,
-                },
-                updated_by: {
-                    type: 'string',
-                    format: 'uuid',
-                    example: '550e8400-e29b-41d4-a716-446655440000',
+        examples: {
+            example1: {
+                summary: 'Patch Success Flag Example',
+                value: {
+                    updated_by: '550e8400-e29b-41d4-a716-446655440000',
                 },
             },
         },
@@ -98,17 +133,11 @@ export class StepFourController {
     @ApiBody({
         type: PatchStepfourDto,
         description: 'Data for patching is_active of Vehicle Service Review Step Four',
-        schema: {
-            type: 'object',
-            properties: {
-                is_active: {
-                    type: 'boolean',
-                    example: false,
-                },
-                updated_by: {
-                    type: 'string',
-                    format: 'uuid',
-                    example: '550e8400-e29b-41d4-a716-446655440000',
+        examples: {
+            example1: {
+                summary: 'Patch is_active Example',
+                value: {
+                    updated_by: '550e8400-e29b-41d4-a716-446655440000',
                 },
             },
         },
