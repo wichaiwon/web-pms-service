@@ -4,12 +4,18 @@ import { PatchStepOneDto } from "src/vehicle-service-review-step-one/interfaces/
 import { StepOneAdditionalDto } from "src/vehicle-service-review-step-one/interfaces/dtos/step-one-additional.dto";
 
 @Injectable()
-export class PatchIsActiveStepOneAdditionalUseCase {
+export class PatchStepOneAdditionalIsActiveUseCase {
     constructor(
         @Inject('IStepOneRepository')
         private readonly stepOneRepository: IStepOneRepositoryInterface,
     ) { }
     async execute(id: string, patchDto: PatchStepOneDto): Promise<StepOneAdditionalDto> {
-        return await this.stepOneRepository.patchIsActiveStepOneAdditional(id, patchDto);
+        const existingAdditional = await this.stepOneRepository.getStepOneAdditionalById(id);
+        if (!existingAdditional) {
+            throw new Error(`Step One Additional with ID ${id} not found.`);
+        }
+        const updatedIsActive = {...existingAdditional, is_active: !existingAdditional.is_active};
+        const updatedAdditional = await this.stepOneRepository.patchStepOneAdditionalIsActive(id, updatedIsActive);
+        return updatedAdditional;
     }
 }

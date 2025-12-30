@@ -10,6 +10,11 @@ export class UpdateStepOneUseCase {
         private readonly stepOneRepository: IStepOneRepositoryInterface,
     ) { }
     async execute(id:string,updateDto: UpdateStepOneDto): Promise<StepOneDto> {
-        return await this.stepOneRepository.updateStepOne(id, updateDto);
+        const existingReview = await this.stepOneRepository.getStepOneByReviewId(id);
+        if (!existingReview) {
+            throw new Error(`Step One with ID ${id} not found.`);
+        }
+        const updatedReview = await this.stepOneRepository.updateStepOne(id, updateDto);
+        return updatedReview;
     }
 }

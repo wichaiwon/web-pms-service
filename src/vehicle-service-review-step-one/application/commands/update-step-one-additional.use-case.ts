@@ -11,6 +11,11 @@ export class UpdateStepOneAdditionalUseCase {
         ,
     ) { }
     async execute(id: string, updateDto: UpdateStepOneAdditionalDto): Promise<StepOneAdditionalDto> {
-        return await this.stepOneAdditionalRepository.updateStepOneAdditional(id, updateDto);
+        const existingStepOneAdditional = await this.stepOneAdditionalRepository.getStepOneAdditionalById(id);
+        if (!existingStepOneAdditional) {
+            throw new Error(`Step One Additional with ID ${id} not found.`);
+        }
+        const updatedStepOneAdditional = await this.stepOneAdditionalRepository.updateStepOneAdditional(id, updateDto);
+        return updatedStepOneAdditional;
     }
 }
