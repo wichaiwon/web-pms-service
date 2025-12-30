@@ -7,13 +7,17 @@ import { VehicleServiceReviewStepOneAdditional } from "../entities/vehicle-servi
 import { UpdateStepOneAdditionalDto } from "src/vehicle-service-review-step-one/interfaces/dtos/update-step-one-additional.dto";
 
 export interface IStepOneRepositoryInterface {
+    getStepOneById(id: string): Promise<VehicleServiceReviewStepOne | null>;
     getStepOneByReviewId(vehicleServiceReviewId: string): Promise<VehicleServiceReviewStepOne | null>;
     createStepOne(createDto: CreateStepOneDto): Promise<VehicleServiceReviewStepOne>;
-    createStepOneAdditional(createDto:CreateStepOneAdditionalDto): Promise<VehicleServiceReviewStepOneAdditional>;
+    createStepOnes(createDtos: CreateStepOneDto[]): Promise<VehicleServiceReviewStepOne[]>;
     updateStepOne(id: string, updateDto: UpdateStepOneDto): Promise<VehicleServiceReviewStepOne>;
-    patchIsActiveStepOne(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOne>;
-    patchSuccessFlagStepOne(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOne>;
+    patchStepOneIsActive(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOne>;
+    patchStepOneSuccessFlag(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOne>;
+    getStepOneAdditionalById(id: string): Promise<VehicleServiceReviewStepOneAdditional | null>;
+    getStepOneAdditionalByStepOneId(stepOneId: string): Promise<VehicleServiceReviewStepOneAdditional | null>;
+    createStepOneAdditional(createDto: CreateStepOneAdditionalDto): Promise<VehicleServiceReviewStepOneAdditional>;
     updateStepOneAdditional(id: string, updateDto: UpdateStepOneAdditionalDto): Promise<VehicleServiceReviewStepOneAdditional>;
-    patchIsActiveStepOneAdditional(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOneAdditional>;
-    patchSuccessFlagStepOneAdditional(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOneAdditional>;
+    patchStepOneAdditionalIsActive(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOneAdditional>;
+    patchStepOneAdditionalSuccessFlag(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOneAdditional>;
 }

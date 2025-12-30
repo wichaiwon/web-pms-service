@@ -1,20 +1,18 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { IStepOneRepositoryInterface } from "src/vehicle-service-review-step-one/domain/interfaces/step-one.repository.interface";
 import { StepOneDto } from "src/vehicle-service-review-step-one/interfaces/dtos/step-one.dto";
-import { UpdateStepOneDto } from "src/vehicle-service-review-step-one/interfaces/dtos/update-step-one.dto";
 
 @Injectable()
-export class UpdateStepOneUseCase {
+export class GetStepOneByIdUseCase {
     constructor(
         @Inject('IStepOneRepository')
         private readonly stepOneRepository: IStepOneRepositoryInterface,
     ) { }
-    async execute(id:string,updateDto: UpdateStepOneDto): Promise<StepOneDto> {
-        const existingReview = await this.stepOneRepository.getStepOneByReviewId(id);
-        if (!existingReview) {
+    async execute(id: string): Promise<StepOneDto | null> {
+        const stepOne = await this.stepOneRepository.getStepOneById(id);
+        if (!stepOne) {
             throw new Error(`Step One with ID ${id} not found.`);
         }
-        const updatedReview = await this.stepOneRepository.updateStepOne(id, updateDto);
-        return updatedReview;
+        return stepOne;
     }
 }

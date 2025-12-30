@@ -7,14 +7,18 @@ import { UpdateStepOneAdditionalDto } from "src/vehicle-service-review-step-one/
 import { UpdateStepOneDto } from "src/vehicle-service-review-step-one/interfaces/dtos/update-step-one.dto";
 
 export interface IStepOneServiceInterface {
+    getStepOneById(id: string): Promise<StepOneDto | null>;
     getStepOneByReviewId(vehicleServiceReviewId: string): Promise<StepOneDto | null>;
     createStepOne(createDto: CreateStepOneDto): Promise<StepOneDto>;
+    createStepOnes(createDtos: CreateStepOneDto[]): Promise<StepOneDto[]>;
     updateStepOne(id: string, updateDto: UpdateStepOneDto): Promise<StepOneDto>;
-    patchIsActiveStepOne(id: string, patchDto: PatchStepOneDto): Promise<StepOneDto>;
-    patchSuccessFlagStepOne(id: string, patchDto: PatchStepOneDto): Promise<StepOneDto>;
+    patchStepOneIsActive(id: string, patchDto: PatchStepOneDto): Promise<StepOneDto>;
+    patchStepOneSuccessFlag(id: string, patchDto: PatchStepOneDto): Promise<StepOneDto>;
+    getStepOneAdditionalById(id: string): Promise<StepOneAdditionalDto | null>;
+    getStepOneAdditionalByStepOneId(stepOneId: string): Promise<StepOneAdditionalDto | null>;
     createStepOneAdditional(createDto: CreateStepOneAdditionalDto): Promise<StepOneAdditionalDto>;
     updateStepOneAdditional(id: string, updateDto: UpdateStepOneAdditionalDto): Promise<StepOneAdditionalDto>;
-    patchIsActiveStepOneAdditional(id: string, patchDto: PatchStepOneDto): Promise<StepOneAdditionalDto>;
-    patchSuccessFlagStepOneAdditional(id: string, patchDto: PatchStepOneDto): Promise<StepOneAdditionalDto>;
+    patchStepOneAdditionalIsActive(id: string, patchDto: PatchStepOneDto): Promise<StepOneAdditionalDto>;
+    patchStepOneAdditionalSuccessFlag(id: string, patchDto: PatchStepOneDto): Promise<StepOneAdditionalDto>;
 
 }

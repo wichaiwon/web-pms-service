@@ -4,13 +4,19 @@ import { PatchStepOneDto } from "src/vehicle-service-review-step-one/interfaces/
 import { StepOneAdditionalDto } from "src/vehicle-service-review-step-one/interfaces/dtos/step-one-additional.dto";
 
 @Injectable()
-export class PatchSuccessFlagStepOneAdditionalUseCase {
+export class PatchStepOneAdditionalSuccessFlagUseCase {
     constructor(
         @Inject('IStepOneRepository')
         private readonly stepOneRepository: IStepOneRepositoryInterface,
     ) { }
     async execute(id: string, patchDto:PatchStepOneDto): Promise<StepOneAdditionalDto> {
-        return await this.stepOneRepository.patchSuccessFlagStepOneAdditional(id, patchDto);
+        const existingAdditional = await this.stepOneRepository.getStepOneAdditionalById(id);
+        if (!existingAdditional) {
+            throw new Error(`Step One Additional with ID ${id} not found.`);
+        }
+        const updatedSuccessFlag = {...existingAdditional, success_flag: !existingAdditional.success_flag};
+        const updatedAdditional = await this.stepOneRepository.patchStepOneAdditionalSuccessFlag(id, updatedSuccessFlag);
+        return updatedAdditional;
     }
 }
 

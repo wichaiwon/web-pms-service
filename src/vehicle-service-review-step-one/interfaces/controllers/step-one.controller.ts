@@ -1,5 +1,5 @@
-import { Body, Controller, Param, Patch, Post, Put, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Get, Param, Patch, Post, Put, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { StepOneService } from "src/vehicle-service-review-step-one/application/step-one.service";
 import { CreateStepOneDto } from "../dtos/create-step-one.dto";
 import { DamageCar } from "src/shared/enum/vehicle-service-review-step-one/step-one.enum";
@@ -18,6 +18,19 @@ export class StepOneController {
     constructor(
         private readonly stepOneService: StepOneService,
     ) { }
+
+    @Get(':id')
+    @ApiOperation({ summary: 'Get Vehicle Service Review Step One by ID' })
+    async getStepOneById(@Param('id') id: string) {
+        return this.stepOneService.getStepOneById(id);
+    }
+
+    @Get('review/:vehicleServiceReviewId')
+    @ApiOperation({ summary: 'Get Vehicle Service Review Step One by Review ID' })
+    async getStepOneByReviewId(@Param('vehicleServiceReviewId') vehicleServiceReviewId: string) {
+        return this.stepOneService.getStepOneByReviewId(vehicleServiceReviewId);
+    }
+
     @Post('create')
     @ApiOperation({ summary: 'Create Vehicle Service Review Step One' })
     @ApiBody({
@@ -37,6 +50,35 @@ export class StepOneController {
     })
     async createStepOne(@Body() createDto: CreateStepOneDto) {
         return this.stepOneService.createStepOne(createDto);
+    }
+
+    @Post('create-multiple')
+    @ApiOperation({ summary: 'Create Multiple Vehicle Service Review Step Ones' })
+    @ApiBody({
+        type: [CreateStepOneDto],
+        description: 'Array of data for creating multiple Vehicle Service Review Step Ones',
+        examples: {
+            example1: {
+                summary: 'Sample multiple details',
+                value: [
+                    {
+                        vehicle_service_review_id: '123e4567-e89b-12d3-a456-426614174000',
+                        damage_car: DamageCar.NONE,
+                        damage_car_image: 'http://example.com/damage1.jpg',
+                        created_by: '550e8400-e29b-41d4-a716-446655440000',
+                    },
+                    {
+                        vehicle_service_review_id: '223e4567-e89b-12d3-a456-426614174000',
+                        damage_car: DamageCar.CANNOT_CHECK,
+                        damage_car_image: 'http://example.com/damage2.jpg',
+                        created_by: '550e8400-e29b-41d4-a716-446655440000',
+                    },
+                ],
+            },
+        },
+    })
+    async createStepOnes(@Body() createDtos: CreateStepOneDto[]) {
+        return this.stepOneService.createStepOnes(createDtos);
     }
 
     @Put('update/:id')
@@ -60,102 +102,103 @@ export class StepOneController {
     }
 
     @Patch('is-active/:id')
-    @ApiOperation({ summary: 'Patch Is Active Status of Vehicle Service Review Step One' })
+    @ApiOperation({
+        summary: 'Patch Is Active Status of Vehicle Service Review Step One',
+        description: 'Toggle the is_active status of a Vehicle Service Review Step One by its ID.',
+    })
+    @ApiParam({
+        name: 'id',
+        type: 'string',
+        format: 'uuid',
+        description: 'The ID of the Vehicle Service Review Step One to patch',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+    })
     @ApiBody({
-        schema: {
-            type: 'object',
-            properties: {
-                is_active: {
-                    type: 'boolean',
-                    example: true,
-                    description: 'Is Active Status',
-                },
-                updated_by: {
-                    type: 'string',
-                    format: 'uuid',
-                    example: '550e8400-e29b-41d4-a716-446655440000',
-                    description: 'User ID who updates the record',
-                },
-            },
-            required: ['is_active', 'updated_by'],
-        },
+        type: PatchStepOneDto,
         description: 'Data for patching Is Active status of Vehicle Service Review Step One',
-    })
-    async patchIsActive(
-        @Param('id') id: string,
-        @Body() patchDto: { is_active: boolean; updated_by: string },
-    ) {
-        return this.stepOneService.patchIsActiveStepOne(id, patchDto);
-    }
-    @Patch('success-flag/:id')
-    @ApiOperation({ summary: 'Patch Success Flag of Vehicle Service Review Step One' })
-    @ApiBody({
-        schema: {
-            type: 'object',
-            properties: {
-                success_flag: {
-                    type: 'boolean',
-                    example: true,
-                    description: 'Success Flag',
-                },
-                updated_by: {
-                    type: 'string',
-                    format: 'uuid',
-                    example: '550e8400-e29b-41d4-a716-446655440000',
-                    description: 'User ID who updates the record',
+        examples: {
+            example1: {
+                summary: 'Patch Is Active Example',
+                value: {
+                    updated_by: '550e8400-e29b-41d4-a716-446655440000',
                 },
             },
-            required: ['success_flag', 'updated_by'],
         },
-        description: 'Data for patching Success Flag of Vehicle Service Review Step One',
     })
-    async patchSuccessFlag(
+    async patchStepOneIsActive(
         @Param('id') id: string,
         @Body() patchDto: PatchStepOneDto,
     ) {
-        return this.stepOneService.patchSuccessFlagStepOne(id, patchDto);
+        return this.stepOneService.patchStepOneIsActive(id, patchDto);
+    }
+
+
+    @Patch('success-flag/:id')
+    @ApiOperation({
+        summary: 'Patch Success Flag of Vehicle Service Review Step One',
+        description: 'Toggle the success_flag of a Vehicle Service Review Step One by its ID.',
+    })
+    @ApiParam({
+        name: 'id',
+        type: 'string',
+        format: 'uuid',
+        description: 'The ID of the Vehicle Service Review Step One to patch',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+    })
+    @ApiBody({
+        type: PatchStepOneDto,
+        description: 'Data for patching Success Flag of Vehicle Service Review Step One',
+        examples: {
+            example1: {
+                summary: 'Patch Success Flag Example',
+                value: {
+                    updated_by: '550e8400-e29b-41d4-a716-446655440000',
+                },
+            },
+        },
+    })
+    async patchSuccessFlagStepOne(
+        @Param('id') id: string,
+        @Body() patchDto: PatchStepOneDto,
+    ) {
+        return this.stepOneService.patchStepOneSuccessFlag(id, patchDto);
+    }
+
+    @Get('additional/:id')
+    @ApiOperation({ summary: 'Get Vehicle Service Review Step One Additional by ID' })
+    async getStepOneAdditionalById(@Param('id') id: string): Promise<StepOneAdditionalDto | null> {
+        return this.stepOneService.getStepOneAdditionalById(id);
+    }
+
+    @Get('additional/step-one/:stepOneId')
+    @ApiOperation({ summary: 'Get Vehicle Service Review Step One Additional by Step One ID' })
+    async getStepOneAdditionalByStepOneId(@Param('stepOneId') stepOneId: string): Promise<StepOneAdditionalDto | null> {
+        return this.stepOneService.getStepOneAdditionalByStepOneId(stepOneId);
     }
 
     @Post('additional/create')
     @ApiOperation({ summary: 'Create Vehicle Service Review Step One Additional' })
     @ApiBody({
-        schema: {
-            type: 'object',
-            properties: {
-                vehicle_service_review_step_one_id: {
-                    type: 'string',
-                    format: 'uuid',
-                    example: '123e4567-e89b-12d3-a456-426614174000',
-                    description: 'Vehicle Service Review Step One ID',
-                },
-                additional_image: {
-                    type: 'array',
-                    items: {
-                        type: 'string',
-                        format: 'uri',
-                    },
-                    example: ['http://example.com/additional1.jpg', 'http://example.com/additional2.jpg'],
-                    description: 'Array of Additional Images',
-                },
-                comment: {
-                    type: 'string',
-                    example: 'Additional comments about the step one review.',
-                    description: 'Comment',
-                },
-                created_by: {
-                    type: 'string',
-                    format: 'uuid',
-                    example: '550e8400-e29b-41d4-a716-446655440000',
-                    description: 'User ID who creates the record',
+        type: CreateStepOneAdditionalDto,
+        description: 'Data for creating Vehicle Service Review Step One Additional',
+        examples: {
+            example1: {
+                summary: 'Create Step One Additional Example',
+                value: {
+                    vehicle_service_review_step_one_id: '123e4567-e89b-12d3-a456-426614174000',
+                    additional_image: ['http://example.com/additional1.jpg'],
+                    comment: 'Additional comments about the step one review.',
+                    created_by: '550e8400-e29b-41d4-a716-446655440000',
                 },
             },
-            required: ['vehicle_service_review_step_one_id', 'created_by'],
         },
-        description: 'Data for creating Vehicle Service Review Step One Additional',
     })
-    async createStepOneAdditional(@Body() createDto: CreateStepOneAdditionalDto): Promise<StepOneAdditionalDto> {
+    async createStepOneAdditional(
+        @Body() createDto: CreateStepOneAdditionalDto,
+    ): Promise<StepOneAdditionalDto> {
         return this.stepOneService.createStepOneAdditional(createDto);
-    }
+    } 
+
     @Put('additional/update/:id')
     @ApiOperation({ summary: 'Update Vehicle Service Review Step One Additional' })
     @ApiBody({
@@ -178,61 +221,60 @@ export class StepOneController {
     ): Promise<StepOneAdditionalDto> {
         return this.stepOneService.updateStepOneAdditional(id, updateDto);
     }
+
     @Patch('additional/is-active/:id')
     @ApiOperation({ summary: 'Patch Is Active Status of Vehicle Service Review Step One Additional' })
+    @ApiParam({
+        name: 'id',
+        type: 'string',
+        format: 'uuid',
+        description: 'The ID of the Vehicle Service Review Step One Additional to patch',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+    })
     @ApiBody({
-        schema: {
-            type: 'object',
-            properties: {
-                is_active: {
-                    type: 'boolean',
-                    example: true,
-                    description: 'Is Active Status',
-                },
-                updated_by: {
-                    type: 'string',
-                    format: 'uuid',
-                    example: '550e8400-e29b-41d4-a716-446655440000',
-                    description: 'User ID who updates the record',
+        type: PatchStepOneDto,
+        description: 'Data for patching Is Active status of Vehicle Service Review Step One Additional',
+        examples: {
+            example1: {
+                summary: 'Patch Is Active Example',
+                value: {
+                    updated_by: '550e8400-e29b-41d4-a716-446655440000',
                 },
             },
-            required: ['is_active', 'updated_by'],
         },
-        description: 'Data for patching Is Active status of Vehicle Service Review Step One Additional',
     })
     async patchIsActiveStepOneAdditional(
         @Param('id') id: string,
         @Body() patchDto: PatchStepOneDto,
     ): Promise<StepOneAdditionalDto> {
-        return this.stepOneService.patchIsActiveStepOneAdditional(id, patchDto);
+        return this.stepOneService.patchStepOneAdditionalIsActive(id, patchDto);
     }
 
     @Patch('additional/success-flag/:id')
     @ApiOperation({ summary: 'Patch Success Flag of Vehicle Service Review Step One Additional' })
+    @ApiParam({
+        name: 'id',
+        type: 'string',
+        format: 'uuid',
+        description: 'The ID of the Vehicle Service Review Step One Additional to patch',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+    })
     @ApiBody({
-        schema: {
-            type: 'object',
-            properties: {
-                success_flag: {
-                    type: 'boolean',
-                    example: true,
-                    description: 'Success Flag',
-                },
-                updated_by: {
-                    type: 'string',
-                    format: 'uuid',
-                    example: '550e8400-e29b-41d4-a716-446655440000',
-                    description: 'User ID who updates the record',
+        type: PatchStepOneDto,
+        description: 'Data for patching Success Flag of Vehicle Service Review Step One Additional',
+        examples: {
+            example1: {
+                summary: 'Patch Success Flag Example',
+                value: {
+                    updated_by: '550e8400-e29b-41d4-a716-446655440000',
                 },
             },
-            required: ['success_flag', 'updated_by'],
         },
-        description: 'Data for patching Success Flag of Vehicle Service Review Step One Additional',
     })
     async patchSuccessFlagStepOneAdditional(
         @Param('id') id: string,
         @Body() patchDto: PatchStepOneDto,
     ): Promise<StepOneAdditionalDto> {
-        return this.stepOneService.patchSuccessFlagStepOneAdditional(id, patchDto);
+        return this.stepOneService.patchStepOneAdditionalSuccessFlag(id, patchDto);
     }
 }

@@ -275,11 +275,10 @@ export class DetailController {
             example1: {
                 summary: 'Sample additional detail update',
                 value: {
-                    image1: "http://example.com/image1_additional_updated.jpg",
-                    image2: "http://example.com/image2_additional_updated.jpg",
-                    mileage: 15700,
-                    fuel_level: 32,
-                    comment : "Updated comment",
+                    tire_pressure: TirePressure.NITROGEN,
+                    front_tire_pressure: 35,
+                    back_tire_pressure: 40,
+                    comment: "Updated comment",
                     updated_by: "fe28d42a-b928-4665-afc9-3d43a3609f36"
                 }
             }

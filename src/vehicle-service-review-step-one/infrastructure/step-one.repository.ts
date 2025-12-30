@@ -18,10 +18,19 @@ export class StepOneRepository implements IStepOneRepositoryInterface {
         private readonly stepOneAdditionalRepository: Repository<VehicleServiceReviewStepOneAdditional>,
     ) { }
 
+    async getStepOneById(id: string): Promise<VehicleServiceReviewStepOne | null> {
+        return this.stepOneRepository.findOne({
+            where: {
+                id,
+            },
+        });
+    }
+
     async getStepOneByReviewId(vehicleServiceReviewId: string): Promise<VehicleServiceReviewStepOne | null> {
         return this.stepOneRepository.findOne({
             where: {
                 vehicle_service_review_id: vehicleServiceReviewId,
+                is_active: true,
             },
         });
     }
@@ -29,55 +38,89 @@ export class StepOneRepository implements IStepOneRepositoryInterface {
         const stepOne = this.stepOneRepository.create(createDto);
         return this.stepOneRepository.save(stepOne);
     }
+    async createStepOnes(createDtos: CreateStepOneDto[]): Promise<VehicleServiceReviewStepOne[]> {
+        const stepOnes = this.stepOneRepository.create(createDtos);
+        return this.stepOneRepository.save(stepOnes);
+    }
+
     async updateStepOne(id: string, updateDto: UpdateStepOneDto): Promise<VehicleServiceReviewStepOne> {
-        await this.stepOneRepository.update(id, updateDto);
+        const existingStepOne = await this.stepOneRepository.findOne({ where: { id, is_active: true } });
+        if (!existingStepOne) {
+            throw new Error(`Step One with ID ${id} not found.`);
+        }
+        const updatedStepOne = Object.assign(existingStepOne, updateDto);
+        return this.stepOneRepository.save(updatedStepOne);
+    }
+    async patchStepOneIsActive(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOne> {
+        const result = await this.stepOneRepository.update(id, patchDto);
+        if (result.affected === 0) {
+            throw new Error(`Step One with ID ${id} not found.`);
+        }
         const updatedEntity = await this.stepOneRepository.findOne({ where: { id } });
         if (!updatedEntity) {
-            throw new Error('Step One not found');
+            throw new Error(`Step One with ID ${id} not found.`);
         }
         return updatedEntity;
     }
-    async patchIsActiveStepOne(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOne> {
-        await this.stepOneRepository.update(id, patchDto);
+    async patchStepOneSuccessFlag(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOne> {
+        const result = await this.stepOneRepository.update(id, patchDto);
+        if (result.affected === 0) {
+            throw new Error(`Step One with ID ${id} not found.`);
+        }
         const updatedEntity = await this.stepOneRepository.findOne({ where: { id } });
         if (!updatedEntity) {
-            throw new Error('Step One not found');
+            throw new Error(`Step One with ID ${id} not found.`);
         }
         return updatedEntity;
     }
-    async patchSuccessFlagStepOne(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOne> {
-        await this.stepOneRepository.update(id, patchDto);
-        const updatedEntity = await this.stepOneRepository.findOne({ where: { id } });
-        if (!updatedEntity) {
-            throw new Error('Step One not found');
-        }
-        return updatedEntity;
+    async getStepOneAdditionalById(id: string): Promise<VehicleServiceReviewStepOneAdditional | null> {
+        return this.stepOneAdditionalRepository.findOne({
+            where: {
+                id,
+            },
+        });
     }
+    async getStepOneAdditionalByStepOneId(stepOneId: string): Promise<VehicleServiceReviewStepOneAdditional | null> {
+        return this.stepOneAdditionalRepository.findOne({
+            where: {
+                vehicle_service_review_step_one_id: stepOneId,
+                is_active: true,
+            },
+        });
+    }
+
     async createStepOneAdditional(createDto: CreateStepOneAdditionalDto): Promise<VehicleServiceReviewStepOneAdditional> {
         const stepOneAdditional = this.stepOneAdditionalRepository.create(createDto);
         return this.stepOneAdditionalRepository.save(stepOneAdditional);
     }
+
     async updateStepOneAdditional(id: string, updateDto: UpdateStepOneDto): Promise<VehicleServiceReviewStepOneAdditional> {
-        await this.stepOneAdditionalRepository.update(id, updateDto);
+        const existingStepOneAdditional = await this.stepOneAdditionalRepository.findOne({ where: { id, is_active: true } });
+        if (!existingStepOneAdditional) {
+            throw new Error(`Step One Additional with ID ${id} not found.`);
+        }
+        const updatedStepOneAdditional = Object.assign(existingStepOneAdditional, updateDto);
+        return this.stepOneAdditionalRepository.save(updatedStepOneAdditional);
+    }
+    async patchStepOneAdditionalIsActive(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOneAdditional> {
+        const result = await this.stepOneAdditionalRepository.update(id, patchDto);
+        if (result.affected === 0) {
+            throw new Error(`Step One Additional with ID ${id} not found.`);
+        }
         const updatedEntity = await this.stepOneAdditionalRepository.findOne({ where: { id } });
         if (!updatedEntity) {
-            throw new Error('Step One Additional not found');
+            throw new Error(`Step One Additional with ID ${id} not found.`);
         }
         return updatedEntity;
     }
-    async patchIsActiveStepOneAdditional(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOneAdditional> {
-        await this.stepOneAdditionalRepository.update(id, patchDto);
-        const updatedEntity = await this.stepOneAdditionalRepository.findOne({ where: { id } });
-        if (!updatedEntity) {
-            throw new Error('Step One Additional not found');
+    async patchStepOneAdditionalSuccessFlag(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOneAdditional> {
+        const result = await this.stepOneAdditionalRepository.update(id, patchDto);
+        if (result.affected === 0) {
+            throw new Error(`Step One Additional with ID ${id} not found.`);
         }
-        return updatedEntity;
-    }
-    async patchSuccessFlagStepOneAdditional(id: string, patchDto: PatchStepOneDto): Promise<VehicleServiceReviewStepOneAdditional> {
-        await this.stepOneAdditionalRepository.update(id, patchDto);
         const updatedEntity = await this.stepOneAdditionalRepository.findOne({ where: { id } });
         if (!updatedEntity) {
-            throw new Error('Step One Additional not found');
+            throw new Error(`Step One Additional with ID ${id} not found.`);
         }
         return updatedEntity;
     }
