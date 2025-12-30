@@ -16,21 +16,37 @@ import { UpdateDetailAdditionalUseCase } from "./commands/update-detail-addition
 import { UpdateDetailAdditionalDto } from "../interfaces/dtos/update-detail-additional.dto";
 import { PatchDetailAdditionalIsActiveUseCase } from "./commands/patch-detail-additional-is-active.use-case";
 import { PatchDetailAdditionalSuccessFlagUseCase } from "./commands/patch-detail-additional-success-flag.use-case";
+import { GetDetailByReviewIdUseCase } from "./queries/get-detail-by-review-id.use-case";
+import { GetDetailAdditionalByDetailIdUseCase } from "./queries/get-additional-by-detail-id.use-case";
+import { GetDetailByIdUseCase } from "./queries/get-detail-by-id.use-case";
+import { GetDetailAdditionalByIdUseCase } from "./queries/get-additional-by-id.use-case";
 
 
 @Injectable()
 export class DetailService implements IDetailServiceInterface {
     constructor(
+        private readonly getDetailByIdUseCase: GetDetailByIdUseCase,
+        private readonly getDetailByReviewIdUseCase: GetDetailByReviewIdUseCase,
         private readonly createDetailUseCase: CreateDetailUseCase,
         private readonly createDetailsUseCase: CreateDetailsUseCase,
         private readonly updateDetailUseCase: UpdateDetailUseCase, 
         private readonly patchSuccessFlagUseCase: PatchSuccessFlagUseCase,
         private readonly patchIsActiveUseCase: PatchIsActiveUseCase,
+        private readonly getDetailAdditionalByIdUseCase: GetDetailAdditionalByIdUseCase,
+        private readonly getDetailAdditionalByDetailIdUseCase: GetDetailAdditionalByDetailIdUseCase,
         private readonly createDetailAdditionalUseCase: CreateDetailAdditionalUseCase,
         private readonly updateDetailAdditionalUseCase: UpdateDetailAdditionalUseCase,
         private readonly patchDetailAdditionalIsActiveUseCase: PatchDetailAdditionalIsActiveUseCase,
         private readonly patchDetailAdditionalSuccessFlagUseCase: PatchDetailAdditionalSuccessFlagUseCase,        
     ) { }
+
+    async getDetailById(id: string): Promise<DetailDto | null> {
+        return await this.getDetailByIdUseCase.execute(id);
+    }
+
+    async getDetailByReviewId(vehicleServiceReviewId: string): Promise<DetailDto | null> {
+        return await this.getDetailByReviewIdUseCase.execute(vehicleServiceReviewId);
+    }
 
     async createDetail(createDto: CreateDetailDto): Promise<DetailDto> {
         return await this.createDetailUseCase.execute(createDto);
@@ -45,23 +61,35 @@ export class DetailService implements IDetailServiceInterface {
     }
 
     async patchSuccessFlag(id: string, patchDto: PatchDetailDto): Promise<DetailDto> {
-        return await this.patchSuccessFlagUseCase.execute(id, patchDto);
+         return await this.patchSuccessFlagUseCase.execute(id, patchDto);
     }
 
     async patchIsActive(id: string, patchDto: PatchDetailDto): Promise<DetailDto> {
         return await this.patchIsActiveUseCase.execute(id, patchDto);
     }
 
+    async getDetailAdditionalById(id: string): Promise<DetailAdditionalDto | null> {
+        return await this.getDetailAdditionalByIdUseCase.execute(id);
+    }
+
+    async getDetailAdditionalByDetailId(detailId: string): Promise<DetailAdditionalDto | null> {
+        return await this.getDetailAdditionalByDetailIdUseCase.execute(detailId);
+    }
+
     async createDetailAdditional( createDto: CreateDetailAdditionalDto): Promise<DetailAdditionalDto> {
         return await this.createDetailAdditionalUseCase.execute(createDto);
     }
+    
     async updateDetailAdditional(id: string, updateDto: UpdateDetailAdditionalDto): Promise<DetailAdditionalDto> {
         return await this.updateDetailAdditionalUseCase.execute(id, updateDto);
     }
+
     async patchDetailAdditionalIsActive(id: string, patchDto: PatchDetailDto): Promise<DetailAdditionalDto> {
         return await this.patchDetailAdditionalIsActiveUseCase.execute(id, patchDto);
     }
+
     async patchDetailAdditionalSuccessFlag(id: string, patchDto: PatchDetailDto): Promise<DetailAdditionalDto> {
         return await this.patchDetailAdditionalSuccessFlagUseCase.execute(id, patchDto);
     }
+    
 }
