@@ -236,6 +236,7 @@ export class VehicleServiceReviewController {
                 summary: 'Patch active status',
                 value: {
                     is_active: false,
+                    responsible: ["edc6a03a-6285-4a09-aab6-decb494cf522"],
                     updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
                 }
             }
@@ -258,6 +259,7 @@ export class VehicleServiceReviewController {
                 summary: 'Patch success flag',
                 value: {
                     success_flag: true,
+                    responsible: ["edc6a03a-6285-4a09-aab6-decb494cf522"],
                     updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
                 }
             }
