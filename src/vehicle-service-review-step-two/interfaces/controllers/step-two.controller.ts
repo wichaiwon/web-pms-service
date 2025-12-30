@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Put, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { StepTwoService } from "src/vehicle-service-review-step-two/application/step-two.service";
 import { CreateStepTwoDto } from "../dtos/create-step-two.dto";
 import { StepTwoDto } from "../dtos/step-two.dto";
@@ -20,7 +20,13 @@ export class StepTwoController {
         private readonly stepTwoService: StepTwoService,
     ) { }
 
-    @Get('/:reviewId')
+    @Get('/:id')
+    @ApiOperation({ summary: 'Get Vehicle Service Review Step Two by ID' })
+    async getStepTwoById(@Param('id') id: string): Promise<StepTwoDto | null> {
+        return this.stepTwoService.getStepTwoById(id);
+    }
+
+    @Get('/review/:reviewId')
     @ApiOperation({ summary: 'Get Vehicle Service Review Step Two by Review ID' })
     async getStepTwoByReviewId(@Param('reviewId') reviewId: string): Promise<StepTwoDto | null> {
         return this.stepTwoService.getStepTwoByReviewId(reviewId);
@@ -65,8 +71,74 @@ export class StepTwoController {
         return this.stepTwoService.createStepTwo(createDto);
     }
 
+    @Post('create-multiple')
+    @ApiOperation({ summary: 'Create Multiple Vehicle Service Review Step Two' })
+    @ApiBody({
+        type: [CreateStepTwoDto],
+        description: 'Array of data for creating multiple Vehicle Service Review Step Two',
+        examples: {
+            example1: {
+                summary: 'Create Multiple Step Two Example',
+                value: [
+                    {
+                        vehicle_service_review_id: '123e4567-e89b-12d3-a456-426614174000',
+                        spare_tire: SpareTire.HAVE,
+                        wheel_control_cover: WheelControlCover.HAVE,
+                        cargo: Cargo.HAVE,
+                        truck_tool_set: TruckToolSet.HAVE,
+                        left_front_tire_year: '25',
+                        right_front_tire_year: '25',
+                        left_back_tire_year: '25',
+                        right_back_tire_year: '25',
+                        left_front_tire_pressure: 32,
+                        right_front_tire_pressure: 32,
+                        left_back_tire_pressure: 32,
+                        right_back_tire_pressure: 32,
+                        left_front_tire_depth: TireDepth.TWO,
+                        right_front_tire_depth: TireDepth.TWO,
+                        left_back_tire_depth: TireDepth.TWO,
+                        right_back_tire_depth: TireDepth.TWO,
+                        left_front_tire_condition: TireCondition.CHANGE_IMMEDIATELY,
+                        right_front_tire_condition: TireCondition.NORMAL,
+                        left_back_tire_condition: TireCondition.SHOULD_CHANGE,
+                        right_back_tire_condition: TireCondition.CHANGE_IMMEDIATELY,
+                        created_by: '550e8400-e29b-41d4-a716-446655440000',
+                    },
+                    {
+                        vehicle_service_review_id: '223e4567-e89b-12d3-a456-426614174000',
+                        spare_tire: SpareTire.NOT_HAVE,
+                        wheel_control_cover: WheelControlCover.NOT_COMPLETE,
+                        cargo: Cargo.NOT_HAVE,
+                        truck_tool_set: TruckToolSet.NOT_COMPLETE,
+                        left_front_tire_year: '24',
+                        right_front_tire_year: '24',
+                        left_back_tire_year: '24',
+                        right_back_tire_year: '24',
+                        left_front_tire_pressure: 30,
+                        right_front_tire_pressure: 30,
+                        left_back_tire_pressure: 30,
+                        right_back_tire_pressure: 30,
+                        left_front_tire_depth: TireDepth.FOUR,
+                        right_front_tire_depth: TireDepth.FOUR,
+                        left_back_tire_depth: TireDepth.FOUR,
+                        right_back_tire_depth: TireDepth.FOUR,
+                        left_front_tire_condition: TireCondition.NORMAL,
+                        right_front_tire_condition: TireCondition.NORMAL,
+                        left_back_tire_condition: TireCondition.NORMAL,
+                        right_back_tire_condition: TireCondition.NORMAL,
+                        created_by: '550e8400-e29b-41d4-a716-446655440000',
+                    },
+                ],
+            },
+        },
+    })
+    async createStepTwos(@Body() createDtos: CreateStepTwoDto[]): Promise<StepTwoDto[]> {
+        return this.stepTwoService.createStepTwos(createDtos);
+    }
+
     @Put('update/:id')
     @ApiOperation({ summary: 'Update Vehicle Service Review Step Two' })
+    @ApiParam({ name: 'id', description: 'ID of the Vehicle Service Review Step Two to update' })
     @ApiBody({
         type: UpdateStepTwoDto,
         description: 'Data for updating Vehicle Service Review Step Two',
@@ -105,9 +177,23 @@ export class StepTwoController {
     ): Promise<StepTwoDto> {
         return this.stepTwoService.updateStepTwo(id, updateDto);
     }
+
     @Patch('is-active/:id')
     @ApiOperation({ summary: 'Patch is_active of Vehicle Service Review Step Two' })
-    async patchIsActiveStepTwo(
+    @ApiParam({ name: 'id', description: 'ID of the Vehicle Service Review Step Two to patch is_active' })
+    @ApiBody({
+        type: PatchStepTwoDto,
+        description: 'Data for patching is_active of Vehicle Service Review Step Two',
+        examples: {
+            example1: {
+                summary: 'Patch is_active Step Two Example',
+                value: {
+                    updated_by: '550e8400-e29b-41d4-a716-446655440000',
+                },
+            },
+        },
+    })
+    async patchStepTwoIsActive(
         @Param('id') id: string,
         @Body() patchDto: PatchStepTwoDto,
     ): Promise<StepTwoDto> {
@@ -115,12 +201,40 @@ export class StepTwoController {
     }
     @Patch('success-flag/:id')
     @ApiOperation({ summary: 'Patch success_flag of Vehicle Service Review Step Two' })
-    async patchSuccessFlagStepTwo(
+    @ApiParam({ name: 'id', description: 'ID of the Vehicle Service Review Step Two to patch success_flag' })
+    @ApiBody({
+        type: PatchStepTwoDto,
+        description: 'Data for patching success_flag of Vehicle Service Review Step Two',
+        examples: {
+            example1: {
+                summary: 'Patch success_flag Step Two Example',
+                value: {
+                    updated_by: '550e8400-e29b-41d4-a716-446655440000',
+                },
+            },
+        },
+    })
+    async patchStepTwoSuccessFlag(
         @Param('id') id: string,
         @Body() patchDto: PatchStepTwoDto,
     ): Promise<StepTwoDto> {
         return this.stepTwoService.patchStepTwoSuccessFlag(id, patchDto);
     }
+
+    @Get('additional/:id')
+    @ApiOperation({ summary: 'Get Vehicle Service Review Step Two Additional by ID' })
+    @ApiParam({ name: 'id', description: 'ID of the Vehicle Service Review Step Two Additional' })
+    async getStepTwoAdditionalById(@Param('id') id: string): Promise<StepTwoAdditionalDto | null> {
+        return this.stepTwoService.getStepTwoAdditionalById(id);
+    }
+
+    @Get('additional/step-two/:stepTwoId')
+    @ApiOperation({ summary: 'Get Vehicle Service Review Step Two Additional by Step Two ID' })
+    @ApiParam({ name: 'stepTwoId', description: 'ID of the Vehicle Service Review Step Two' })
+    async getStepTwoAdditionalByStepTwoId(@Param('stepTwoId') stepTwoId: string): Promise<StepTwoAdditionalDto | null> {
+        return this.stepTwoService.getStepTwoAdditionalByStepTwoId(stepTwoId);
+    }
+
     @Post('additional/create')
     @ApiOperation({ summary: 'Create Vehicle Service Review Step Two Additional' })
     @ApiBody({
@@ -146,6 +260,7 @@ export class StepTwoController {
     }
     @Put('additional/update/:id')
     @ApiOperation({ summary: 'Patch is_active of Vehicle Service Review Step Two Additional' })
+    @ApiParam({ name: 'id', description: 'ID of the Vehicle Service Review Step Two Additional to update' })
     @ApiBody({
         type: UpdateStepTwoAdditionalDto,
         description: 'Data for patching is_active of Vehicle Service Review Step Two Additional',
@@ -168,7 +283,20 @@ export class StepTwoController {
 
     @Patch('additional/is-active/:id')
     @ApiOperation({ summary: 'Patch is_active of Vehicle Service Review Step Two Additional' })
-    async patchIsActiveStepTwoAdditional(
+    @ApiParam({ name: 'id', description: 'ID of the Vehicle Service Review Step Two Additional to patch is_active' })
+    @ApiBody({
+        type: PatchStepTwoDto,
+        description: 'Data for patching is_active of Vehicle Service Review Step Two Additional',
+        examples: {
+            example1: {
+                summary: 'Patch is_active Step Two Additional Example',
+                value: {
+                    updated_by: '550e8400-e29b-41d4-a716-446655440000',
+                },
+            },
+        },
+    })
+    async patchStepTwoAdditionalIsActive(
         @Param('id') id: string,
         @Body() patchDto: PatchStepTwoDto,
     ): Promise<StepTwoAdditionalDto> {
@@ -177,7 +305,20 @@ export class StepTwoController {
 
     @Patch('additional/success-flag/:id')
     @ApiOperation({ summary: 'Patch success_flag of Vehicle Service Review Step Two Additional' })
-    async patchSuccessFlagStepTwoAdditional(
+    @ApiParam({ name: 'id', description: 'ID of the Vehicle Service Review Step Two Additional to patch success_flag' })
+    @ApiBody({
+        type: PatchStepTwoDto,
+        description: 'Data for patching success_flag of Vehicle Service Review Step Two Additional',
+        examples: {
+            example1: {
+                summary: 'Patch success_flag Step Two Additional Example',
+                value: {
+                    updated_by: '550e8400-e29b-41d4-a716-446655440000',
+                },
+            },
+        },
+    })
+    async patchStepTwoAdditionalSuccessFlag(
         @Param('id') id: string,
         @Body() patchDto: PatchStepTwoDto,
     ): Promise<StepTwoAdditionalDto> {
