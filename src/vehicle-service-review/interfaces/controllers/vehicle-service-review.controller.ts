@@ -280,7 +280,6 @@ export class VehicleServiceReviewController {
             patch: {
                 summary: 'Reissue vehicle service review',
                 value: {
-                    is_active: false,
                     created_by: 'edc6a03a-6285-4a09-aab6-decb494cf522',
                     updated_by: 'edc6a03a-6285-4a09-aab6-decb494cf522'
                 }

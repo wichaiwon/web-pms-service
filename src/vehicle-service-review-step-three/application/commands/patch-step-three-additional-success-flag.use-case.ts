@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import type { IStepThreeRepositoryInterface } from "src/vehicle-service-review-step-three/domain/interfaces/step-three.repository.interface";
 import { PatchStepThreeDto } from "src/vehicle-service-review-step-three/interfaces/dtos/patch-step-three.dto";
 import { StepThreeAdditionalDto } from "src/vehicle-service-review-step-three/interfaces/dtos/step-three-additional.dto";
@@ -11,6 +11,12 @@ export class PatchStepThreeAdditionalSuccessFlagUseCase {
     ) { }
 
     async execute(id: string, patchDto: PatchStepThreeDto): Promise<StepThreeAdditionalDto> {
-        return this.stepThreeRepository.patchStepThreeAdditionalIsActive(id, patchDto);
+        const existingStepThreeAdditional = await this.stepThreeRepository.getStepThreeAdditionalById(id);
+        if (!existingStepThreeAdditional) {
+            throw new NotFoundException('Step Three Additional not found');
+        }
+        const updatedSuccessFlag = { ...patchDto, success_flag: !existingStepThreeAdditional.success_flag};
+        const updatedStepThreeAdditional = await this.stepThreeRepository.patchStepThreeAdditionalSuccessFlag(id, updatedSuccessFlag);
+        return updatedStepThreeAdditional;
     }
 }

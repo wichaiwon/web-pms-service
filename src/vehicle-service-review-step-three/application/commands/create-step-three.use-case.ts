@@ -8,9 +8,13 @@ export class CreateStepThreeUseCase {
     constructor(
         @Inject('IStepThreeRepository')
         private readonly stepThreeRepository: IStepThreeRepositoryInterface
-    ) {}
+    ) { }
 
-    async execute(createDto:CreateStepThreeDto): Promise<StepThreeDto> {
+    async execute(createDto: CreateStepThreeDto): Promise<StepThreeDto> {
+        const existingReview = await this.stepThreeRepository.getStepThreeByReviewId(createDto.vehicle_service_review_id);
+        if (existingReview) {
+            return existingReview;
+        }
         return this.stepThreeRepository.createStepThree(createDto);
     }
 }
