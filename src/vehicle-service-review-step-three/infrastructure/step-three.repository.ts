@@ -18,10 +18,19 @@ export class stepThreeRepository implements IStepThreeRepositoryInterface {
         @InjectRepository(VehicleServiceReviewStepThreeAdditional)
         private readonly stepThreeAdditionalRepository: Repository<VehicleServiceReviewStepThreeAdditional>,
     ) { }
+    async getStepThreeById(id: string): Promise<VehicleServiceReviewStepThree | null> {
+        const stepThree = await this.stepThreeRepository.findOne({
+            where: {
+                id,
+            },
+        });
+        return stepThree;
+    }
     async getStepThreeByReviewId(reviewId: string): Promise<VehicleServiceReviewStepThree | null> {
         return await this.stepThreeRepository.findOne({
             where: {
                 vehicle_service_review_id: reviewId,
+                is_active: true,
             },
         });
     }
@@ -29,8 +38,15 @@ export class stepThreeRepository implements IStepThreeRepositoryInterface {
         const stepThreeEntity = this.stepThreeRepository.create(createDto);
         return await this.stepThreeRepository.save(stepThreeEntity);
     }
+    async createStepThrees(createDtos: CreateStepThreeDto[]): Promise<VehicleServiceReviewStepThree[]> {
+        const stepThreeEntities = this.stepThreeRepository.create(createDtos);
+        return await this.stepThreeRepository.save(stepThreeEntities);
+    }
     async updateStepThree(id: string, updateDto: UpdateStepThreeDto): Promise<VehicleServiceReviewStepThree> {
-        await this.stepThreeRepository.update(id, updateDto);
+        const result = await this.stepThreeRepository.update(id, updateDto);
+        if (result.affected === 0) {
+            throw new NotFoundException('Step Three entity not found for update');
+        }
         const updatedEntity = await this.stepThreeRepository.findOne({
             where: { id },
         });
@@ -59,12 +75,33 @@ export class stepThreeRepository implements IStepThreeRepositoryInterface {
         }
         return updatedEntity;
     }
+    async getStepThreeAdditionalById(id: string): Promise<VehicleServiceReviewStepThreeAdditional | null> {
+        const stepThreeAdditional = await this.stepThreeAdditionalRepository.findOne({
+            where: {
+                id,
+            },
+        });
+        return stepThreeAdditional;
+    }
+    async getStepThreeAdditionalByStepThreeId(stepThreeId: string): Promise<VehicleServiceReviewStepThreeAdditional | null> {
+        const stepThreeAdditional = await this.stepThreeAdditionalRepository.findOne({
+            where: {
+                vehicle_service_review_step_three_id: stepThreeId,
+                is_active: true,
+            },
+        });
+        return stepThreeAdditional;
+    }
+
     async createStepThreeAdditional(createDto: CreateStepThreeAdditionalDto): Promise<VehicleServiceReviewStepThreeAdditional> {
         const stepThreeAdditionalEntity = this.stepThreeAdditionalRepository.create(createDto);
         return await this.stepThreeAdditionalRepository.save(stepThreeAdditionalEntity);
     }
     async updateStepThreeAdditional(id: string, updateDto: UpdateStepThreeAdditionalDto): Promise<VehicleServiceReviewStepThreeAdditional> {
-        await this.stepThreeAdditionalRepository.update(id, updateDto);
+        const result = await this.stepThreeAdditionalRepository.update(id, updateDto);
+        if (result.affected === 0) {
+            throw new NotFoundException('Step Three Additional entity not found for update');
+        }
         const updatedEntity = await this.stepThreeAdditionalRepository.findOne({
             where: { id },
         });
