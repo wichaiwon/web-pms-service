@@ -7,8 +7,7 @@ import { CarBrand, CarType, StatusRepairOrder, StatusReport } from "src/shared/e
 import { CreateVehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/create-vehicle-service-review.dto";
 import { UpdateVehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/update-vehicle-service-review.dto";
 import type { IStepOneRepositoryInterface } from "src/vehicle-service-review-step-one/domain/interfaces/step-one.repository.interface";
-import { CreateDetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/create-detail.dto";
-import { CreateStepOneDto } from "src/vehicle-service-review-step-one/interfaces/dtos/create-step-one.dto";
+import type { IStepTwoRepositoryInterface } from "src/vehicle-service-review-step-two/domain/interfaces/step-two.repository.inface";
 
 @Injectable()
 export class AutoSyncVehicleServiceReviewUseCase {
@@ -21,6 +20,8 @@ export class AutoSyncVehicleServiceReviewUseCase {
         private readonly employeeService: EmployeeService,
         @Inject('IStepOneRepository')
         private readonly stepOneRepository: IStepOneRepositoryInterface,
+        @Inject('IStepTwoRepository')
+        private readonly stepTwoRepository: IStepTwoRepositoryInterface,
     ) { }
 
     async execute(): Promise<{ synced: number; skipped: number; errors: number }> {
@@ -39,8 +40,7 @@ export class AutoSyncVehicleServiceReviewUseCase {
         let errors = 0;
 
         // Arrays สำหรับ bulk insert
-        const detailsToCreate: CreateDetailDto[] = [];
-        const stepOnesToCreate: CreateStepOneDto[] = [];
+        const createdReviews: { id: string; created_by: string }[] = [];
 
         // 2. วนลูปบันทึกข้อมูลแต่ละรายการ
         for (const appointment of appointmentData) {
@@ -156,18 +156,13 @@ export class AutoSyncVehicleServiceReviewUseCase {
                     };
 
                     const createdReview = await this.vehicleServiceReviewRepository.createVehicleServiceReview(dataToCreate);
-                    
-                    // เก็บ detail และ stepOne ไว้ใน array สำหรับ bulk insert
-                    detailsToCreate.push({
-                        vehicle_service_review_id: createdReview.id,
+
+                    // เก็บ review ที่สร้างสำเร็จไว้สำหรับ bulk insert ภายหลัง
+                    createdReviews.push({
+                        id: createdReview.id,
                         created_by: dataToCreate.created_by,
                     });
 
-                    stepOnesToCreate.push({
-                        vehicle_service_review_id: createdReview.id,
-                        created_by: dataToCreate.created_by,
-                    });
-                    
                     synced++;
                 }
             } catch (error) {
@@ -176,16 +171,21 @@ export class AutoSyncVehicleServiceReviewUseCase {
             }
         }
 
-        // 3. Bulk insert details และ stepOnes หลังวนลูปจบ
-        if (detailsToCreate.length > 0) {
-            await this.detailRepository.createDetails(detailsToCreate);
-        }
-        if (stepOnesToCreate.length > 0) {
-            await this.stepOneRepository.createStepOnes(stepOnesToCreate);
-        }
+        // 3. Bulk insert details, stepOnes และ stepTwos พร้อมกัน
+        if (createdReviews.length > 0) {
+            const dtos = createdReviews.map(review => ({
+                vehicle_service_review_id: review.id,
+                created_by: review.created_by,
+            }));
 
+            await Promise.all([
+                this.detailRepository.createDetails(dtos),
+                this.stepOneRepository.createStepOnes(dtos),
+                this.stepTwoRepository.createStepTwos(dtos),
+            ]);
+
+        }
         console.log(`Sync completed: ${synced} synced, ${skipped} skipped, ${errors} errors`);
         return { synced, skipped, errors };
     }
-
 }

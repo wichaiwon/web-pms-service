@@ -1,6 +1,7 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import type { IDetailRepositoryInterface } from "src/vehicle-service-review-detail/domain/interfaces/detail.repository.interface";
-import { CreateDetailDto } from "src/vehicle-service-review-detail/interfaces/dtos/create-detail.dto";
+import type { IStepOneRepositoryInterface } from "src/vehicle-service-review-step-one/domain/interfaces/step-one.repository.interface";
+import type { IStepTwoRepositoryInterface } from "src/vehicle-service-review-step-two/domain/interfaces/step-two.repository.inface";
 import type { IVehicleServiceReviewRepositoryInterface } from "src/vehicle-service-review/domain/interfaces/vehicle-service-review.repository.interface";
 import { PatchVehicleServiceReviewIsActiveDto } from "src/vehicle-service-review/interfaces/dtos/patch-vehicle-service-review-is-active.dto";
 import { VehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/vehicle-service-review.dto";
@@ -12,27 +13,38 @@ export class ReIssueVehicleServiceReviewUseCase {
         private readonly vehicleServiceReviewRepository: IVehicleServiceReviewRepositoryInterface,
         @Inject('IDetailRepository')
         private readonly detailRepository: IDetailRepositoryInterface,
+        @Inject('IStepOneRepository')
+        private readonly stepOneRepository: IStepOneRepositoryInterface,
+        @Inject('IStepTwoRepository')
+        private readonly stepTwoRepository: IStepTwoRepositoryInterface,
     ) { }
 
-    async execute(id: string, patchDto:PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReviewDto> {
+    async execute(id: string, patchDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReviewDto> {
         // ดึง review ที่ต้องการ reissue (review ยัง active อยู่)
         const review = await this.vehicleServiceReviewRepository.getVehicleServiceReviewById(id);
-        
         if (!review) {
-            throw new Error('Vehicle service review not found');
+            throw new NotFoundException('Vehicle service review not found');
         }
-        
-        // ดึง detail เก่ามา และ set is_active=false
-        const oldDetail = await this.detailRepository.getDetailByReviewId(id);
-        if (oldDetail) {
-            await this.detailRepository.patchIsActive(oldDetail.id,patchDto);
-        }
-        // สร้าง detail ใหม่ที่เป็นค่า default (null ทั้งหมด)
-        await this.detailRepository.createDetail({
-            vehicle_service_review_id: id,
-            created_by: patchDto.updated_by,
-        });
-        
+
+        const [oldDetail, oldStepOne, oldStepTwo] = await Promise.all([
+            this.detailRepository.getDetailByReviewId(id),
+            this.stepOneRepository.getStepOneByReviewId(id),
+            this.stepTwoRepository.getStepTwoByReviewId(id),
+        ]);
+
+        const inactivePatchDto = { ...patchDto, is_active: false };
+        await Promise.all([
+            oldDetail && this.detailRepository.patchIsActive(oldDetail.id, inactivePatchDto),
+            oldStepOne && this.stepOneRepository.patchStepOneIsActive(oldStepOne.id, inactivePatchDto),
+            oldStepTwo && this.stepTwoRepository.patchStepTwoIsActive(oldStepTwo.id, inactivePatchDto),
+        ]); 
+
+        await Promise.all([
+            this.detailRepository.createDetail({ vehicle_service_review_id: id, created_by: patchDto.updated_by }),
+            this.stepOneRepository.createStepOne({ vehicle_service_review_id: id, created_by: patchDto.updated_by }),
+            this.stepTwoRepository.createStepTwo({ vehicle_service_review_id: id, created_by: patchDto.updated_by }),
+        ]);
+
         return review;
     }
 }

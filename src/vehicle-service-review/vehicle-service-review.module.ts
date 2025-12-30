@@ -20,6 +20,7 @@ import { VehicleServiceReviewDetailModule } from "src/vehicle-service-review-det
 import { CancelVehicleServiceReviewUseCase } from "./application/commands/cancel-vehicle-service-review.use-case";
 import { ReIssueVehicleServiceReviewUseCase } from "./application/commands/reissue-vehicle-service-review.use-case";
 import { VehicleServiceReviewStepOneModule } from "src/vehicle-service-review-step-one/vehicle-service-review-step-one.module";
+import { VehicleServiceReviewStepTwoModule } from "src/vehicle-service-review-step-two/vehicle-service-review-step-two.module";
 
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { VehicleServiceReviewStepOneModule } from "src/vehicle-service-review-st
         EmployeeModule,
         VehicleServiceReviewDetailModule,
         VehicleServiceReviewStepOneModule,
+        VehicleServiceReviewStepTwoModule,
     ],
     controllers: [VehicleServiceReviewController],
     providers: [

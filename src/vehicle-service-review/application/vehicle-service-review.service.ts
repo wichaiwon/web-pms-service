@@ -21,10 +21,10 @@ import { ReIssueVehicleServiceReviewUseCase } from "./commands/reissue-vehicle-s
 @Injectable()
 export class VehicleServiceReviewService implements IVehicleServiceReviewServiceInterface {
     constructor(
+        private readonly getVehicleServiceReviewUseCase: GetVehicleServiceReviewUseCase,
         private readonly autoSyncVehicleServiceReviewUseCase: AutoSyncVehicleServiceReviewUseCase,
         private readonly createVehicleServiceReviewUseCase: CreateVehicleServiceReviewUseCase,
         private readonly createVehicleServiceReviewsUseCase: CreateVehicleServiceReviewsUseCase,
-        private readonly getVehicleServiceReviewUseCase: GetVehicleServiceReviewUseCase,
         private readonly updateVehicleServiceReviewUseCase: UpdateVehicleServiceReviewUseCase,
         private readonly patchInProcessUseCase: PatchInProcessUseCase,
         private readonly patchSuccessFlagUseCase: PatchSuccessFlagUseCase,

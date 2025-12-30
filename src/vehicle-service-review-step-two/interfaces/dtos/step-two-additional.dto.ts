@@ -7,5 +7,5 @@ export class StepTwoAdditionalDto {
     right_back_tire_image: string[];
     comment: string;
     created_by: string;
-    updated_by?: string;
+    updated_by: string;
 }

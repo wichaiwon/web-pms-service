@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { IDetailRepositoryInterface } from "src/vehicle-service-review-detail/domain/interfaces/detail.repository.interface";
 import type { IStepOneRepositoryInterface } from "src/vehicle-service-review-step-one/domain/interfaces/step-one.repository.interface";
+import type { IStepTwoRepositoryInterface } from "src/vehicle-service-review-step-two/domain/interfaces/step-two.repository.inface";
 import type { IVehicleServiceReviewRepositoryInterface } from "src/vehicle-service-review/domain/interfaces/vehicle-service-review.repository.interface";
 import { CreateVehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/create-vehicle-service-review.dto";
 import { VehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/vehicle-service-review.dto";
@@ -14,22 +15,29 @@ export class CreateVehicleServiceReviewUseCase {
         private readonly detailRepository: IDetailRepositoryInterface,
         @Inject('IStepOneRepository')
         private readonly stepOneRepository: IStepOneRepositoryInterface,
+        @Inject('IStepTwoRepository')
+        private readonly stepTwoRepository: IStepTwoRepositoryInterface,
     ) {}
 
     async execute(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
         // สร้าง vehicle service review ก่อน
         const createdReview = await this.vehicleServiceReviewRepository.createVehicleServiceReview(createDto);
         
-        // สร้าง detail อัตโนมัติสำหรับ review ที่สร้างใหม่
-        await this.detailRepository.createDetail({
-            vehicle_service_review_id: createdReview.id,
-            created_by: createDto.created_by,
-        });
-        // สร้าง step one อัตโนมัติสำหรับ review ที่สร้างใหม่
-        await this.stepOneRepository.createStepOne({
-            vehicle_service_review_id: createdReview.id,
-            created_by: createDto.created_by,
-        });
+        // สร้าง detail, step one, และ step two อัตโนมัติสำหรับ review ที่สร้างใหม่
+        const repositories = [
+            this.detailRepository.createDetail.bind(this.detailRepository),
+            this.stepOneRepository.createStepOne.bind(this.stepOneRepository),
+            this.stepTwoRepository.createStepTwo.bind(this.stepTwoRepository),
+        ];
+
+        await Promise.all(
+            repositories.map(repoFn =>
+            repoFn({
+                vehicle_service_review_id: createdReview.id,
+                created_by: createDto.created_by,
+            })
+            )
+        );
         
         return createdReview;
     }
