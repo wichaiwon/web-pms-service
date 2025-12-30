@@ -12,6 +12,12 @@ export class PatchSuccessFlagUseCase {
     ) { }
 
     async execute(id: string, patchDto: PatchDetailDto): Promise<DetailDto> {
-        return await this.detailRepository.patchSuccessFlag(id, patchDto);
+        const existingDetail = await this.detailRepository.getDetailById(id);
+        if (!existingDetail) {
+            throw new Error(`Detail with ID ${id} not found.`);
+        }
+        const updatedSuccessFlag = { ...patchDto, success_flag: !existingDetail.success_flag };
+        const updatedDetail = await this.detailRepository.patchSuccessFlag(id, updatedSuccessFlag);
+        return updatedDetail;
     }
 }

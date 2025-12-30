@@ -10,6 +10,12 @@ export class PatchDetailAdditionalIsActiveUseCase {
         private readonly detailRepository: IDetailRepositoryInterface,
     ) {}
     async execute(id: string,patchDto:PatchDetailDto): Promise<DetailAdditionalDto> {
-        return this.detailRepository.patchAdditionalIsActive(id, patchDto);
+        const existingDetailAdditional = await this.detailRepository.getAdditionalById(id);
+        if (!existingDetailAdditional) {
+            throw new Error(`Detail Additional with ID ${id} not found.`);
+        }
+        const updatedIsActive = { ...patchDto, is_active: !existingDetailAdditional.is_active};
+        const updatedDetailAdditional = await this.detailRepository.patchAdditionalIsActive(id, updatedIsActive);
+        return updatedDetailAdditional;
     }
 }

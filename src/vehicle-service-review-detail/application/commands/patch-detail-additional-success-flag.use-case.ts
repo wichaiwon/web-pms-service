@@ -10,6 +10,12 @@ export class PatchDetailAdditionalSuccessFlagUseCase {
         private readonly detailRepository: IDetailRepositoryInterface,
     ) { }
     async execute(id: string, patchDto:PatchDetailDto): Promise<DetailAdditionalDto> {
-        return this.detailRepository.patchAdditionalSuccessFlag(id, patchDto);
+        const existingDetailAdditional = await this.detailRepository.getAdditionalById(id);
+        if (!existingDetailAdditional) {
+            throw new Error(`Detail Additional with ID ${id} not found.`);
+        }
+        const updatedSuccessFlag = { ...patchDto, success_flag: !existingDetailAdditional.success_flag };
+        const updatedDetailAdditional = await this.detailRepository.patchAdditionalSuccessFlag(id, updatedSuccessFlag);
+        return updatedDetailAdditional;
     }
 }
