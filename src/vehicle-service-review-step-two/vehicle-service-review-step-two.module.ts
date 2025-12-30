@@ -14,6 +14,10 @@ import { PatchStepTwoAdditionalIsActiveUseCase } from "./application/commands/pa
 import { UpdateStepTwoAdditionalUseCase } from "./application/commands/update-step-two-additional.use-case";
 import { PatchStepTwoAdditionalSuccessFlagUseCase } from "./application/commands/patch-step-two-additional-success-flag.use-case";
 import { VehicleServiceReviewStepTwoAdditional } from "./domain/entities/vehicle-service-review-step-two-additional.entity";
+import { GetStepTwoByIdUseCase } from "./application/queries/get-step-two-by-id.use-case";
+import { GetStepTwoAdditionalByIdUseCase } from "./application/queries/get-step-two-additional-by-id.use-case";
+import { GetStepTwoAdditionalByStepTwoIdUseCase } from "./application/queries/get-step-two-additional-by-review-id.use-case";
+import { CreateStepTwosUseCase } from "./application/commands/create-step-twos.use-case";
 
 @Module({
     imports: [TypeOrmModule.forFeature([VehicleServiceReviewStepTwo,
@@ -21,11 +25,15 @@ import { VehicleServiceReviewStepTwoAdditional } from "./domain/entities/vehicle
     ])],
     controllers: [StepTwoController],
     providers: [
+        GetStepTwoByIdUseCase,
         GetStepTwoByReviewIdUseCase,
         CreateStepTwoUseCase,
+        CreateStepTwosUseCase,
         UpdateStepTwoUseCase,
         PatchStepTwoIsActiveUseCase,
         PatchStepTwoSuccessFlagUseCase,
+        GetStepTwoAdditionalByIdUseCase,
+        GetStepTwoAdditionalByStepTwoIdUseCase,
         CreateStepTwoAdditionalUseCase,
         UpdateStepTwoAdditionalUseCase,
         PatchStepTwoAdditionalIsActiveUseCase,
