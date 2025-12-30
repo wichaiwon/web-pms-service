@@ -26,42 +26,33 @@ import { UpdateEmployeeUseCase } from "./application/commands/update-employee.us
             useFactory: async (configService: ConfigService) => ({
                 global: true,
                 secret: configService.get<string>('JWT_SECRET') || 'defaultSecretKey',
-                signOptions: { expiresIn: '12h' },
+                signOptions: {
+                    expiresIn:
+                        (configService.get<string>('JWT_EXPIRES_IN') as import('@nestjs/jwt').JwtSignOptions['expiresIn']) ||
+                        '12h',
+                },
             }),
             inject: [ConfigService],
         }),
     ],
     controllers: [EmployeeController],
     providers: [
-        // Application Service (Orchestrator)
         EmployeeService,
-        
-        // Infrastructure
         JwtStrategy,
-        
         // Use Cases - Commands
         CreateEmployeeUseCase,
         CreateEmployeesUseCase,
         UpdateEmployeeUseCase,
         LoginUseCase,
-        
         // Use Cases - Queries
         GetEmployeeUseCase,
         GetEmployeesUseCase,
         GetEmployeeByFullNameUseCase,
-        
         // Repository
-        {
-            provide: 'IEmployeeRepository',
-            useClass: EmployeeRepository,
-        },
-        
+        { provide: 'IEmployeeRepository', useClass: EmployeeRepository },
         // Infrastructure Services
-        {
-            provide: 'IPasswordHasher',
-            useClass: BcryptPasswordHasher,
-        }
+        { provide: 'IPasswordHasher', useClass: BcryptPasswordHasher },
     ],
     exports: [EmployeeService],
 })
-export class EmployeeModule { }
+export class EmployeeModule {}
