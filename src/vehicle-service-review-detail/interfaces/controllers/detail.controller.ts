@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, Put, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { CreateDetailDto } from "../dtos/create-detail.dto";
 import { DetailDto } from "../dtos/detail.dto";
@@ -9,6 +9,7 @@ import { CreateDetailAdditionalDto } from "../dtos/create-detail-additional.dto"
 import { DetailAdditionalDto } from "../dtos/detail-additional.dto";
 import { UpdateDetailAdditionalDto } from "../dtos/update-detail-additional.dto";
 import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
+import { TirePressure } from "src/shared/enum/vehicle-service-review-detail/detail.enum";
 
 @ApiTags('Vehicle Service Review Details')
 @Controller('detail')
@@ -19,6 +20,36 @@ export class DetailController {
     constructor(
         private readonly detailService: DetailService,
     ) { }
+
+    @Get(':id')
+    @ApiOperation({
+        summary: 'Get detail by ID',
+        description: 'Retrieve a detail record by its ID.'
+    })
+    @ApiParam({
+        name: 'id',
+        type: 'string',
+        description: 'ID of the detail to retrieve',
+        example: 'd4e5f6g7-h8i9-j0k1-l2m3-n4o5p6q7r8s9'
+    })
+    async getDetailById(@Param('id') id: string): Promise<DetailDto | null> {
+        return await this.detailService.getDetailById(id);
+    }
+
+    @Get('review/:reviewId')
+    @ApiOperation({
+        summary: 'Get detail by Vehicle Service Review ID',
+        description: 'Retrieve a detail record by its associated Vehicle Service Review ID.'
+    })
+    @ApiParam({
+        name: 'reviewId',
+        type: 'string',
+        description: 'Vehicle Service Review ID of the detail to retrieve',
+        example: 'e7b8c2a0-4f1e-4e7a-9c2d-3b6f7a8e2d1f'
+    })
+    async getDetailByReviewId(@Param('reviewId') reviewId: string): Promise<DetailDto | null> {
+        return await this.detailService.getDetailByReviewId(reviewId);
+    }
 
     @Post('create')
     @ApiOperation({
@@ -46,7 +77,7 @@ export class DetailController {
     async createDetail(@Body() createDto: CreateDetailDto): Promise<DetailDto> {
         return await this.detailService.createDetail(createDto);
     }
-    
+
     @Post('create-multiple')
     @ApiOperation({
         summary: 'Create multiple details',
@@ -112,7 +143,7 @@ export class DetailController {
             }
         }
     })
-    async updateDetail(@Body('id') id: string, @Body() updateDto: UpdateDetailDto): Promise<DetailDto> {
+    async updateDetail(@Param('id') id: string, @Body() updateDto: UpdateDetailDto): Promise<DetailDto> {
         return await this.detailService.updateDetail(id, updateDto);
     }
 
@@ -134,13 +165,12 @@ export class DetailController {
             example1: {
                 summary: 'Sample patch success flag',
                 value: {
-                    success_flag: true,
                     updated_by: "fe28d42a-b928-4665-afc9-3d43a3609f36"
                 }
             }
         }
     })
-    async patchSuccessFlag(@Body('id') id: string, @Body() patchDto: PatchDetailDto): Promise<DetailDto> {
+    async patchSuccessFlag(@Param('id') id: string, @Body() patchDto: PatchDetailDto): Promise<DetailDto> {
         return await this.detailService.patchSuccessFlag(id, patchDto);
     }
 
@@ -162,14 +192,43 @@ export class DetailController {
             example1: {
                 summary: 'Sample patch active status',
                 value: {
-                    is_active: false,
                     updated_by: "fe28d42a-b928-4665-afc9-3d43a3609f36"
                 }
             }
         }
     })
-    async patchIsActive(@Body('id') id: string, @Body() patchDto: PatchDetailDto): Promise<DetailDto> {
+    async patchIsActive(@Param('id') id: string, @Body() patchDto: PatchDetailDto): Promise<DetailDto> {
         return await this.detailService.patchIsActive(id, patchDto);
+    }
+
+    @Get('additional/:id')
+    @ApiOperation({
+        summary: 'Get additional detail by ID',
+        description: 'Retrieve an additional detail record by its ID.'
+    })
+    @ApiParam({
+        name: 'id',
+        type: 'string',
+        description: 'ID of the additional detail to retrieve',
+        example: 'd4e5f6g7-h8i9-j0k1-l2m3-n4o5p6q7r8s9'
+    })
+    async getDetailAdditionalById(@Param('id') id: string): Promise<DetailAdditionalDto | null> {
+        return await this.detailService.getDetailAdditionalById(id);
+    }
+
+    @Get('additional/detail/:detailId')
+    @ApiOperation({
+        summary: 'Get additional detail by Detail ID',
+        description: 'Retrieve an additional detail record by its associated Detail ID.'
+    })
+    @ApiParam({
+        name: 'detailId',
+        type: 'string',
+        description: 'Detail ID of the additional detail to retrieve',
+        example: 'e7b8c2a0-4f1e-4e7a-9c2d-3b6f7a8e2d1f'
+    })
+    async getDetailAdditionalByDetailId(@Param('detailId') detailId: string): Promise<DetailAdditionalDto | null> {
+        return await this.detailService.getDetailAdditionalByDetailId(detailId);
     }
 
     @Post('additional/create')
@@ -178,18 +237,17 @@ export class DetailController {
         description: 'Create an additional detail record.'
     })
     @ApiBody({
-        type: CreateDetailDto,
+        type: CreateDetailAdditionalDto,
         description: 'Additional detail data to create',
         examples: {
             example1: {
                 summary: 'Sample additional detail',
                 value: {
-                    vehicle_service_review_id: "e7b8c2a0-4f1e-4e7a-9c2d-3b6f7a8e2d1f",
-                    session_id: "session_12345_additional",
-                    image1: "http://example.com/image1_additional.jpg",
-                    image2: "http://example.com/image2_additional.jpg",
-                    mileage: 15200,
-                    fuel_level: 28,
+                    vehicle_service_review_detail_id: "e7b8c2a0-4f1e-4e7a-9c2d-3b6f7a8e2d1f",
+                    tire_pressure: TirePressure.NORMAL,
+                    front_tire_pressure: 35,
+                    back_tire_pressure: 40,
+                    comment: "Sample comment",
                     created_by: "fe28d42a-b928-4665-afc9-3d43a3609f36"
                 }
             }
@@ -221,6 +279,7 @@ export class DetailController {
                     image2: "http://example.com/image2_additional_updated.jpg",
                     mileage: 15700,
                     fuel_level: 32,
+                    comment : "Updated comment",
                     updated_by: "fe28d42a-b928-4665-afc9-3d43a3609f36"
                 }
             }
@@ -248,13 +307,12 @@ export class DetailController {
             example1: {
                 summary: 'Sample patch active status of additional detail',
                 value: {
-                    is_active: true,
                     updated_by: "fe28d42a-b928-4665-afc9-3d43a3609f36"
                 }
             }
         }
     })
-    async patchDetailAdditionalIsActive(@Body('id') id: string, @Body() patchDto: PatchDetailDto): Promise<DetailAdditionalDto> {
+    async patchDetailAdditionalIsActive(@Param('id') id: string, @Body() patchDto: PatchDetailDto): Promise<DetailAdditionalDto> {
         return await this.detailService.patchDetailAdditionalIsActive(id, patchDto);
     }
 
@@ -276,13 +334,12 @@ export class DetailController {
             example1: {
                 summary: 'Sample patch success flag of additional detail',
                 value: {
-                    success_flag: false,
                     updated_by: "fe28d42a-b928-4665-afc9-3d43a3609f36"
                 }
             }
         }
     })
-    async patchDetailAdditionalSuccessFlag(@Body('id') id: string, @Body() patchDto: PatchDetailDto): Promise<DetailAdditionalDto> {
+    async patchDetailAdditionalSuccessFlag(@Param('id') id: string, @Body() patchDto: PatchDetailDto): Promise<DetailAdditionalDto> {
         return await this.detailService.patchDetailAdditionalSuccessFlag(id, patchDto);
     }
 }
