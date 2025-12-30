@@ -7,12 +7,15 @@ import { CreateStepTwoAdditionalDto } from "src/vehicle-service-review-step-two/
 import { UpdateStepTwoAdditionalDto } from "src/vehicle-service-review-step-two/interfaces/dtos/update-step-two-additional.dto";
 
 export interface IStepTwoRepositoryInterface {
-    // getStepTwoById(id: string): Promise<StepTwoDto | null>;
+    getStepTwoById(id: string): Promise<VehicleServiceReviewStepTwo | null>;
     getStepTwoByReviewId(reviewId: string): Promise<VehicleServiceReviewStepTwo | null>;
     createStepTwo(createDto: CreateStepTwoDto): Promise<VehicleServiceReviewStepTwo>;
+    createStepTwos(createDto: CreateStepTwoDto[]): Promise<VehicleServiceReviewStepTwo[]>;    
     updateStepTwo(id: string, updateDto: UpdateStepTwoDto): Promise<VehicleServiceReviewStepTwo>;
-    patchIsActiveStepTwo(id: string, patchDto: PatchStepTwoDto): Promise<VehicleServiceReviewStepTwo>;
-    patchSuccessFlagStepTwo(id: string, patchDto: PatchStepTwoDto): Promise<VehicleServiceReviewStepTwo>;
+    patchStepTwoIsActive(id: string, patchDto: PatchStepTwoDto): Promise<VehicleServiceReviewStepTwo>;
+    patchStepTwoSuccessFlag(id: string, patchDto: PatchStepTwoDto): Promise<VehicleServiceReviewStepTwo>;
+    getStepTwoAdditionalById(id: string): Promise<VehicleServiceReviewStepTwoAdditional | null>;
+    getStepTwoAdditionalByStepTwoId(stepTwoId: string): Promise<VehicleServiceReviewStepTwoAdditional | null>;
     createStepTwoAdditional(createDto: CreateStepTwoAdditionalDto): Promise<VehicleServiceReviewStepTwoAdditional>;
     updateStepTwoAdditional(id: string, updateDto: UpdateStepTwoAdditionalDto): Promise<VehicleServiceReviewStepTwoAdditional>;
     patchStepTwoAdditionalIsActive(id: string, patchDto: PatchStepTwoDto): Promise<VehicleServiceReviewStepTwoAdditional>;
