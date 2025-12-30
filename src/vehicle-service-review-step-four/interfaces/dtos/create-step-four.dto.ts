@@ -16,7 +16,7 @@ export class CreateStepfourDto {
         example: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...',
     })
     @IsOptional()
-    signature_customer: string;
+    signature_customer?: string;
 
     @ApiProperty({
         description: 'Status of Customer Signature',
@@ -24,14 +24,14 @@ export class CreateStepfourDto {
         enum: SignatureStatus,
     })
     @IsOptional()
-    signature_status: SignatureStatus;
+    signature_status?: SignatureStatus;
 
     @ApiProperty({
         description: 'Customer Absent Flag',
         example: null,
     })
     @IsOptional()
-    customer_absent_flag: boolean;
+    customer_absent_flag?: boolean;
 
     @ApiProperty({
         description: 'Created By',
