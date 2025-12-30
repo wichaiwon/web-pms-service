@@ -22,6 +22,7 @@ import { ReIssueVehicleServiceReviewUseCase } from "./application/commands/reiss
 import { VehicleServiceReviewStepOneModule } from "src/vehicle-service-review-step-one/vehicle-service-review-step-one.module";
 import { VehicleServiceReviewStepTwoModule } from "src/vehicle-service-review-step-two/vehicle-service-review-step-two.module";
 import { VehicleServiceReviewStepThreeModule } from "src/vehicle-service-review-step-three/vehicle-step-three.module";
+import { VehicleServiceReviewStepFourModule } from "src/vehicle-service-review-step-four/vehicle-service-review-step-four.module";
 
 @Module({
     imports: [
@@ -33,6 +34,7 @@ import { VehicleServiceReviewStepThreeModule } from "src/vehicle-service-review-
         VehicleServiceReviewStepOneModule,
         VehicleServiceReviewStepTwoModule,
         VehicleServiceReviewStepThreeModule,
+        VehicleServiceReviewStepFourModule
     ],
     controllers: [VehicleServiceReviewController],
     providers: [
