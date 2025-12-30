@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import type { IVehicleServiceReviewRepositoryInterface } from "src/vehicle-service-review/domain/interfaces/vehicle-service-review.repository.interface";
 import { PatchVehicleServiceReviewInProcessDto } from "src/vehicle-service-review/interfaces/dtos/patch-vehicle-service-review-in-process.dto";
 import { VehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/vehicle-service-review.dto";
@@ -11,6 +11,10 @@ export class PatchInProcessUseCase {
     ) { }
     
     async execute(id: string, patchDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReviewDto> {
+        const existingReview = await this.vehicleServiceReviewRepository.getVehicleServiceReviewById(id);
+        if (!existingReview) {
+            throw new NotFoundException('Vehicle service review not found');
+        }
         if (patchDto.responsible) {
             const existing = await this.vehicleServiceReviewRepository.getVehicleServiceReviewById(id);
             if (existing) {
@@ -34,6 +38,7 @@ export class PatchInProcessUseCase {
                     : [patchDto.responsible];
             }
         }
-        return await this.vehicleServiceReviewRepository.patchInProcess(id, patchDto);
+        const updatedReview = await this.vehicleServiceReviewRepository.patchInProcess(id, patchDto);
+        return updatedReview;
     }
 }

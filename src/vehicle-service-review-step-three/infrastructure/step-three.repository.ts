@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import type { IStepThreeRepositoryInterface } from "../domain/interfaces/step-three.repository.interface";
 import { InjectRepository } from "@nestjs/typeorm";
 import { VehicleServiceReviewStepThree } from "../domain/entities/vehicle-service-review-step-three.entity";
@@ -35,7 +35,7 @@ export class stepThreeRepository implements IStepThreeRepositoryInterface {
             where: { id },
         });
         if (!updatedEntity) {
-            throw new Error('Step Three entity not found after update');
+            throw new NotFoundException('Step Three entity not found after update');
         }
         return updatedEntity;
     }
@@ -45,7 +45,7 @@ export class stepThreeRepository implements IStepThreeRepositoryInterface {
             where: { id },
         });
         if (!updatedEntity) {
-            throw new Error('Step Three entity not found after patch');
+            throw new NotFoundException('Step Three entity not found after patch');
         }
         return updatedEntity;
     }
@@ -55,7 +55,7 @@ export class stepThreeRepository implements IStepThreeRepositoryInterface {
             where: { id },
         });
         if (!updatedEntity) {
-            throw new Error('Step Three entity not found after patch');
+            throw new NotFoundException('Step Three entity not found after patch');
         }
         return updatedEntity;
     }
@@ -69,7 +69,7 @@ export class stepThreeRepository implements IStepThreeRepositoryInterface {
             where: { id },
         });
         if (!updatedEntity) {
-            throw new Error('Step Three Additional entity not found after update');
+            throw new NotFoundException('Step Three Additional entity not found after update');
         }
         return updatedEntity;
     }
@@ -79,7 +79,7 @@ export class stepThreeRepository implements IStepThreeRepositoryInterface {
             where: { id },
         });
         if (!updatedEntity) {
-            throw new Error('Step Three Additional entity not found after patch');
+            throw new NotFoundException('Step Three Additional entity not found after patch');
         }
         return updatedEntity;
     }
@@ -89,7 +89,7 @@ export class stepThreeRepository implements IStepThreeRepositoryInterface {
             where: { id },
         });
         if (!updatedEntity) {
-            throw new Error('Step Three Additional entity not found after patch');
+            throw new NotFoundException('Step Three Additional entity not found after patch');
         }
         return updatedEntity;
     }

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import type { IStepOneRepositoryInterface } from "src/vehicle-service-review-step-one/domain/interfaces/step-one.repository.interface";
 import { StepOneAdditionalDto } from "src/vehicle-service-review-step-one/interfaces/dtos/step-one-additional.dto";
 
@@ -12,7 +12,7 @@ export class GetStepOneAdditionalByIdUseCase {
     async execute(id: string): Promise<StepOneAdditionalDto | null> {
         const additional = await this.stepOneRepository.getStepOneAdditionalById(id);
         if (!additional) {
-            throw new Error(`Step One Additional with ID ${id} not found.`);
+            throw new NotFoundException(`Step One Additional with ID ${id} not found.`);
         }
         return additional;
     }

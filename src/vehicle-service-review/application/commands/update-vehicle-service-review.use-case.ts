@@ -11,7 +11,10 @@ export class UpdateVehicleServiceReviewUseCase {
     ) { }
 
     async execute(id: string, updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
-
+        const existingReview = await this.vehicleServiceReviewRepository.getVehicleServiceReviewById(id);
+        if (!existingReview) {
+            throw new NotFoundException('Vehicle service review not found');
+        }
         // Business Logic: Handle responsible field - merge with existing, check duplicate
         if (updateDto.responsible) {
             const existing = await this.vehicleServiceReviewRepository.getVehicleServiceReviewById(id);
@@ -37,7 +40,7 @@ export class UpdateVehicleServiceReviewUseCase {
             }
         }
 
-        // เรียก Repository ทำ Data Access เท่านั้น
-        return await this.vehicleServiceReviewRepository.updateVehicleServiceReview(id, updateDto);
+        const updatedReview = await this.vehicleServiceReviewRepository.updateVehicleServiceReview(id, updateDto);
+        return updatedReview;
     }
 }
