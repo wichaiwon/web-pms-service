@@ -10,6 +10,11 @@ export class UpdateDetailAdditionalUseCase {
         private readonly detailRepository: IDetailRepositoryInterface,
     ) {}
     async execute(id: string, updateDto: UpdateDetailAdditionalDto): Promise<DetailAdditionalDto> {
-        return this.detailRepository.updateDetailAdditional(id, updateDto);
+        const existingDetail = await this.detailRepository.getAdditionalByDetailId(id);
+        if (!existingDetail) {
+            throw new Error(`Detail ID ${id} not found.`);
+        }
+        const updatedDetailAdditional = await this.detailRepository.updateDetailAdditional(id, updateDto);
+        return updatedDetailAdditional;
     }
 }
