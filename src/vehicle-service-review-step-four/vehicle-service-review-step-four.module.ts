@@ -9,13 +9,17 @@ import { UpdateStepFourUseCase } from "./application/command/update-step-four.us
 import { PatchStepfourIsActiveUseCase } from "./application/command/patch-step-four-is-active.use-case";
 import { StepFourRepository } from "./infrastructure/step-four.repository";
 import { PatchStepfourSuccessFlagUseCase } from "./application/command/patch-step-four-success-flag.use-case";
+import { GetStepFourByIdUseCase } from "./application/queries/get-step-four-by-id.use-case";
+import { CreateStepFoursUseCase } from "./application/command/create-step-fours.use-case";
 
 @Module({
     imports: [TypeOrmModule.forFeature([VehicleServiceReviewStepFour])],
     controllers: [StepFourController],
     providers: [
+        GetStepFourByIdUseCase,
         GetStepFourByReviewIdUseCase,
         CreateStepFourUseCase,
+        CreateStepFoursUseCase,
         UpdateStepFourUseCase,
         PatchStepfourIsActiveUseCase,
         PatchStepfourSuccessFlagUseCase,
