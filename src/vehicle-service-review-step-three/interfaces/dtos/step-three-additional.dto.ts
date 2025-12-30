@@ -4,6 +4,8 @@ export class StepThreeAdditionalDto {
     session_id: string;
     additional_image: string[];
     comment: string;
+    success_flag: boolean;
+    is_active: boolean;
     created_by: string;
     updated_by?: string;
 }
