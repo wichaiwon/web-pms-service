@@ -19,6 +19,7 @@ import { EmployeeModule } from "src/employee/employee.module";
 import { VehicleServiceReviewDetailModule } from "src/vehicle-service-review-detail/vehicle-service-review-detail.module";
 import { CancelVehicleServiceReviewUseCase } from "./application/commands/cancel-vehicle-service-review.use-case";
 import { ReIssueVehicleServiceReviewUseCase } from "./application/commands/reissue-vehicle-service-review.use-case";
+import { VehicleServiceReviewStepOneModule } from "src/vehicle-service-review-step-one/vehicle-service-review-step-one.module";
 
 @Module({
     imports: [
@@ -26,7 +27,8 @@ import { ReIssueVehicleServiceReviewUseCase } from "./application/commands/reiss
         ScheduleModule.forRoot(),
         TypeOrmModule.forFeature([VehicleServiceReview]),
         EmployeeModule,
-        VehicleServiceReviewDetailModule
+        VehicleServiceReviewDetailModule,
+        VehicleServiceReviewStepOneModule,
     ],
     controllers: [VehicleServiceReviewController],
     providers: [
