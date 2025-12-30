@@ -6,6 +6,8 @@ export class DetailAdditionalDto {
     front_tire_pressure: number;
     back_tire_pressure: number;
     comment: string;
+    is_active: boolean;
+    success_flag: boolean;
     created_by: string;
     created_at: Date;
     updated_by: string;
