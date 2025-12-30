@@ -9,20 +9,30 @@ import { StepFourDto } from "../interfaces/dtos/step-four.dto";
 import { CreateStepfourDto } from "../interfaces/dtos/create-step-four.dto";
 import { UpdateStepfourDto } from "../interfaces/dtos/update-step-four.dto";
 import { PatchStepfourDto } from "../interfaces/dtos/patch-step-four.dto";
+import { GetStepFourByIdUseCase } from "./queries/get-step-four-by-id.use-case";
+import { CreateStepFoursUseCase } from "./command/create-step-fours.use-case";
 @Injectable()
 export class StepFourService implements IStepFourServiceInterface {
     constructor(
+        private readonly getStepFourByIdUseCase: GetStepFourByIdUseCase,
         private readonly getStepFourByReviewIdUseCase: GetStepFourByReviewIdUseCase,
         private readonly createStepFourUseCase: CreateStepFourUseCase,
+        private readonly createStepFoursUseCase: CreateStepFoursUseCase,
         private readonly updateStepFourUseCase: UpdateStepFourUseCase,
         private readonly patchStepfourSuccessFlagUseCase: PatchStepfourSuccessFlagUseCase,
         private readonly patchStepfourIsActiveUseCase: PatchStepfourIsActiveUseCase,
     ) { }
+    async getStepFourById(id: string): Promise<StepFourDto | null> {
+        return this.getStepFourByIdUseCase.execute(id);
+    }
     async getStepFourByReviewId(reviewId: string): Promise<StepFourDto | null> {
         return this.getStepFourByReviewIdUseCase.execute(reviewId);
     }
     async createStepFour(createDto:CreateStepfourDto): Promise<StepFourDto> {
         return this.createStepFourUseCase.execute(createDto);
+    }
+    async createStepFours(createDtos: CreateStepfourDto[]): Promise<StepFourDto[]> {
+        return this.createStepFoursUseCase.execute(createDtos);
     }
     async updateStepFour(id: string, updateDto: UpdateStepfourDto): Promise<StepFourDto> {
         return this.updateStepFourUseCase.execute(id, updateDto);
