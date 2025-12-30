@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Put, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
 import { StepThreeService } from "src/vehicle-service-review-step-three/application/step-three.service";
 import { CreateStepThreeDto } from "../dtos/create-step-three.dto";
@@ -19,6 +19,12 @@ export class StepThreeController {
         private readonly stepThreeService: StepThreeService,
     ) { }
 
+    @Get(':id')
+    @ApiOperation({ summary: 'Get Vehicle Service Review Step Three by ID' })
+    async getStepThreeById(@Param('id') id: string): Promise<StepThreeDto | null> {
+        return this.stepThreeService.getStepThreeById(id);
+    }
+
     @Get(':reviewId')
     @ApiOperation({ summary: 'Get Vehicle Service Review Step Three by Review ID' })
     async getStepThreeByReviewId(@Param('reviewId') reviewId: string): Promise<StepThreeDto | null> {
@@ -34,10 +40,10 @@ export class StepThreeController {
                 summary: 'Create Step Three Example',
                 value: {
                     vehicle_service_review_id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
-                    first_batterry_valtage: 12.5,
+                    first_battery_voltage: 12.5,
                     first_measurement: 5.0,
                     first_rating: 4,
-                    second_batterry_valtage: 12.6,
+                    second_battery_voltage: 12.6,
                     second_measurement: 4.8,
                     second_rating: 5,
                     created_by: '123e4567-e89b-12d3-a456-426614174000',
@@ -48,6 +54,44 @@ export class StepThreeController {
     async createStepThree(@Body() createDto: CreateStepThreeDto): Promise<StepThreeDto> {
         return this.stepThreeService.createStepThree(createDto);
     }
+
+    @Post('create-multiple')
+    @ApiOperation({ summary: 'Create Multiple Vehicle Service Review Step Three Entries' })
+    @ApiBody({
+        type: [CreateStepThreeDto],
+        description: 'Payload to create multiple Vehicle Service Review Step Three entries',
+        examples: {
+            example1: {
+                summary: 'Create Multiple Step Three Entries Example',
+                value: [
+                    {
+                        vehicle_service_review_id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+                        first_battery_voltage: 12.5,
+                        first_measurement: 5.0,
+                        first_rating: 4,
+                        second_battery_voltage: 12.6,
+                        second_measurement: 4.8,
+                        second_rating: 5,
+                        created_by: '123e4567-e89b-12d3-a456-426614174000',
+                    },
+                    {
+                        vehicle_service_review_id: 'b2c3d4e5-f678-90ab-cdef-1234567890ab',
+                        first_battery_voltage: 12.7,
+                        first_measurement: 5.2,
+                        first_rating: 5,
+                        second_battery_voltage: 12.8,
+                        second_measurement: 5.0,
+                        second_rating: 5,
+                        created_by: '123e4567-e89b-12d3-a456-426614174000',
+                    },
+                ],
+            },
+        },
+    })
+    async createStepThrees(@Body() createDtos: CreateStepThreeDto[]): Promise<StepThreeDto[]> {
+        return this.stepThreeService.createStepThrees(createDtos);
+    }
+
     @Put('update/:id')
     @ApiOperation({ summary: 'Update Vehicle Service Review Step Three' })
     @ApiBody({
@@ -57,10 +101,10 @@ export class StepThreeController {
             example1: {
                 summary: 'Update Step Three Example',
                 value: {
-                    first_batterry_valtage: 12.7,
+                    first_battery_voltage: 12.7,
                     first_measurement: 5.2,
                     first_rating: 5,
-                    second_batterry_valtage: 12.8,
+                    second_battery_voltage: 12.8,
                     second_measurement: 5.0,
                     second_rating: 5,
                     updated_by: '123e4567-e89b-12d3-a456-426614174000',
@@ -74,6 +118,7 @@ export class StepThreeController {
 
     @Patch('success-flag/:id')
     @ApiOperation({ summary: 'Patch Vehicle Service Review Step Three Success Flag' })
+    @ApiParam({ name: 'id', description: 'ID of the Vehicle Service Review Step Three to patch success flag' })
     @ApiBody({
         type: PatchStepThreeDto,
         description: 'Payload to patch Vehicle Service Review Step Three success flag',
@@ -81,7 +126,7 @@ export class StepThreeController {
             example1: {
                 summary: 'Patch Step Three Success Flag Example',
                 value: {
-                    is_successful: true,
+                    updated_by: '123e4567-e89b-12d3-a456-426614174000',
                 },
             },
         },
@@ -91,6 +136,7 @@ export class StepThreeController {
     }
     @Patch('is-active/:id')
     @ApiOperation({ summary: 'Patch Vehicle Service Review Step Three Is Active Flag' })
+    @ApiParam({ name: 'id', description: 'ID of the Vehicle Service Review Step Three to patch is active flag' })
     @ApiBody({
         type: PatchStepThreeDto,
         description: 'Payload to patch Vehicle Service Review Step Three is active flag',
@@ -98,14 +144,29 @@ export class StepThreeController {
             example1: {
                 summary: 'Patch Step Three Is Active Flag Example',
                 value: {
-                    is_active: false,
+                    updated_by: '123e4567-e89b-12d3-a456-426614174000',
                 },
             },
         },
     })
     async patchStepThreeIsActive(@Param('id') id: string, @Body() patchDto: PatchStepThreeDto): Promise<StepThreeDto> {
         return this.stepThreeService.patchStepThreeIsActive(id, patchDto);
-    }   
+    }
+
+    @Get('additional/:id')
+    @ApiOperation({ summary: 'Get Vehicle Service Review Step Three Additional by ID' })
+    @ApiParam({ name: 'id', description: 'ID of the Vehicle Service Review Step Three Additional to retrieve' })
+    async getStepThreeAdditionalById(@Param('id') id: string): Promise<StepThreeAdditionalDto | null> {
+        return this.stepThreeService.getStepThreeAdditionalById(id);
+    }
+
+    @Get('additional/step-three/:stepThreeId')
+    @ApiOperation({ summary: 'Get Vehicle Service Review Step Three Additional by Step Three ID' })
+    @ApiParam({ name: 'stepThreeId', description: 'ID of the Vehicle Service Review Step Three to retrieve additional info for' })
+    async getStepThreeAdditionalByStepThreeId(@Param('stepThreeId') stepThreeId: string): Promise<StepThreeAdditionalDto | null> {
+        return this.stepThreeService.getStepThreeAdditionalByStepThreeId(stepThreeId);
+    }
+
     @Post('additional/create')
     @ApiOperation({ summary: 'Create Vehicle Service Review Step Three Additional' })
     @ApiBody({
@@ -147,6 +208,7 @@ export class StepThreeController {
     }
     @Patch('additional/is-active/:id')
     @ApiOperation({ summary: 'Patch Vehicle Service Review Step Three Additional Is Active Flag' })
+    @ApiParam({ name: 'id', description: 'ID of the Vehicle Service Review Step Three Additional to patch is active flag' })
     @ApiBody({
         type: PatchStepThreeDto,
         description: 'Payload to patch Vehicle Service Review Step Three Additional is active flag',
@@ -154,7 +216,6 @@ export class StepThreeController {
             example1: {
                 summary: 'Patch Step Three Additional Is Active Flag Example',
                 value: {
-                    is_active: false,
                     updated_by: '123e4567-e89b-12d3-a456-426614174000',
                 },
             },
@@ -172,7 +233,6 @@ export class StepThreeController {
             example1: {
                 summary: 'Patch Step Three Additional Success Flag Example',
                 value: {
-                    sucess_flag: true,
                     updated_by: '123e4567-e89b-12d3-a456-426614174000',
                 },
             },
@@ -180,5 +240,5 @@ export class StepThreeController {
     })
     async patchStepThreeAdditionalSuccessFlag(@Param('id') id: string, @Body() patchDto: PatchStepThreeDto): Promise<StepThreeAdditionalDto> {
         return this.stepThreeService.patchStepThreeAdditionalSuccessFlag(id, patchDto);
-    }   
+    }
 }
