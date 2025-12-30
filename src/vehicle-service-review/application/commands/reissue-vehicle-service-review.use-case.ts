@@ -1,5 +1,6 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import type { IDetailRepositoryInterface } from "src/vehicle-service-review-detail/domain/interfaces/detail.repository.interface";
+import type { IStepFourRepositoryInterface } from "src/vehicle-service-review-step-four/domain/interfaces/step-four.repsitory.interface";
 import type { IStepOneRepositoryInterface } from "src/vehicle-service-review-step-one/domain/interfaces/step-one.repository.interface";
 import type { IStepThreeRepositoryInterface } from "src/vehicle-service-review-step-three/domain/interfaces/step-three.repository.interface";
 import type { IStepTwoRepositoryInterface } from "src/vehicle-service-review-step-two/domain/interfaces/step-two.repository.inface";
@@ -20,6 +21,8 @@ export class ReIssueVehicleServiceReviewUseCase {
         private readonly stepTwoRepository: IStepTwoRepositoryInterface,
         @Inject('IStepThreeRepository')
         private readonly stepThreeRepository: IStepThreeRepositoryInterface,
+        @Inject('IStepFourRepository')
+        private readonly stepFourRepository: IStepFourRepositoryInterface,
     ) { }
 
     async execute(id: string, patchDto: PatchVehicleServiceReviewIsActiveDto): Promise<VehicleServiceReviewDto> {
@@ -29,11 +32,12 @@ export class ReIssueVehicleServiceReviewUseCase {
             throw new NotFoundException('Vehicle service review not found');
         }
 
-        const [oldDetail, oldStepOne, oldStepTwo, oldStepThree] = await Promise.all([
+        const [oldDetail, oldStepOne, oldStepTwo, oldStepThree, oldStepFour] = await Promise.all([
             this.detailRepository.getDetailByReviewId(id),
             this.stepOneRepository.getStepOneByReviewId(id),
             this.stepTwoRepository.getStepTwoByReviewId(id),
             this.stepThreeRepository.getStepThreeByReviewId(id),
+            this.stepFourRepository.getStepFourByReviewId(id),
         ]);
 
         const inactivePatchDto = { ...patchDto, is_active: false };
@@ -42,6 +46,7 @@ export class ReIssueVehicleServiceReviewUseCase {
             oldStepOne && this.stepOneRepository.patchStepOneIsActive(oldStepOne.id, inactivePatchDto),
             oldStepTwo && this.stepTwoRepository.patchStepTwoIsActive(oldStepTwo.id, inactivePatchDto),
             oldStepThree && this.stepThreeRepository.patchStepThreeIsActive(oldStepThree.id, inactivePatchDto),
+            oldStepFour && this.stepFourRepository.patchStepFourIsActive(oldStepFour.id, inactivePatchDto),
         ]); 
 
         await Promise.all([
@@ -49,6 +54,7 @@ export class ReIssueVehicleServiceReviewUseCase {
             this.stepOneRepository.createStepOne({ vehicle_service_review_id: id, created_by: patchDto.updated_by }),
             this.stepTwoRepository.createStepTwo({ vehicle_service_review_id: id, created_by: patchDto.updated_by }),
             this.stepThreeRepository.createStepThree({ vehicle_service_review_id: id, created_by: patchDto.updated_by }),
+            this.stepFourRepository.createStepFour({ vehicle_service_review_id: id, created_by: patchDto.updated_by }),
         ]);
 
         return review;
