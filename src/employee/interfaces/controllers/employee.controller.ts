@@ -31,7 +31,7 @@ export class EmployeeController {
         }
     })
     async login(@Body() loginDto: LoginDto): Promise<TokenDto> {
-        const result = await this.employeeService.login(loginDto.username, loginDto.password);
+        const result = await this.employeeService.login(loginDto);
         if (!result) {
             throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
         }
