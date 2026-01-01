@@ -10,6 +10,7 @@ import { VehicleServiceReviewStepOneModule } from './vehicle-service-review-step
 import { VehicleServiceReviewStepTwoModule } from './vehicle-service-review-step-two/vehicle-service-review-step-two.module'
 import { VehicleServiceReviewStepThreeModule } from './vehicle-service-review-step-three/vehicle-step-three.module'
 import { VehicleServiceReviewStepFourModule } from './vehicle-service-review-step-four/vehicle-service-review-step-four.module'
+import { UploadImageModule } from './upload-image/upload-image.module'
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { VehicleServiceReviewStepFourModule } from './vehicle-service-review-ste
       envFilePath: '.env',
     }),
     DatabaseModule,
+    UploadImageModule,
     EmployeeModule,
     VehicleServiceReviewModule,
     VehicleServiceReviewDetailModule,
