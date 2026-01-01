@@ -11,6 +11,7 @@ import { GetEmployeesUseCase } from "./queries/get-employees.use-case";
 import { GetEmployeeUseCase } from "./queries/get-employee.use-case";
 import { UpdateEmployeeUseCase } from "./commands/update-employee.use-case";
 import { UpdateEmployeeDto } from "../interfaces/dtos/update-employee.dto";
+import { LoginDto } from "../interfaces/dtos/login.dto";
 
 /**
  * EmployeeService - Application Service
@@ -59,8 +60,8 @@ export class EmployeeService implements IEmployeeService {
     /**
      * Login และได้ JWT token กลับมา
      */
-    async login(username: string, password: string): Promise<TokenDto | null> {
-        return this.loginUseCase.execute(username, password);
+    async login(loginDto : LoginDto): Promise<TokenDto | null> {
+        return this.loginUseCase.execute(loginDto);
     }
 
     /**

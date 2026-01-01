@@ -10,4 +10,10 @@ export class TokenDto {
 
   @ApiProperty({ type: () => EmployeeDto, required: false })
   employee?: EmployeeDto;
+
+  @ApiProperty({ example: '405680518', description: 'Username', required: false })
+  username?: string;
+
+  @ApiProperty({ example: 'Bangkok', description: 'Branch', required: false })
+  branch?: string;
 }
