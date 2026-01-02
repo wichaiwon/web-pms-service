@@ -41,6 +41,24 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
         });
     }
 
+    async getVehicleServiceReview(branch: Branch, is_active: boolean, date_booked: string): Promise<VehicleServiceReview[]> {
+        return await this.vehicleServiceReviewRepository.find({
+            where: {
+                branch_booked: branch,
+                is_active,
+                date_booked,
+            },
+        });
+    }
+
+    async getVehicleServiceReviewById(id: string): Promise<VehicleServiceReview> {
+        const found = await this.vehicleServiceReviewRepository.findOneBy({ id });
+        if (!found) {
+            throw new NotFoundException(`Vehicle service review with ID ${id} not found`);
+        }
+        return found;
+    }
+    
     async createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReview> {
         const newReview = this.vehicleServiceReviewRepository.create(createDto);
         return await this.vehicleServiceReviewRepository.save(newReview);
@@ -51,15 +69,6 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
         return await this.vehicleServiceReviewRepository.save(newReviews);
     }
 
-    async getVehicleServiceReview(branch: Branch, is_active: boolean, date_booked: string): Promise<VehicleServiceReview[]> {
-        return await this.vehicleServiceReviewRepository.find({
-            where: {
-                branch_booked: branch,
-                is_active,
-                date_booked,
-            },
-        });
-    }
     async updateVehicleServiceReview(id: string, updateDto: UpdateVehicleServiceReviewDto): Promise<VehicleServiceReview> {
         // Data Access Only: Update และ return ข้อมูล
         await this.vehicleServiceReviewRepository.update(id, updateDto);
@@ -70,13 +79,6 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
         return updated;
     }
 
-    async getVehicleServiceReviewById(id: string): Promise<VehicleServiceReview> {
-        const found = await this.vehicleServiceReviewRepository.findOneBy({ id });
-        if (!found) {
-            throw new NotFoundException(`Vehicle service review with ID ${id} not found`);
-        }
-        return found;
-    }
 
 
     async patchInProcess(id: string, patchDto: PatchVehicleServiceReviewInProcessDto): Promise<VehicleServiceReview> {
