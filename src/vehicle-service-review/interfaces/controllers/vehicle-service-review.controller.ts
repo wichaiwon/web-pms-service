@@ -34,6 +34,21 @@ export class VehicleServiceReviewController {
         return await this.vehicleServiceReviewService.getVehicleServiceReview(branch);
     }
 
+    @Get(':id')
+    @ApiOperation({
+        summary: 'Get vehicle service review by ID',
+        description: 'Get a vehicle service review by its ID. Requires JWT authentication.'
+    })
+    @ApiParam({
+        name: 'id',
+        type: 'string',
+        description: 'ID of the vehicle service review',
+        example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+    })
+    async getVehicleServiceReviewById(@Param('id') id: string) {
+        return await this.vehicleServiceReviewService.getVehicleServiceReviewById(id);
+    }
+
     @Post('create')
     @ApiOperation({
         summary: 'Create vehicle service reviews',

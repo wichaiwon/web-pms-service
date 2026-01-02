@@ -10,6 +10,7 @@ export interface IVehicleServiceReviewRepositoryInterface {
     fetchAppointmentsFromN8n(): Promise<CreateVehicleServiceReviewDto[]>;
     findByAppointmentRunning(appointmentRunning: string): Promise<VehicleServiceReview | null>;
     getVehicleServiceReview(branch: Branch, is_active: boolean, date_booked: string): Promise<VehicleServiceReview[]>;
+    getVehicleServiceReviewById(id: string): Promise<VehicleServiceReview | null>;
     createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReview>;
     createVehicleServiceReviews(createDtos: CreateVehicleServiceReviewDto[]): Promise<VehicleServiceReview[]>;
     getVehicleServiceReviewById(id: string): Promise<VehicleServiceReview>;
