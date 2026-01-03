@@ -1,16 +1,19 @@
-import { Body, Controller, Get, Post, Query, UploadedFile, UseInterceptors } from "@nestjs/common";
-import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Get, Post, Query, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { UploadImageService } from "./upload-image.service";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { JwtAuthGuard } from "src/employee/infrastructure/services/jwt-auth.guard";
 
-@ApiTags('Upload Image')
-@Controller('upload-image')
+@ApiTags('s3 image')
+@Controller('s3')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('JWT-auth')
 export class UploadImageController {
     constructor(
         private readonly uploadImageService: UploadImageService
     ) { }
 
-    @Post()
+    @Post('upload')
     @UseInterceptors(FileInterceptor('file'))
     @ApiOperation({ summary: 'Upload an image to AWS S3' })
     @ApiConsumes('multipart/form-data')
@@ -27,22 +30,30 @@ export class UploadImageController {
                 },
             },
         },
-    }) 
+    })
     async uploadImage(
         @UploadedFile() file: Express.Multer.File,
         @Body('id') id: string
     ) {
-        const result = await this.uploadImageService.uploadImage(file, id);
-        return result;
+        return await this.uploadImageService.uploadImage(file, id);
+        
+    }
+
+    @Get('presigned-url')
+    @ApiOperation({ summary: 'Generate a presigned upload URL for AWS S3' })
+    @ApiQuery({ name: 'imageName', type: 'string' })
+    @ApiQuery({ name: 'contentType', type: 'string' })
+    async generatePresignedUrl(
+        @Query('imageName') imageName: string,
+        @Query('contentType') contentType: string
+    ) {
+       return await this.uploadImageService.generateUploadUrl(imageName, contentType);
+       
     }
 
     @Get('view-url')
     async getViewUrl(@Query('imageName') imageName: string) {
-        const result = await this.uploadImageService.generateImageUrl(imageName);
-        return {
-            success: true,
-            message: 'View URL generated successfully',
-            data: result,
-        }
+        return await this.uploadImageService.generateImageUrl(imageName);
+        
     }
 }
