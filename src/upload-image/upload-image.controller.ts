@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { UploadImageService } from "./upload-image.service";
 import { FileInterceptor } from "@nestjs/platform-express";
@@ -34,5 +34,15 @@ export class UploadImageController {
     ) {
         const result = await this.uploadImageService.uploadImage(file, id);
         return result;
+    }
+
+    @Get('view-url')
+    async getViewUrl(@Query('imageName') imageName: string) {
+        const result = await this.uploadImageService.generateImageUrl(imageName);
+        return {
+            success: true,
+            message: 'View URL generated successfully',
+            data: result,
+        }
     }
 }
