@@ -1,5 +1,6 @@
 
 export class StepFourDto {
+    vehicle_service_review_id: string
     session_id: string
     signature_customer: string
     signature_status: string
