@@ -25,7 +25,7 @@ export class StepThreeController {
         return this.stepThreeService.getStepThreeById(id);
     }
 
-    @Get(':reviewId')
+    @Get('/review/:reviewId')
     @ApiOperation({ summary: 'Get Vehicle Service Review Step Three by Review ID' })
     async getStepThreeByReviewId(@Param('reviewId') reviewId: string): Promise<StepThreeDto | null> {
         return this.stepThreeService.getStepThreeByReviewId(reviewId);
