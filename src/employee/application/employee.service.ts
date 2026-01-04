@@ -12,6 +12,7 @@ import { GetEmployeeUseCase } from "./queries/get-employee.use-case";
 import { UpdateEmployeeUseCase } from "./commands/update-employee.use-case";
 import { UpdateEmployeeDto } from "../interfaces/dtos/update-employee.dto";
 import { LoginDto } from "../interfaces/dtos/login.dto";
+import { GetEmployeeByUsernameUseCase } from "./queries/get-employee-by-username.use-case";
 
 /**
  * EmployeeService - Application Service
@@ -34,6 +35,7 @@ export class EmployeeService implements IEmployeeService {
         private readonly getEmployeeUseCase: GetEmployeeUseCase,
         private readonly getEmployeesUseCase: GetEmployeesUseCase,
         private readonly getEmployeeByFullNameUseCase: GetEmployeeByFullNameUseCase,
+        private readonly getEmployeeByUsernameUseCase: GetEmployeeByUsernameUseCase,
     ) { }
 
     /**
@@ -83,5 +85,12 @@ export class EmployeeService implements IEmployeeService {
      */
     async getEmployeeByFullName(firstname: string, lastname: string): Promise<EmployeeDto | null> {
         return this.getEmployeeByFullNameUseCase.execute(firstname, lastname);
+    }
+
+    /**
+     * ค้นหาพนักงานด้วยชื่อผู้ใช้ (username)
+     */
+    async findEmployeeByUsername(username: string): Promise<EmployeeDto | null> {
+        return this.getEmployeeByUsernameUseCase.execute(username);
     }
 }

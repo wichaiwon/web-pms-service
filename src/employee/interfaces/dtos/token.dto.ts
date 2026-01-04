@@ -8,6 +8,9 @@ export class TokenDto {
   @ApiProperty({ example: 3600, required: false })
   expires_in?: number;
 
+  @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'Employee ID', required: false })
+  id?: string;
+
   @ApiProperty({ type: () => EmployeeDto, required: false })
   employee?: EmployeeDto;
 

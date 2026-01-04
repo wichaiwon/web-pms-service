@@ -7,6 +7,7 @@ import { UpdateEmployeeDto } from "src/employee/interfaces/dtos/update-employee.
 export interface IEmployeeService {
     getEmployees(): Promise<EmployeeDto[]>;
     getEmployeeByFullName(firstname: string, lastname: string): Promise<EmployeeDto | null>;
+    findEmployeeByUsername(username: string): Promise<EmployeeDto | null>;
     createEmployee(createEmployeeDto: CreateEmployeeDto): Promise<EmployeeDto>;
     createEmployees(createEmployeeDtos: CreateEmployeeDto[]): Promise<EmployeeDto[]>;
     updateEmployee(id: string, updateEmployeeDto: UpdateEmployeeDto): Promise<EmployeeDto>;

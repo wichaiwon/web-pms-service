@@ -16,6 +16,7 @@ import { GetEmployeeUseCase } from "./application/queries/get-employee.use-case"
 import { GetEmployeesUseCase } from "./application/queries/get-employees.use-case";
 import { GetEmployeeByFullNameUseCase } from "./application/queries/get-employee-by-fullname.use-case";
 import { UpdateEmployeeUseCase } from "./application/commands/update-employee.use-case";
+import { GetEmployeeByUsernameUseCase } from "./application/queries/get-employee-by-username.use-case";
 
 @Module({
     imports: [
@@ -49,6 +50,7 @@ import { UpdateEmployeeUseCase } from "./application/commands/update-employee.us
         GetEmployeeUseCase,
         GetEmployeesUseCase,
         GetEmployeeByFullNameUseCase,
+        GetEmployeeByUsernameUseCase,
         
         // Repository
         {

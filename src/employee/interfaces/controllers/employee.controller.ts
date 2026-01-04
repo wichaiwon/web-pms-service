@@ -54,6 +54,14 @@ export class EmployeeController {
         return this.employeeService.getEmployee(id);
     }
 
+    @Get('username/:username')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('JWT-auth')
+    @ApiOperation({ summary: 'Get employee by username', description: 'Retrieve an employee by their username (mirai_id, pkg_id_member, or email)' })
+    async findEmployeeByUsername(@Param('username') username: string): Promise<EmployeeDto | null> {
+        return this.employeeService.findEmployeeByUsername(username);
+    }
+
     @Get(':firstname/:lastname')
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('JWT-auth')
