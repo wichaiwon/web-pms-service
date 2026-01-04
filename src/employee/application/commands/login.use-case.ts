@@ -37,6 +37,7 @@ export class LoginUseCase {
         };
 
         return {
+            id: employee.id,
             username: employee.mirai_id || employee.pkg_id_member || employee.email,
             branch: employee.branch,
             access_token: this.jwtService.sign(payload),
