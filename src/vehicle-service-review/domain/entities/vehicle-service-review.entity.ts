@@ -1,7 +1,9 @@
 import { Branch } from 'src/shared/enum/employee/employee.enum'
 import { CarBrand, CarType, StatusRepairOrder, StatusReport } from 'src/shared/enum/vehicle-service-review/vehicle-service-review.enum'
 import { VehicleServiceReviewDetail } from 'src/vehicle-service-review-detail/domain/entities/vehicle-service-review-detail.entity'
+import { VehicleServiceReviewStepFour } from 'src/vehicle-service-review-step-four/domain/entities/vehicle-service-review-step-four.entity'
 import { VehicleServiceReviewStepOne } from 'src/vehicle-service-review-step-one/domain/entities/vehicle-service-review-step-one.entity'
+import { VehicleServiceReviewStepThree } from 'src/vehicle-service-review-step-three/domain/entities/vehicle-service-review-step-three.entity'
 import { VehicleServiceReviewStepTwo } from 'src/vehicle-service-review-step-two/domain/entities/vehicle-service-review-step-two.entity'
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
@@ -94,11 +96,15 @@ export class VehicleServiceReview {
   @Column({ type: 'uuid', nullable: true })
   updated_by: string
 
-  // // Relations
+  // Relations
   @OneToMany(() => VehicleServiceReviewDetail, detail => detail.vehicle_service_review, { cascade: true })
   detail: VehicleServiceReviewDetail[]
   @OneToMany(() => VehicleServiceReviewStepOne, stepOne => stepOne.vehicle_service_review,{ cascade: true })
   step_one: VehicleServiceReviewStepOne[]
   @OneToMany(() => VehicleServiceReviewStepTwo, stepTwo => stepTwo.vehicle_service_review,{ cascade: true })
   step_two: VehicleServiceReviewStepTwo[]
+  @OneToMany(() => VehicleServiceReviewStepThree, stepThree => stepThree.vehicle_service_review,{ cascade: true })
+  step_three: VehicleServiceReviewStepThree[]
+  @OneToMany(() => VehicleServiceReviewStepFour, stepFour => stepFour.vehicle_service_review,{ cascade: true })
+  step_four: VehicleServiceReviewStepFour[]
 }
