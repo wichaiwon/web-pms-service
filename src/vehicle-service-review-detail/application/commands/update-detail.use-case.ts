@@ -12,7 +12,7 @@ export class UpdateDetailUseCase {
     ) { }
 
     async execute(id: string, updateDto: UpdateDetailDto): Promise<DetailDto> {
-        const existingReview = await this.detailRepository.getDetailByReviewId(id);
+        const existingReview = await this.detailRepository.getDetailById(id);
         if (!existingReview) {
             throw new NotFoundException(`Detail with ID ${id} not found.`);
         }
