@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsOptional, IsUUID } from "class-validator";
-import { Cargo, SpareTire, TireCondition, TireDepth, TruckToolSet, WheelControlCover } from "src/shared/enum/vehicle-service-review-step-two/step-two.enum";
+import { Cargo, SpareTire, TireCondition, TireDamage, TireDepth, TruckToolSet, WheelControlCover } from "src/shared/enum/vehicle-service-review-step-two/step-two.enum";
 
 export class UpdateStepTwoDto {
     @ApiProperty({ enum: SpareTire, example: SpareTire.HAVE })
@@ -73,6 +73,19 @@ export class UpdateStepTwoDto {
     @ApiProperty({enum:TireCondition, example: TireCondition.CHANGE_IMMEDIATELY, description: 'สภาพยางล้อหลังขวา' })
     @IsOptional()
     right_back_tire_condition?: TireCondition;
+
+    @ApiProperty({enum:TireDamage, example: TireDamage.BULGE, description: 'ความเสียหายของยางล้อหน้าซ้าย' })
+    @IsOptional()
+    left_front_tire_damage?: TireDamage;
+    @ApiProperty({enum:TireDamage, example: TireDamage.BULGE, description: 'ความเสียหายของยางล้อหน้าขวา' })
+    @IsOptional()
+    right_front_tire_damage?: TireDamage;
+    @ApiProperty({enum:TireDamage, example: TireDamage.BULGE, description: 'ความเสียหายของยางล้อหลังซ้าย' })
+    @IsOptional()
+    left_back_tire_damage?: TireDamage;
+    @ApiProperty({enum:TireDamage, example: TireDamage.BULGE, description: 'ความเสียหายของยางล้อหลังขวา' })
+    @IsOptional()
+    right_back_tire_damage?: TireDamage;
     
     @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000' })
     @IsNotEmpty()
