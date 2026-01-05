@@ -27,7 +27,7 @@ import { GetEmployeeByUsernameUseCase } from "./application/queries/get-employee
             useFactory: async (configService: ConfigService) => ({
                 global: true,
                 secret: configService.get<string>('JWT_SECRET') || 'defaultSecretKey',
-                signOptions: { expiresIn: '12h' },
+                signOptions: { expiresIn: 43200 },
             }),
             inject: [ConfigService],
         }),
