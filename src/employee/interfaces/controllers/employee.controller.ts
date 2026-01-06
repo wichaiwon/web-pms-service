@@ -71,8 +71,8 @@ export class EmployeeController {
     }
 
     @Post('create')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('JWT-auth')
+    // @UseGuards(JwtAuthGuard)
+    // @ApiBearerAuth('JWT-auth')
     @ApiOperation({
         summary: 'Create new employee(s)',
         description: 'Create one or multiple employees. Can accept a single employee object or an array of employee objects. Requires JWT authentication.'
