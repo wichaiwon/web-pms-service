@@ -11,10 +11,9 @@ export class GetVehicleServiceReviewUseCase {
     ) { }
     
     async execute(branch: Branch): Promise<VehicleServiceReviewDto[]> {
-        // Business Logic: กำหนด is_active=true และ date_booked=วันปัจจุบัน
         const is_active = true;
         const today = new Date();
-        const date_booked = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+        const date_booked = today.toISOString().split('T')[0]; 
         
         return this.vehicleServiceReviewRepository.getVehicleServiceReview(branch, is_active, date_booked);
     }

@@ -10,7 +10,7 @@ import { PatchVehicleServiceReviewIsActiveDto } from "src/vehicle-service-review
 import { PatchVehicleServiceReviewInProcessDto } from "src/vehicle-service-review/interfaces/dtos/patch-vehicle-service-review-in-process.dto";
 import { PatchVehicleServiceReviewSuccessFlagDto } from "src/vehicle-service-review/interfaces/dtos/patch-vehicle-service-review-success-flag.dto";
 import { UpdateVehicleServiceReviewDto } from "src/vehicle-service-review/interfaces/dtos/update-vehicle-service-review.dto";
-import { Repository } from "typeorm";
+import { IsNull, Not, Repository } from "typeorm";
 
 @Injectable()
 export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepositoryInterface {
@@ -47,6 +47,11 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
                 branch_booked: branch,
                 is_active,
                 date_booked,
+                vin_number: Not(IsNull()),
+                engine_number: Not(IsNull()),
+                chassis_number: Not(IsNull()),
+                model_number: Not(IsNull()),
+                model_name: Not(IsNull()),
             },
         });
     }
