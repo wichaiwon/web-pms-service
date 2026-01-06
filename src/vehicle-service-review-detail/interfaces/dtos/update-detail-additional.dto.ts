@@ -19,9 +19,9 @@ export class UpdateDetailAdditionalDto {
 
     @ApiProperty({ description: 'Additional Services', example: [AdditionalService.CAR_WASH] })
     @IsOptional()
-        @IsArray()
-        @IsString({ each: true })
-    additional_service: AdditionalService[]
+    @IsArray()
+    @IsString({ each: true })
+    additional_service?: AdditionalService[];
 
     @ApiProperty({ description: 'Comment', example: 'Tire pressure checked and adjusted.' })
     @IsOptional()
