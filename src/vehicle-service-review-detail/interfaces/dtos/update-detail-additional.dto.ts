@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsOptional, IsUUID } from "class-validator";
-import { TirePressure } from "src/shared/enum/vehicle-service-review-detail/detail.enum";
+import { IsArray, IsEnum, IsOptional, IsString, IsUUID } from "class-validator";
+import { AdditionalService, TirePressure } from "src/shared/enum/vehicle-service-review-detail/detail.enum";
 
 export class UpdateDetailAdditionalDto {
 
@@ -16,6 +16,12 @@ export class UpdateDetailAdditionalDto {
     @ApiProperty({ description: 'Back Tire Pressure', example: 40 })
     @IsOptional()
     back_tire_pressure: number
+
+    @ApiProperty({ description: 'Additional Services', example: [AdditionalService.CAR_WASH] })
+    @IsOptional()
+        @IsArray()
+        @IsString({ each: true })
+    additional_service: AdditionalService[]
 
     @ApiProperty({ description: 'Comment', example: 'Tire pressure checked and adjusted.' })
     @IsOptional()
