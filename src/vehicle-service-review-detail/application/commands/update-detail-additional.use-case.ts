@@ -14,21 +14,6 @@ export class UpdateDetailAdditionalUseCase {
         if (!existingDetail) {
             throw new NotFoundException(`Detail ID ${id} not found.`);
         }
-        if(updateDto.additional_service) {
-            const currentServices = existingDetail.additional_service || [];
-            if (typeof updateDto.additional_service === 'string') {
-                // ถ้าส่งมาเป็น string: เพิ่มเข้า array ถ้ายังไม่มี
-                if (!currentServices.includes(updateDto.additional_service)) {
-                    updateDto.additional_service = [...currentServices, updateDto.additional_service];
-                } else {
-                    updateDto.additional_service = currentServices;
-                }
-            } else if (Array.isArray(updateDto.additional_service)) {
-                // ถ้าส่งมาเป็น array: รวมกับของเดิมแล้ว filter duplicate
-                const merged = [...currentServices, ...updateDto.additional_service];
-                updateDto.additional_service = Array.from(new Set(merged));
-            }
-        }
         const updatedDetailAdditional = await this.detailRepository.updateDetailAdditional(id, updateDto);
         return updatedDetailAdditional;
     }
