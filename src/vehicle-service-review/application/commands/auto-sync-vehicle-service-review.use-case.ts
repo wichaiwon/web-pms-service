@@ -60,7 +60,10 @@ export class AutoSyncVehicleServiceReviewUseCase {
 
                 // จัดการ responsible - แปลงชื่อ-นามสกุลเป็น employee ID
                 let responsibleIds: string[] = [];
-                if (typeof appointment.responsible === 'string' && appointment.responsible) {
+                if (Array.isArray(appointment.responsible)) {
+                    // ถ้าเป็น array (เช่น []) ให้ใช้ responsibleIds = []
+                    responsibleIds = appointment.responsible;
+                } else if (typeof appointment.responsible === 'string' && appointment.responsible) {
                     const nameParts = (appointment.responsible as string).trim().split(/\s+/);
                     if (nameParts.length >= 2) {
                         const firstname = nameParts[0];
@@ -78,7 +81,6 @@ export class AutoSyncVehicleServiceReviewUseCase {
                         }
                     }
                 }
-
                 // Business Logic: เช็กว่าข้อมูลซ้ำหรือไม่
                 const existing = await this.vehicleServiceReviewRepository.findByAppointmentRunning(appointment.appointment_running);
 
