@@ -53,19 +53,21 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
                 model_number: Not(IsNull()),
                 model_name: Not(IsNull()),
             },
+            order: { time_booked: 'ASC' },
         });
     }
     async getIncompleteVehicleServiceReview(branch: Branch, is_active: boolean, date_booked: string): Promise<VehicleServiceReview[]> {
-    return await this.vehicleServiceReviewRepository.find({
-        where: [
-            { branch_booked: branch, is_active, date_booked, model_number: IsNull() },
-            { branch_booked: branch, is_active, date_booked, model_name: IsNull() },
-            { branch_booked: branch, is_active, date_booked, vin_number: IsNull() },
-            { branch_booked: branch, is_active, date_booked, engine_number: IsNull() },
-            { branch_booked: branch, is_active, date_booked, chassis_number: IsNull() },
-        ],
-    });
-}
+        return await this.vehicleServiceReviewRepository.find({
+            where: [
+                { branch_booked: branch, is_active, date_booked, model_number: IsNull() },
+                { branch_booked: branch, is_active, date_booked, model_name: IsNull() },
+                { branch_booked: branch, is_active, date_booked, vin_number: IsNull() },
+                { branch_booked: branch, is_active, date_booked, engine_number: IsNull() },
+                { branch_booked: branch, is_active, date_booked, chassis_number: IsNull() },
+            ],
+            order: { time_booked: 'ASC' },
+        });
+    }
 
     async getVehicleServiceReviewById(id: string): Promise<VehicleServiceReview> {
         const found = await this.vehicleServiceReviewRepository.findOneBy({ id });
