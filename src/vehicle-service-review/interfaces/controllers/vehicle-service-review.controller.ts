@@ -33,6 +33,21 @@ export class VehicleServiceReviewController {
     async getVehicleServiceReviews(@Query('branch') branch: Branch) {
         return await this.vehicleServiceReviewService.getVehicleServiceReview(branch);
     }
+    @Get('incomplete')
+    @ApiOperation({
+        summary: 'Get incomplete vehicle service reviews',
+        description: 'Get incomplete vehicle service reviews by branch (active only, today only). Requires JWT authentication.'
+    })
+    @ApiQuery({
+        name: 'branch',
+        enum: Branch,
+        required: true,
+        description: 'Branch to filter',
+        example: Branch.HEAD_OFFICE
+    })
+    async getIncompleteVehicleServiceReviews(@Query('branch') branch: Branch) {
+        return await this.vehicleServiceReviewService.getIncompleteVehicleServiceReview(branch);
+    }
 
     @Get(':id')
     @ApiOperation({

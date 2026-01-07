@@ -24,6 +24,7 @@ import { VehicleServiceReviewStepTwoModule } from "src/vehicle-service-review-st
 import { VehicleServiceReviewStepThreeModule } from "src/vehicle-service-review-step-three/vehicle-step-three.module";
 import { VehicleServiceReviewStepFourModule } from "src/vehicle-service-review-step-four/vehicle-service-review-step-four.module";
 import { GetVehicleServiceReviewByIdUseCase } from "./application/queries/get-vehicle-service-review-by-id.use-case";
+import { GetIncompleteVehicleServiceReviewUseCase } from "./application/queries/get-incompleted-vehicle-service-review.use-case";
 
 @Module({
     imports: [
@@ -43,6 +44,7 @@ import { GetVehicleServiceReviewByIdUseCase } from "./application/queries/get-ve
         AppointmentSyncScheduler,
         VehicleServiceReviewService,
         GetVehicleServiceReviewUseCase,
+        GetIncompleteVehicleServiceReviewUseCase,
         GetVehicleServiceReviewByIdUseCase,
         CreateVehicleServiceReviewUseCase,
         CreateVehicleServiceReviewsUseCase,

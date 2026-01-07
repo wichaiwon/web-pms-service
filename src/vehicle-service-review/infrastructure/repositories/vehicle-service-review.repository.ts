@@ -55,6 +55,17 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
             },
         });
     }
+    async getIncompleteVehicleServiceReview(branch: Branch, is_active: boolean, date_booked: string): Promise<VehicleServiceReview[]> {
+    return await this.vehicleServiceReviewRepository.find({
+        where: [
+            { branch_booked: branch, is_active, date_booked, model_number: IsNull() },
+            { branch_booked: branch, is_active, date_booked, model_name: IsNull() },
+            { branch_booked: branch, is_active, date_booked, vin_number: IsNull() },
+            { branch_booked: branch, is_active, date_booked, engine_number: IsNull() },
+            { branch_booked: branch, is_active, date_booked, chassis_number: IsNull() },
+        ],
+    });
+}
 
     async getVehicleServiceReviewById(id: string): Promise<VehicleServiceReview> {
         const found = await this.vehicleServiceReviewRepository.findOneBy({ id });
@@ -63,7 +74,7 @@ export class VehicleServiceReviewRepository implements IVehicleServiceReviewRepo
         }
         return found;
     }
-    
+
     async createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReview> {
         const newReview = this.vehicleServiceReviewRepository.create(createDto);
         return await this.vehicleServiceReviewRepository.save(newReview);

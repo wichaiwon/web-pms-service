@@ -18,11 +18,13 @@ import { AutoSyncVehicleServiceReviewUseCase } from "./commands/auto-sync-vehicl
 import { CancelVehicleServiceReviewUseCase } from "./commands/cancel-vehicle-service-review.use-case";
 import { ReIssueVehicleServiceReviewUseCase } from "./commands/reissue-vehicle-service-review.use-case";
 import { GetVehicleServiceReviewByIdUseCase } from "./queries/get-vehicle-service-review-by-id.use-case";
+import { GetIncompleteVehicleServiceReviewUseCase } from "./queries/get-incompleted-vehicle-service-review.use-case";
 
 @Injectable()
 export class VehicleServiceReviewService implements IVehicleServiceReviewServiceInterface {
     constructor(
         private readonly getVehicleServiceReviewUseCase: GetVehicleServiceReviewUseCase,
+        private readonly getIncompleteVehicleServiceReviewUseCase: GetIncompleteVehicleServiceReviewUseCase,
         private readonly getVehicleServiceReviewByIdUseCase: GetVehicleServiceReviewByIdUseCase,
         private readonly autoSyncVehicleServiceReviewUseCase: AutoSyncVehicleServiceReviewUseCase,
         private readonly createVehicleServiceReviewUseCase: CreateVehicleServiceReviewUseCase,
@@ -40,6 +42,10 @@ export class VehicleServiceReviewService implements IVehicleServiceReviewService
         return this.getVehicleServiceReviewUseCase.execute(branch);
     }
 
+    async getIncompleteVehicleServiceReview(branch: Branch): Promise<VehicleServiceReviewDto[]> {
+        return this.getIncompleteVehicleServiceReviewUseCase.execute(branch);
+    }
+
     async getVehicleServiceReviewById(id: string): Promise<VehicleServiceReviewDto> {
         return this.getVehicleServiceReviewByIdUseCase.execute(id);
     }
@@ -47,8 +53,6 @@ export class VehicleServiceReviewService implements IVehicleServiceReviewService
     async autoSyncVehicleServiceReview(): Promise<{ synced: number; skipped: number; errors: number }> {
         return this.autoSyncVehicleServiceReviewUseCase.execute();
     }
-    
-
 
     async createVehicleServiceReview(createDto: CreateVehicleServiceReviewDto): Promise<VehicleServiceReviewDto> {
         return this.createVehicleServiceReviewUseCase.execute(createDto);
