@@ -21,31 +21,31 @@ export class UpdateEmployeeDto {
     description: 'Mirai password',
     minLength: 1
   })
-  @IsNotEmpty({ message: 'mirai_password is required' })
+  @IsOptional()
   @IsString({ message: 'mirai_password must be a string' })
   @MinLength(1, { message: 'mirai_password must not be empty' })
   @MaxLength(100, { message: 'mirai_password must not exceed 100 characters' })
-  mirai_password: string
+  mirai_password?: string
 
   @ApiProperty({ 
     example: 'วิชัย',
     description: 'First name'
   })
-  @IsNotEmpty({ message: 'firstname is required' })
+  @IsOptional()
   @IsString({ message: 'firstname must be a string' })
   @MinLength(1, { message: 'firstname must not be empty' })
   @MaxLength(100, { message: 'firstname must not exceed 100 characters' })
-  firstname: string
+  firstname?: string
 
   @ApiProperty({ 
     example: 'วงค์ฟู',
     description: 'Last name'
   })
-  @IsNotEmpty({ message: 'lastname is required' })
+  @IsOptional()
   @IsString({ message: 'lastname must be a string' })
   @MinLength(1, { message: 'lastname must not be empty' })
   @MaxLength(100, { message: 'lastname must not exceed 100 characters' })
-  lastname: string
+  lastname?: string
 
   @ApiProperty({ 
     example: '123456',
