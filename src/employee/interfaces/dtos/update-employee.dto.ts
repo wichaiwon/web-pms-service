@@ -59,7 +59,14 @@ export class UpdateEmployeeDto {
   @Matches(/^\d{4,6}$/, { message: 'pin_code must be between 4 and 6 digits' })
   pin_code?: string
 
-
+  @IsOptional()
+  @ApiProperty({
+    example: Branch.HEAD_OFFICE,
+    description: 'Branch of the employee',
+    enum: Branch,
+  })
+  @IsEnum(Branch, { message: 'branch must be a valid Branch enum value' })
+  branch?: Branch
 
   @ApiProperty({
     example: 'system',
