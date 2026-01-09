@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsEnum, IsOptional, MinLength, MaxLength, IsEmail, Matches } from 'class-validator'
+import { IsString, IsNotEmpty, IsEnum, IsOptional, MinLength, MaxLength, IsEmail, Matches, isNotEmpty } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { Branch, EmployeeRole } from 'src/shared/enum/employee/employee.enum'
 
@@ -102,13 +102,12 @@ export class CreateEmployeeDto {
   @ApiProperty({ 
     example: Branch.HEAD_OFFICE, 
     enum: Branch, 
-    default: Branch.HEAD_OFFICE,
     description: 'Branch location',
     required: false
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsEnum(Branch, { message: `branch must be one of: ${Object.values(Branch).join(', ')}` })
-  branch?: Branch
+  branch: Branch
 
   @ApiProperty({
     example: 'system',
